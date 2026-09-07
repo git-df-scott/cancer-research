@@ -1,0 +1,2 @@
+Phase C: 60 runs, 28 simulated days, dispersed architecture, continuous dosing.
+
