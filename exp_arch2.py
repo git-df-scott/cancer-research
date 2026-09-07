@@ -27,7 +27,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lymphoid import Lymphoid
 import exp_schedule as S
 import schedules as SCH
-from exp_poscontrol import run as _run_base, load_combos
+from exp_poscontrol import load_combos, N_T_OVERRIDE as _NT_OVERRIDE
+from exp_poscontrol4 import run as _run4, combos as _combos4
 
 OUT = S.OUT
 ARCHS = ['dispersed', 'multi', 'follicle']
@@ -39,30 +40,40 @@ G_SCHEDULES = ['A_cont', 'B_6on1off', 'B_MO_FR', 'A_tfi7']
 
 
 def run(args):
-    arch, sched_name, rep_label, params, influx, seed, swap = args
+    arch, sched_name, rep_label, params, influx, seed, swap, n_t = args
     p = dict(params); p['swap_prob'] = swap
-    r = _run_base((arch, sched_name, rep_label, p, influx, seed))
+    r = _run4((arch, sched_name, rep_label, p, influx, seed, n_t))
     r['swap_prob'] = swap
     return r
 
 
 def passing_combos():
-    # Phase 3 writes expE3_*; Phase 2's expE_* is preserved untouched. Prefer the newest verdict
-    # that exists so this script is always gated on the most recent positive control.
-    fn = ('expE3_poscontrol_verdict.json'
-          if os.path.exists(f'{OUT}/expE3_poscontrol_verdict.json')
-          else 'expE_poscontrol_verdict.json')
-    print(f'gating on {fn}')
+    """Gate on the NEWEST positive-control verdict that exists. Phase 2 wrote expE_*, Phase 3
+    expE3_*, Phase 4 expE4_*; all are preserved. Returns (label, params, influx, n_t) so the
+    initial T-cell number travels with the regime instead of sitting in a module global."""
+    for fn, phase in (('expE4_poscontrol_verdict.json', 4),
+                      ('expE3_poscontrol_verdict.json', 3),
+                      ('expE_poscontrol_verdict.json', 2)):
+        if os.path.exists(f'{OUT}/{fn}'):
+            break
+    else:
+        raise SystemExit('no positive-control verdict found')
+    print(f'gating on {fn} (phase {phase})')
     v = json.load(open(f'{OUT}/{fn}'))
     if not v['passes']:
         print('POSITIVE CONTROL FAILED - MODEL NOT VALIDATED FOR SCHEDULING QUESTION')
         print('PHASE2_PREREG.md section 9, stopping rule 1: the architecture comparison is NOT run.')
         sys.exit(1)
     keys = {(p[0], float(p[1])) for p in v['passes']}
-    combos = [c for c in load_combos() if (c[0], c[2]) in keys]
+    if phase == 4:
+        allc = [(l, p, i, n) for l, p, i, n in _combos4()]
+    else:
+        allc = [(l, p, i, _NT_OVERRIDE if _NT_OVERRIDE is not None else S.N_T)
+                for l, p, i in load_combos()]
+    combos = [c for c in allc if (c[0], c[2]) in keys]
     print(f'Positive control passed in {len(keys)} combination(s); running those only.')
-    for label, _p, infl in combos:
-        print(f'    [{label}] influx {infl:.1e}')
+    for label, _p, infl, n_t in combos:
+        print(f'    [{label}] influx {infl:.1e}  N_T {n_t}')
     return combos
 
 
@@ -189,16 +200,16 @@ if __name__ == '__main__':
     mode = (sys.argv[1] if len(sys.argv) > 1 else 'A').upper()
     if mode == 'F':
         combos = passing_combos()
-        jobs = [(a, n, lab, p, infl, s, 0.0)
-                for lab, p, infl in combos for a in ARCHS
+        jobs = [(a, n, lab, p, infl, s, 0.0, n_t)
+                for lab, p, infl, n_t in combos for a in ARCHS
                 for n, _o, _f in SCH.ALL for s in SEEDS]
         res = launch(jobs, 'expF_arch.json', 'Phase F, architecture comparison, swap_prob = 0')
         rep = analyse(res, [0.0])
         json.dump(rep, open(f'{OUT}/expF_arch_report.json', 'w'), indent=1)
     elif mode == 'G':
         combos = passing_combos()
-        jobs = [(a, n, lab, p, infl, s, sw)
-                for lab, p, infl in combos for a in ARCHS
+        jobs = [(a, n, lab, p, infl, s, sw, n_t)
+                for lab, p, infl, n_t in combos for a in ARCHS
                 for n in G_SCHEDULES for s in SEEDS for sw in (0.5, 1.0)]
         res = launch(jobs, 'expG_traffic.json', 'Phase G, trafficking attack')
         both = json.load(open(f'{OUT}/expF_arch.json')) + res

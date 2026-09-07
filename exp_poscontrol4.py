@@ -31,9 +31,13 @@ OUT = S.OUT
 def run(args):
     arch, sched_name, tag, params, influx, seed, n_t = args
     on, off = SCH.by_name(sched_name)
+    # systemic is enabled only when the caller supplies calibrated systemic parameters, so this
+    # runner also reproduces the Phase 2 and Phase 3 configurations exactly when they are absent.
+    # It must NOT default to on with k_sys = 0: the compartment would still accumulate exposure
+    # and hand it to arrivals, which changes behaviour whenever the Hill lag c50 > 0.
     m = Lymphoid(L=S.L, seed=seed, dt=S.DT, p_kill=S.PARAMS['p_kill'],
                  p_div=S.PARAMS['p_div'], t_div=S.PARAMS['t_div'], t_influx=influx,
-                 exhaust_model='twostate', systemic=True, **params)
+                 exhaust_model='twostate', systemic=('k_sys' in params), **params)
     m.seed_dispersed(S.N_B, occupancy=0.95)
     m.seed_tcells(n_t)
     n0 = m.nB

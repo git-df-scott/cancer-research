@@ -155,18 +155,18 @@ if __name__ == '__main__':
     combos = passing_combos()
     if mode == 'K':
         jobs = [('K', a, n, lab, p, infl, s, None)
-                for lab, p, infl in combos for a in ARCHS for n in SUBSET for s in SEEDS]
+                for lab, p, infl, _n_t in combos for a in ARCHS for n in SUBSET for s in SEEDS]
     elif mode == 'D':
         jobs = [('D', a, n, lab, p, infl, s, None)
-                for lab, p, infl in combos for a in ARCHS
+                for lab, p, infl, _n_t in combos for a in ARCHS
                 for n in SUBSET if n != SCH.CONTINUOUS for s in SEEDS]
     elif mode == 'P':
         jobs = [('P', a, n, lab, p, infl, s, None)
-                for lab, p, infl in combos for a in ARCHS
+                for lab, p, infl, _n_t in combos for a in ARCHS
                 for n in ('A_cont', 'B_MO_FR') for s in SEEDS[:5]]
     elif mode == 'C':
         jobs = [('C', 'continuum', n, lab, p, infl, s, nf)
-                for lab, p, infl in combos for nf in N_FOLL
+                for lab, p, infl, _n_t in combos for nf in N_FOLL
                 for n in SUBSET for s in SEEDS[:6]]
     else:
         raise SystemExit('mode must be K, D, P or C')
