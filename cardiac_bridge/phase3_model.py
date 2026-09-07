@@ -33,6 +33,11 @@ class P3:
     a_clear: float = 1.0            # Weibull shape of clearance time
     p_dur: float = 0.5              # P(clearance is durable | cleared)
     m_regrow: float = 6.0           # median months to re-emergence if clearance not durable
+    # G7: separates the BIOLOGICAL effect of cytostasis (more time for clearance to act)
+    # from the DECISION-PROCESS effect (disease stays radiographically hidden, so more
+    # patients remain transplant-eligible). In reality these are the same drug effect;
+    # splitting them is diagnostic, not a claim about biology. None -> tied to tx_stasis.
+    s_detect: float = None          # stasis applied to the DETECTION clock only
 
 
 def draw_latents3(p: P3, n, rng):
@@ -71,18 +76,20 @@ def disease_state(T, p: P3, L):
       s_eff  therapy-progress divisor applying to residual disease after transplant
     """
     s = p.tx_stasis
-    U_bridge = L["U"] * s                       # cytostasis stretches time to unmasking
+    s_det = s if p.s_detect is None else p.s_detect
+    U_bio = L["U"] * s                          # biological clock: when clearance must beat
+    U_obs = L["U"] * s_det                      # observation clock: when it becomes visible
     responder = L["occult"] & (L["R_u"] < p.p_R)
     C = _clearance_time(p, L)
-    cleared = responder & (C < np.minimum(U_bridge, T))     # must clear before unmasking/tx
+    cleared = responder & (C < np.minimum(U_bio, T))        # must clear before unmasking/tx
     durable = cleared & (L["dur_u"] < p.p_dur)
     transient = cleared & ~durable
 
     # non-durable clearance buys a delay, not a cure: disease re-emerges at C + G
     G = L["G_unit"] * (p.m_regrow / np.log(2.0))
     U_eff = np.where(durable, np.inf,
-             np.where(transient, C + G, U_bridge))
-    s_eff = np.where(transient, 1.0, s)         # re-emergence delay already encodes therapy
+             np.where(transient, C + G, U_obs))
+    s_eff = np.where(transient, 1.0, s_det)     # re-emergence delay already encodes therapy
     return U_eff, durable, s_eff
 
 

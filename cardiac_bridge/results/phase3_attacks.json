@@ -1,0 +1,101 @@
+{
+  "g7": {
+    "neither (s=1, detect=1)": {
+      "gain": 0.01813199999999998,
+      "T": 4.0
+    },
+    "BIOLOGY only (s=3, detect=1)": {
+      "gain": 0.023648000000000002,
+      "T": 5.0
+    },
+    "OBSERVATION only (s=1, detect=3)": {
+      "gain": 0.018091999999999997,
+      "T": 4.0
+    },
+    "both, as a real drug would (s=3,det=3)": {
+      "gain": 0.023604000000000014,
+      "T": 5.0
+    }
+  },
+  "obs_share": -0.007309941520464959,
+  "attacks": {
+    "generous corner, no attack": {
+      "gain": 0.06299199999999999,
+      "T": 11.0,
+      "meets_mcid": true
+    },
+    "G3 non-exponential clearance (a=2.5)": {
+      "gain": 0.07639600000000002,
+      "T": 6.0,
+      "meets_mcid": true
+    },
+    "G4 acquired escape (p_dur 0.70 -> 0.35)": {
+      "gain": 0.02601199999999998,
+      "T": 7.0,
+      "meets_mcid": false
+    },
+    "G5 mid-quality device centre (0.025)": {
+      "gain": 0.032884000000000024,
+      "T": 5.0,
+      "meets_mcid": false
+    },
+    "G5 poor device centre (0.045)": {
+      "gain": 0.013168000000000013,
+      "T": 3.0,
+      "meets_mcid": false
+    },
+    "G6 faster unmasking (IGR: 3 mo)": {
+      "gain": 0.052815999999999974,
+      "T": 9.0,
+      "meets_mcid": true
+    },
+    "all attacks together": {
+      "gain": 0.008884000000000003,
+      "T": 4.0,
+      "meets_mcid": false
+    }
+  },
+  "h_rows": [
+    {
+      "pi": 0.05,
+      "gain": 0.008172000000000013,
+      "T": 6.0
+    },
+    {
+      "pi": 0.1,
+      "gain": 0.02394400000000002,
+      "T": 7.0
+    },
+    {
+      "pi": 0.15,
+      "gain": 0.041356000000000004,
+      "T": 9.0
+    },
+    {
+      "pi": 0.21,
+      "gain": 0.06256,
+      "T": 10.0
+    },
+    {
+      "pi": 0.25,
+      "gain": 0.07669999999999999,
+      "T": 11.0
+    },
+    {
+      "pi": 0.3,
+      "gain": 0.09505200000000003,
+      "T": 11.0
+    },
+    {
+      "pi": 0.4,
+      "gain": 0.13056800000000002,
+      "T": 12.0
+    },
+    {
+      "pi": 0.5,
+      "gain": 0.166844,
+      "T": 12.0
+    }
+  ],
+  "required_pi": 0.21
+}

@@ -15,3 +15,19 @@ C1  p_R x p_dur degeneracy: benefit (pp gain in 5-yr survival) on a grid
     -> p_R and p_dur are NOT separately identifiable (product only)
 
 C2  normalised sensitivity of the benefit to each parameter (central point)
+    a_clear      elasticity -2520000.00
+    m_clear      elasticity -1525000.00
+    p_R          elasticity +900000.00
+    p_dur        elasticity +750000.00
+    tx_stasis    elasticity +0.00
+    med_unmask   elasticity +0.00
+    dev_rate     elasticity +0.00
+
+C3  external constraint on each parameter (from PROVENANCE.md)
+    p_R          0.00-0.30      WEAK       0/1 cardiac, 1/7 visceral in DART; ~0 adjuvant chemo
+    p_dur        0.20-0.70      VERY WEAK  2/4 DART responses ongoing at ~12 mo
+    m_clear      2-8 mo         WEAK       time-to-response in solid tumours, indirect
+    a_clear      1.0-2.5        NONE       no angiosarcoma data at all
+    tx_stasis    1.0-3.0        MODERATE   PALETTE PFS ratio 4.6/1.6; JCOG AS weaker
+    med_unmask   3-12 mo        MODERATE   IGR cardiac AS median TTP 3 mo
+    dev_rate     0.010-0.045    MODERATE   TAH programme data, centre-specific

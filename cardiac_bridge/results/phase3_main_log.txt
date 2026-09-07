@@ -1,0 +1,30 @@
+calibrated k = 2.189   MCID = 5 pp absolute (pre-registered)
+
+C2 (corrected)  absolute sensitivity: pp change in benefit per 10% of admissible range
+   The original C2 divided by the benefit, which is ZERO at the centre of the
+   admissible region, producing meaningless elasticities. Recorded as a correction.
+
+  centre of admissible region: benefit 0.00 pp at T*=0
+      p_R          +0.000 pp
+      p_dur        +0.000 pp
+      m_clear      +0.000 pp
+      a_clear      +0.000 pp
+      tx_stasis    +0.000 pp
+      med_unmask   +0.000 pp
+      dev_rate     +0.000 pp
+
+  generous corner (p_R=0.30, p_dur=0.70): benefit 3.06 pp at T*=5
+      m_clear      -0.605 pp
+      p_R          +0.257 pp
+      p_dur        +0.196 pp
+      a_clear      +0.084 pp
+      tx_stasis    +0.012 pp
+      med_unmask   +0.000 pp
+      dev_rate     +0.000 pp
+
+F  PHASE BOUNDARY: minimum effective durable clearance fraction pi = p_R x p_dur
+   required to reach the 5 pp MCID. '-' = MCID unreachable at any pi <= 0.90.
+
+ device hazard      stasis 1.0      stasis 2.0      stasis 3.0
+         0.010  pi>=0.26 (T=9) pi>=0.22 (T=10) pi>=0.20 (T=10)
+         0.025  pi>=0.40 (T=5)  pi>=0.36 (T=6)  pi>=0.34 (T=7)
