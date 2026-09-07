@@ -1,14 +1,102 @@
 # Findings — live status
 
-**Status 2026-09-07 (Phase 2): the model has been recalibrated against external data and refrozen.
-The architecture hypothesis remains UNTESTED pending the positive control.**
+**Status 2026-09-07 (Phase 2): CLASSIFICATION A — MODEL NOT VALIDATED FOR THE SCHEDULING
+QUESTION.** The Phase E positive control failed. Per `PHASE2_PREREG.md` §9 rule 1, the
+architecture comparison was **not run**. The architecture hypothesis remains **untested**. It is
+not falsified.
 
-Experiment L1 is preserved below, unaltered and bit-identical reproducible. Nothing in Phase 2
-reinterprets it.
+Experiment L1 is preserved below, unaltered and bit-identical reproducible.
+
+---
+
+## Phase E: the positive control failed, and why
+
+The pre-registered criterion (PC-1) required at least one non-continuous schedule to reduce day-42
+burden versus continuous dosing at p < 0.05 with a median reduction of at least 10%. Across all
+four admissible (exhaustion representative × influx) combinations, ten schedules and eight paired
+seeds — 320 runs — **no combination passed.**
+
+### The endpoint saturated. The experiment had no dynamic range.
+
+| combination | median nB42 | % of lattice | spread across all 10 arms |
+|---|---|---|---|
+| `rec_high` × 0 | 11,285 | 78.4% | **0.9%** |
+| `rec_low` × 0 | 11,343 | 78.8% | **0.6%** |
+| `rec_low` × 2.5e-5 | 9,838 | 68.3% | 11.9% |
+| `rec_mid` × 0 | 11,320 | 78.6% | **0.7%** |
+
+Initial burden 5,542; lattice capacity 14,400. Continuous-arm trajectories flatten by day 21–28
+(`d21=11000, d28=11298, d35=11302, d42=11313`) **because the domain is full, not because the
+disease is controlled.** A 10% minimum effect is unreachable when arms differ by under 1%.
+
+### This is the mirror image of L1's failure
+
+| | failure mode | why burden could not separate the arms |
+|---|---|---|
+| **L1** | **floor** | every arm cleared the tumour (medians 4 and 7 cells of 5,525) |
+| **Phase 2** | **ceiling** | every arm saturates the lattice at 68–79% occupancy |
+
+L1 anticipated the floor, and `PHASE2_PREREG.md` §5 carried a contingency for it. Neither
+anticipated the ceiling. That is the gap, and it is now on the record.
+
+### The causal chain, quantified
+
+```
+Phase C's external criterion (patient T-cell function must collapse at the population level)
+  -> only near-zero influx is admissible
+  -> with a 14-day background T-cell half-life and no replenishment, the pool falls 200 -> 10-142
+  -> 10-142 T cells cannot control 5,542 malignant cells with a 2-day doubling time
+  -> the tumour reaches lattice carrying capacity by day 21-28
+  -> the endpoint stops responding to anything
+```
+
+**This was recorded in advance.** `PHASE2_PREREG.md` §2: *"within this model's structure,
+recruitment and population-level functional collapse cannot both be represented at a realistic
+influx rate, because arrivals enter with zero exhaustion."* That is exactly what bit.
+
+### What is NOT the cause
+
+- **Not the kill rate.** 1.9–3.0 targets/T-cell/day, inside the measured range of 2–16
+  (Halle et al., Immunity 2016). Not miscalibrated.
+- **Not the exhaustion mechanism.** It works exactly as calibrated.
+
+### The exhaustion mechanism works. It just cannot pay for itself here.
+
+In `rec_low` × 2.5e-5 — the only combination with real dynamic range, and the one flagged in
+advance as physiologically sensible — end-of-run T-cell function rises **monotonically** with
+off-fraction, and so does tumour burden:
+
+| schedule | duty | T-cell function at day 42 | median nB42 |
+|---|---|---|---|
+| `B_7on7off` | 0.50 | **0.646** | 10,807 |
+| `B_4on3off` | 0.57 | 0.545 | 10,408 |
+| `B_MO_FR` | 0.71 | 0.459 | 10,174 |
+| `B_6on1off` | 0.86 | 0.395 | 9,929 |
+| `A_cont` | 1.00 | **0.315** | 9,678 |
+
+Breaks restore function precisely as the external calibration says they should — 0.315 → 0.646 —
+and the tumour is **larger** every time. Rank correlation between restored function and worse
+control is perfect across the repeating family.
+
+Read honestly: **recovery is real and does not repay the lost drug time.** But this is *not* a
+valid test of the hypothesis, because the regime is one of uncontrolled growth against a
+saturating boundary. A model that cannot control disease under continuous dosing cannot be used to
+rank schedules.
+
+### Consequence
+
+Classification **A**. The architecture comparison, trafficking attack and causal tests were not
+run. Per `PHASE2_PREREG.md` §3, any continuation requires a **new externally justified calibration
+and a new pre-registration**. The pre-registered non-naive-arrivals variant (§8) is explicitly
+**not permitted as a rescue** here, and has not been run.
+
+Raw output: `results/expE_poscontrol.json` (320 runs, all seeds preserved),
+`results/expE_poscontrol_verdict.json`, `results/expE_diagnosis.txt`.
 
 ---
 
 ## Phase 2 calibration (Phases A–D), completed and committed before any Phase 2 result
+
 
 ### What was wrong with L1, and it was two things, not one
 

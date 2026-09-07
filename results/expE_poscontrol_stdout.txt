@@ -1,0 +1,82 @@
+Phase E positive control: 320 runs (4 parameter combinations x 10 schedules x 8 seeds)
+  20/320  3.4 min, eta 51 min
+  40/320  5.9 min, eta 42 min
+  60/320  8.4 min, eta 36 min
+  80/320  10.7 min, eta 32 min
+  100/320  13.1 min, eta 29 min
+  120/320  15.4 min, eta 26 min
+  140/320  17.6 min, eta 23 min
+  160/320  19.7 min, eta 20 min
+  180/320  22.3 min, eta 17 min
+  200/320  24.9 min, eta 15 min
+  220/320  27.4 min, eta 12 min
+  240/320  29.7 min, eta 10 min
+  260/320  32.3 min, eta 7 min
+  280/320  34.6 min, eta 5 min
+  300/320  37.0 min, eta 2 min
+  320/320  39.2 min, eta 0 min
+
+==============================================================================
+POSITIVE CONTROL, architecture = dispersed
+==============================================================================
+
+--- [rec_high]  influx 0.0e+00   continuous arm clears 0% of seeds -> primary endpoint = nB42 ---
+    continuous: median nB42 = 11340  integrated burden = 397299  end function f = 0.005
+    schedule      duty  med nB42   vs cont p(1-sided)     integ  f_end Ed_end verdict
+    A_cont        1.00     11340        -0        nan    397299  0.005  0.448 
+    A_tfi2        0.93     11263       +76     0.0078    395265  0.063  0.654 
+    A_tfi4        0.86     11270       +70     0.0039    395475  0.065  0.649 
+    A_tfi7        0.75     11308       +49     0.0391    395700  0.066  0.636 
+    A_tfi14       0.50     11238      +112     0.0039    399091  0.080  0.570 
+    B_6on1off     0.86     11235      +118     0.0078    394837  0.213  0.787 
+    B_MO_FR       0.71     11301       +58     0.0977    397353  0.275  0.725 
+    B_4on3off     0.57     11256       +72     0.0078    403414  0.366  0.634 
+    B_12on2off    0.86     11304       +64     0.0117    393857  0.296  0.704 
+    B_7on7off     0.50     11314       +60     0.0508    404996  0.481  0.519 
+
+--- [rec_low]  influx 0.0e+00   continuous arm clears 0% of seeds -> primary endpoint = nB42 ---
+    continuous: median nB42 = 11313  integrated burden = 419821  end function f = 0.001
+    schedule      duty  med nB42   vs cont p(1-sided)     integ  f_end Ed_end verdict
+    A_cont        1.00     11313        -0        nan    419821  0.001  0.929 
+    A_tfi2        0.93     11362       -47     0.8438    420031  0.004  0.941 
+    A_tfi4        0.86     11329       +15     0.4727    419989  0.006  0.951 
+    A_tfi7        0.75     11336       -35     0.8086    419771  0.009  0.960 
+    A_tfi14       0.50     11379       -41     0.8750    420883  0.019  0.961 
+    B_6on1off     0.86     11340        +5     0.6289    421192  0.013  0.952 
+    B_MO_FR       0.71     11360       -29     0.8438    420781  0.022  0.958 
+    B_4on3off     0.57     11356       -43     0.7266    423918  0.040  0.948 
+    B_12on2off    0.86     11345        -8     0.8359    420086  0.016  0.949 
+    B_7on7off     0.50     11334       -13     0.5430    421943  0.061  0.930 
+
+--- [rec_low]  influx 2.5e-05   continuous arm clears 0% of seeds -> primary endpoint = nB42 ---
+    continuous: median nB42 = 9678  integrated burden = 365242  end function f = 0.315
+    schedule      duty  med nB42   vs cont p(1-sided)     integ  f_end Ed_end verdict
+    A_cont        1.00      9678        -0        nan    365242  0.315  0.637 
+    A_tfi2        0.93      9618       -40     0.5781    367302  0.343  0.615 
+    A_tfi4        0.86      9524      +110     0.0273    367194  0.354  0.606 
+    A_tfi7        0.75      9646      +166     0.3203    372597  0.357  0.604 
+    A_tfi14       0.50      9748       -16     0.6797    384578  0.383  0.581 
+    B_6on1off     0.86      9929      -348     0.9961    373213  0.395  0.574 
+    B_MO_FR       0.71     10174      -508     1.0000    378206  0.459  0.519 
+    B_4on3off     0.57     10408      -700     1.0000    384956  0.545  0.440 
+    B_12on2off    0.86     10154      -476     1.0000    369053  0.451  0.522 
+    B_7on7off     0.50     10807     -1146     1.0000    387903  0.646  0.346 
+
+--- [rec_mid]  influx 0.0e+00   continuous arm clears 0% of seeds -> primary endpoint = nB42 ---
+    continuous: median nB42 = 11336  integrated burden = 400995  end function f = 0.003
+    schedule      duty  med nB42   vs cont p(1-sided)     integ  f_end Ed_end verdict
+    A_cont        1.00     11336        -0        nan    400995  0.003  0.688 
+    A_tfi2        0.93     11321        +9     0.2734    400690  0.027  0.817 
+    A_tfi4        0.86     11299       +26     0.1094    400007  0.035  0.851 
+    A_tfi7        0.75     11366        +6     0.4727    401038  0.040  0.855 
+    A_tfi14       0.50     11300       +53     0.0977    402739  0.054  0.810 
+    B_6on1off     0.86     11308       +50     0.1562    402486  0.082  0.875 
+    B_MO_FR       0.71     11318       +35     0.1211    404443  0.106  0.881 
+    B_4on3off     0.57     11289       +47     0.1250    408628  0.159  0.834 
+    B_12on2off    0.86     11324       +12     0.2305    400776  0.110  0.859 
+    B_7on7off     0.50     11330       +14     0.4219    407357  0.236  0.763 
+
+==============================================================================
+POSITIVE CONTROL FAILED - MODEL NOT VALIDATED FOR SCHEDULING QUESTION
+Per PHASE2_PREREG.md section 9 rule 1, the architecture comparison is NOT run.
+==============================================================================

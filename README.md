@@ -2,16 +2,23 @@
 
 A spatial agent-based model asking one narrow question, under active adversarial testing.
 
-**Status as of 2026-09-07: UNRESOLVED. Phase 2 in progress.** The model has been recalibrated
-against external experimental data and refrozen; the architecture hypothesis is currently
-**untested**, pending a positive control. Nothing here is a validated biological claim. Read
+**Status as of 2026-09-07: CLASSIFICATION A — MODEL NOT VALIDATED FOR THE SCHEDULING QUESTION.**
+The Phase 2 positive control failed and the architecture comparison was not run. The architecture
+hypothesis is **untested**, not falsified. Nothing here is a validated biological claim. Read
 `FINDINGS.md` for the live status, `PHASE2_PREREG.md` for what was fixed in advance, and
 `PRIOR_ART.md` before believing any novelty claim.
 
-Experiment L1 is preserved unaltered and reproduces bit-identically. It was **uninformative**,
-not negative: its positive control failed, for two independent reasons that Phase 2 identified
-and fixed — a structurally mis-specified exhaustion submodel, and a schedule family that never
-contained the effect being reproduced.
+Two experiments have now failed for opposite reasons, and both failures are on the record:
+
+| | failure mode | why the endpoint could not separate the arms |
+|---|---|---|
+| L1 | **floor** | every arm cleared the tumour (medians 4 and 7 cells of 5,525) |
+| Phase 2 | **ceiling** | every arm saturated the lattice at 68–79% occupancy |
+
+L1 was **uninformative**, not negative. Phase 2 recalibrated the exhaustion submodel against
+external data, excluded L1's T-cell influx rate on independent patient data, and refroze the
+model — and then failed its own positive control because excluding that influx collapsed the
+effector pool into a regime of uncontrolled tumour growth.
 
 ## The question
 

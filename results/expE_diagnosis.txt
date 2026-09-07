@@ -1,0 +1,103 @@
+
+Why the Phase E positive control failed. Diagnosis only - nothing here is tuned, and no
+parameter is changed. Per PHASE2_PREREG.md section 9 rule 1, the architecture comparison
+was NOT run.
+
+FINDING: the day-42 endpoint saturated. The experiment had no dynamic range, so it could not
+have detected a scheduling effect of any size.
+
+This is the MIRROR IMAGE of experiment L1's failure, and it is worth stating plainly:
+
+    L1        failed at the FLOOR    - every arm cleared the tumour (medians 4 and 7 cells
+                                       of 5525), so burden could not separate the arms
+    Phase 2   failed at the CEILING  - every arm saturates the lattice at 68-79% occupancy,
+                                       so burden again cannot separate the arms
+
+L1's pre-registration anticipated the floor and PHASE2_PREREG.md section 5 carried a
+contingency for it. Neither anticipated the ceiling. That is the gap.
+
+THE CAUSAL CHAIN, quantified below:
+
+  Phase C's external criterion (patient T-cell function must collapse at the population level)
+     -> only near-zero influx is admissible
+     -> with a 14-day background T-cell half-life and no replenishment, the effector pool
+        falls from 200 to 10-142 by day 42
+     -> 10-142 T cells cannot control 5542 malignant cells with a 2-day doubling time
+     -> the tumour reaches lattice carrying capacity by roughly day 21-28
+     -> the endpoint stops responding to anything
+
+Note what is NOT the cause. Killing per T cell is 1.9-3.0 targets/day, inside the measured
+range of 2-16 (Halle et al., Immunity 2016). The kill rate is not miscalibrated. And the
+exhaustion mechanism works exactly as calibrated: in the one combination with real dynamic
+range, breaks raise end-of-run T-cell function from 0.315 to 0.646. Treatment-free intervals
+do restore function in this model. They simply cannot repay the lost drug time while the
+tumour is running away, and the endpoint cannot see the difference either way.
+
+The structural limitation that produced this was recorded IN ADVANCE, in PHASE2_PREREG.md
+section 2: "within this model's structure, recruitment and population-level functional
+collapse cannot both be represented at a realistic influx rate, because arrivals enter with
+zero exhaustion." That is precisely what bit.
+
+==============================================================================
+1. DYNAMIC RANGE. Could the endpoint separate the arms at all?
+==============================================================================
+combination                    n0  med nB42  % lattice  arm spread
+rec_high x 0.0e+00           5541     11285      78.4%        0.9%
+rec_low x 0.0e+00            5541     11343      78.8%        0.6%
+rec_low x 2.5e-05            5541      9838      68.3%       11.9%
+rec_mid x 0.0e+00            5541     11320      78.6%        0.7%
+
+  Three of four combinations separate the arms by under 1% of burden. A 10%
+  minimum effect was pre-registered; it is unreachable when the ceiling is this close.
+
+==============================================================================
+2. THE EFFECTOR POOL COLLAPSES, and killing per cell is NOT the problem
+==============================================================================
+combination                 nT d0  nT d42   kills  kills/T/day  in Halle 2-16?
+rec_high x 0.0e+00            200      12    7970         3.04             yes
+rec_low x 0.0e+00             200      10    4800         1.86        marginal
+rec_low x 2.5e-05             200     142   13718         2.00             yes
+rec_mid x 0.0e+00             200      10    7284         2.74             yes
+
+==============================================================================
+3. THE TUMOUR REACHES CARRYING CAPACITY, continuous arm
+==============================================================================
+  rec_high x 0.0e+00         d7=6556  d14=8764  d21=10429  d28=11150  d35=11274  d42=11340
+  rec_low x 0.0e+00          d7=7766  d14=10080  d21=11000  d28=11298  d35=11302  d42=11313
+  rec_low x 2.5e-05          d7=7157  d14=8705  d21=9376  d28=9594  d35=9649  d42=9678
+  rec_mid x 0.0e+00          d7=6666  d14=9018  d21=10640  d28=11208  d35=11272  d42=11336
+
+  lattice capacity 14400 sites, initial burden 5542. The trajectories flatten by
+  day 21-28 because the domain is full, not because the disease is controlled.
+
+==============================================================================
+4. THE EXHAUSTION MECHANISM ITSELF WORKS
+==============================================================================
+  rec_low x 2.5e-5 is the only combination with real dynamic range, and is the one
+  flagged in advance as physiologically sensible (stable T pool AND the required
+  functional collapse). End-of-run T-cell function by schedule:
+
+    B_7on7off    f_end=0.646   med nB42= 10807
+    B_4on3off    f_end=0.545   med nB42= 10408
+    B_MO_FR      f_end=0.459   med nB42= 10174
+    B_12on2off   f_end=0.451   med nB42= 10154
+    B_6on1off    f_end=0.395   med nB42=  9929
+    A_tfi14      f_end=0.383   med nB42=  9748
+    A_tfi7       f_end=0.357   med nB42=  9646
+    A_tfi4       f_end=0.354   med nB42=  9524
+    A_tfi2       f_end=0.343   med nB42=  9618
+    A_cont       f_end=0.315   med nB42=  9678
+
+  Breaks restore function exactly as calibrated - 0.315 continuous to 0.646 under
+  7-on/7-off. And the tumour is still LARGER. That is an interpretable negative
+  within this combination: recovery is real but does not repay the lost drug time.
+  It is not, however, a valid test of the hypothesis, because the regime is one of
+  uncontrolled growth against a saturating boundary.
+
+==============================================================================
+CLASSIFICATION A - MODEL NOT VALIDATED FOR THE SCHEDULING QUESTION.
+The architecture hypothesis remains UNTESTED. It is not falsified.
+Per PHASE2_PREREG.md section 3, any continuation requires a NEW externally
+justified calibration and a NEW pre-registration. The pre-registered
+non-naive-arrivals variant is explicitly NOT permitted as a rescue here.
+==============================================================================
