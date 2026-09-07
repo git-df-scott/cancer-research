@@ -1,15 +1,106 @@
-# Findings — live status
+# Findings — final status
 
-**Status 2026-09-07 (Phase 2): CLASSIFICATION A — MODEL NOT VALIDATED FOR THE SCHEDULING
-QUESTION.** The Phase E positive control failed. Per `PHASE2_PREREG.md` §9 rule 1, the
-architecture comparison was **not run**. The architecture hypothesis remains **untested**. It is
-not falsified.
+**CLASSIFICATION A — MODEL NOT VALIDATED FOR THE SCHEDULING QUESTION.**
 
-Experiment L1 is preserved below, unaltered and bit-identical reproducible.
+Two positive controls have failed under two pre-registrations. Per `PHASE3_PREREG.md` §4 this line
+of attack ends here and is written up as a negative. The model is **not** modified a third time.
+
+**The architecture hypothesis remains UNTESTED. It is not falsified, and it is not supported.**
+The architecture comparison, trafficking attack and causal tests were never run.
+
+Experiments L1, Phase 2 and Phase 3 are all preserved, with every seed and raw output.
 
 ---
 
-## Phase E: the positive control failed, and why
+## The result that this project actually establishes
+
+> **In this model, tumour control and binding T-cell exhaustion never co-occur.** Across a 14-fold
+> range of effector-to-target ratio, in 24 of 24 (N_T × parameter) cells, there is no regime in
+> which the drug controls the disease *and* exhaustion is the limiting constraint. The window in
+> which an exhaustion-driven scheduling effect could exist is **empty.**
+
+| N_T | E:T | tumour burden at d42 / n0 | terminal T-cell function | controlled? | exhausted? |
+|---|---|---|---|---|---|
+| 200 | 1:28 | 2.04 | 0.004 | no | **yes** |
+| 400 | 1:14 | 2.03 | 0.008 | no | **yes** |
+| 800 | 1:7 | 1.37 | 0.258 | no | **yes** |
+| 1400 | 1:4 | 0.01 | 0.947 | **yes** | no |
+| 2000 | 1:3 | 0.00 | 0.922 | **yes** | no |
+| 2800 | 1:2 | 0.00 | 0.943 | **yes** | no |
+
+This is one finding, not two accidents. It explains both failures at once:
+
+- **Phase 2** (E:T 1:28) — exhaustion binds hard, terminal function 0.001–0.36, but the tumour is
+  never controlled. It outgrows its starting burden and saturates the lattice at 78–79% occupancy.
+  Arms differ by 0.6%. **The endpoint could not measure anything.**
+- **Phase 3** (E:T 1:4) — the endpoint has full dynamic range (continuous leaves 22–1296 cells, the
+  worst arm 7,546, a 6–129× spread, nowhere near the ceiling). The tumour is controlled, but killed
+  so fast that **antigen disappears before exhaustion accrues**. Terminal function is 0.53–1.00.
+  A rest period has nothing to restore and only costs drug time.
+
+In Phase 3 every non-continuous schedule was worse than continuous, monotonically in duty cycle, in
+all four combinations. That is not a marginal miss; there was nothing there to find.
+
+## What the model is missing, stated precisely
+
+Real patients occupy the regime this model cannot reach. Philipp's Figure 1B measured it directly:
+patients on continuous blinatumomab with **persistent disease and** peripheral T-cell function down
+to 0.238 of baseline. Partial control with persistent antigen and a progressively exhausting
+effector pool is the clinically relevant state, and it is exactly the state that is unreachable
+here.
+
+It is unreachable for one identifiable reason. Sustaining an engaged pool against persistent
+antigen requires ongoing recruitment — but recruited T cells arrive with **zero** exhaustion, so
+any influx high enough to sustain the pool also resets the population mean and prevents functional
+collapse. That is what Phase C measured and excluded.
+
+Every thread converges on one sentence, recorded in `PHASE2_PREREG.md` §2 **before any of these
+runs**:
+
+> *"within this model's structure, recruitment and population-level functional collapse cannot both
+> be represented at a realistic influx rate, because arrivals enter with zero exhaustion"*
+
+## What a future attempt would need
+
+Recruited T cells that are **not naive** — an exhaustion state that is partly systemic rather than
+purely per-cell, so a sustained pool can still lose function. That is a different model, needing
+its own external calibration and its own pre-registration. It is **not** attempted here;
+`PHASE3_PREREG.md` §4 forbids it.
+
+## What was established along the way, and is worth keeping
+
+1. **An externally calibrated exhaustion submodel.** Reversible + durable, fitted to seven measured
+   points from Philipp et al. by grid search over 244,800 parameter sets, scored against no
+   schedule ranking of any kind. `k = 0.159/day` is identified at every point of both profiles;
+   `rho` and `tau_r` are individually unidentifiable and the identified combination — the fraction
+   of exhaustion a 7-day break reverses — is 4.3–55%. Verified in the real code path.
+2. **A caught calibration trap.** Fitting to % specific lysis alone reproduces all five points
+   perfectly while driving the assay-saturation constant to 10.0 and declaring every arm
+   functionally dead. Only a second, non-saturating readout (granzyme B) exposes it.
+3. **L1's influx rate is excluded by external patient data**, confirming L1's own suspicion on an
+   independent measurement rather than by judgement.
+4. **At least 43% of Philipp's measured TFI benefit is reduced cumulative exposure, not
+   reinvigoration** (24–57% reinvigoration across the admissible class). The clinical rationale for
+   treatment-free intervals is reinvigoration specifically, so this is worth stating — though the
+   split is not identifiable and this is a diagnostic, not a finding.
+5. **Two named failure modes for this class of experiment**: the floor (everything clears) and the
+   ceiling (everything saturates). L1 hit the first, Phase 2 the second.
+
+## Recorded but not acted on
+
+`p_div = 1/2880` per minute is a generic "standard human tumour cell-cycle time". It is defensible
+for the leukaemia-like arm the positive controls use, but **too fast for follicular lymphoma**,
+which is indolent. Any future attempt must face it — and it confounds a design that deliberately
+holds all biology fixed while varying only geometry.
+
+Raw output: `results/expE3_poscontrol.json`, `results/expE3_diagnosis.txt`,
+`results/expNT_sweep.json`, `results/expE_poscontrol.json`, `results/expE_diagnosis.txt`.
+
+---
+
+## Phase 3: the positive control at E:T 1:4
+
+## Phase 2: the positive control failed, and why
 
 The pre-registered criterion (PC-1) required at least one non-continuous schedule to reduce day-42
 burden versus continuous dosing at p < 0.05 with a median reduction of at least 10%. Across all

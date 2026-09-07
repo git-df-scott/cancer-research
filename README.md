@@ -3,22 +3,35 @@
 A spatial agent-based model asking one narrow question, under active adversarial testing.
 
 **Status as of 2026-09-07: CLASSIFICATION A — MODEL NOT VALIDATED FOR THE SCHEDULING QUESTION.**
-The Phase 2 positive control failed and the architecture comparison was not run. The architecture
-hypothesis is **untested**, not falsified. Nothing here is a validated biological claim. Read
-`FINDINGS.md` for the live status, `PHASE2_PREREG.md` for what was fixed in advance, and
-`PRIOR_ART.md` before believing any novelty claim.
+Two positive controls have failed under two pre-registrations. This line of attack is closed and
+written up as a negative. The architecture hypothesis is **untested** — not falsified, not
+supported. Nothing here is a validated biological claim. Read `FINDINGS.md` first.
 
-Two experiments have now failed for opposite reasons, and both failures are on the record:
+**What the project does establish:** in this model, tumour control and binding T-cell exhaustion
+never co-occur. Across a 14-fold range of effector-to-target ratio, in 24 of 24 cells, there is no
+regime where the drug controls the disease *and* exhaustion is the limiting constraint. **The
+window in which an exhaustion-driven scheduling effect could exist is empty.**
+
+| E:T | burden at d42 / n0 | terminal T-cell function | controlled? | exhausted? |
+|---|---|---|---|---|
+| 1:28 | 2.04 | 0.004 | no | **yes** |
+| 1:7 | 1.37 | 0.258 | no | **yes** |
+| 1:4 | 0.01 | 0.947 | **yes** | no |
+| 1:2 | 0.00 | 0.943 | **yes** | no |
+
+That single fact explains three failed experiments:
 
 | | failure mode | why the endpoint could not separate the arms |
 |---|---|---|
 | L1 | **floor** | every arm cleared the tumour (medians 4 and 7 cells of 5,525) |
 | Phase 2 | **ceiling** | every arm saturated the lattice at 68–79% occupancy |
+| Phase 3 | **no effect to find** | full dynamic range, but exhaustion never binds where the drug works |
 
-L1 was **uninformative**, not negative. Phase 2 recalibrated the exhaustion submodel against
-external data, excluded L1's T-cell influx rate on independent patient data, and refroze the
-model — and then failed its own positive control because excluding that influx collapsed the
-effector pool into a regime of uncontrolled tumour growth.
+The missing ingredient is identified precisely: recruited T cells arrive with **zero** exhaustion,
+so any influx high enough to sustain an engaged pool also prevents population-level functional
+collapse. Real patients occupy exactly the regime this cannot represent. Addressing it needs a
+different model, its own external calibration and its own pre-registration — and is not attempted
+here.
 
 ## The question
 
