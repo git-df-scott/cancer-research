@@ -37,3 +37,10 @@ F  PHASE BOUNDARY: minimum pi = p_R x p_dur reaching the 5 pp MCID
 
 
 ADMISSIBLE-REGION MONTE CARLO (robustness threshold: MCID in >=50% of draws)
+    usable draws                      : 300
+    reaching the 5 pp MCID            : 0.3%   (threshold 50%) -> FAILS
+    with any benefit at all (T* > 0)  : 21.7%
+    median benefit                    : 0.00 pp
+    90th percentile benefit           : 1.05 pp
+    max benefit anywhere in the region: 5.31 pp (at pi=0.183)
+    admissible pi: median 0.058, max 0.204
