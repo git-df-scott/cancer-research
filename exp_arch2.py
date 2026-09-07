@@ -47,7 +47,13 @@ def run(args):
 
 
 def passing_combos():
-    v = json.load(open(f'{OUT}/expE_poscontrol_verdict.json'))
+    # Phase 3 writes expE3_*; Phase 2's expE_* is preserved untouched. Prefer the newest verdict
+    # that exists so this script is always gated on the most recent positive control.
+    fn = ('expE3_poscontrol_verdict.json'
+          if os.path.exists(f'{OUT}/expE3_poscontrol_verdict.json')
+          else 'expE_poscontrol_verdict.json')
+    print(f'gating on {fn}')
+    v = json.load(open(f'{OUT}/{fn}'))
     if not v['passes']:
         print('POSITIVE CONTROL FAILED - MODEL NOT VALIDATED FOR SCHEDULING QUESTION')
         print('PHASE2_PREREG.md section 9, stopping rule 1: the architecture comparison is NOT run.')
