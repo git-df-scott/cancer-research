@@ -27,3 +27,8 @@ F  PHASE BOUNDARY: minimum pi = p_R x p_dur reaching the 5 pp MCID
  device hazard        stasis 1.0        stasis 2.0        stasis 3.0
          0.010    pi>=0.26 (T=9)   pi>=0.22 (T=10)   pi>=0.22 (T=12)
          0.025    pi>=0.40 (T=5)    pi>=0.36 (T=6)    pi>=0.34 (T=6)
+         0.045    pi>=0.56 (T=4)    pi>=0.52 (T=4)    pi>=0.50 (T=5)
+
+   best case for the hypothesis (dev=0.010, s=3), varying the clearance/unmasking race:
+      clearance 2 mo vs unmasking   12 mo -> pi >= 0.16 (T*=8)
+      clearance 3 mo vs unmasking    9 mo -> pi >= 0.18 (T*=9)

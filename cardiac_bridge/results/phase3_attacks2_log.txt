@@ -1,0 +1,5 @@
+G7  is the cytostasis effect biology, or the observation process?
+    tx_stasis = clearance window (BIOLOGY).  s_detect = detection clock (OBSERVATION).
+
+condition                                   benefit (pp)   T*   carried@T*
+neither (s=1, detect=1)                             1.70    4       0.3309
