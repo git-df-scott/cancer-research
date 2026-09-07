@@ -130,6 +130,39 @@ def load_combos():
     return combos
 
 
+
+def logrank(t1, e1, t2, e2):
+    """Two-sample log-rank test. t = time, e = 1 if the event (clearance) was observed, 0 if the
+    run was censored at the horizon. Implemented here because the pre-registered floor-effect
+    contingency in PHASE2_PREREG.md section 5 specifies log-rank, and neither scipy nor lifelines
+    provides it in this environment."""
+    from scipy import stats as _st
+    t1, e1, t2, e2 = map(np.asarray, (t1, e1, t2, e2))
+    times = np.unique(np.concatenate([t1[e1 == 1], t2[e2 == 1]]))
+    if not times.size:
+        return 1.0
+    O1 = E1 = V = 0.0
+    for t in times:
+        n1, n2 = int((t1 >= t).sum()), int((t2 >= t).sum())
+        n = n1 + n2
+        d1, d2 = int(((t1 == t) & (e1 == 1)).sum()), int(((t2 == t) & (e2 == 1)).sum())
+        d = d1 + d2
+        if n < 2 or d == 0:
+            continue
+        O1 += d1
+        E1 += d * n1 / n
+        V += d * (n1 / n) * (1 - n1 / n) * (n - d) / (n - 1)
+    if V <= 0:
+        return 1.0
+    z2 = (O1 - E1) ** 2 / V
+    return float(_st.chi2.sf(z2, 1))
+
+
+def clearance(r):
+    """Time to clearance in days, with runs that never clear censored at the 42-day horizon."""
+    return (r['day_cleared'], 1) if r['cleared'] else (float(DAYS), 0)
+
+
 def analyse(res, arch, combos, out_name):
     from scipy import stats
     print(f'\n{"="*78}\nPOSITIVE CONTROL, architecture = {arch}\n{"="*78}')
@@ -159,10 +192,20 @@ def analyse(res, arch, combos, out_name):
             d = v - b
             if name == SCH.CONTINUOUS:
                 p = np.nan; red = 0.0
-            else:
+            elif endpoint == 'nB42':
                 p = (stats.wilcoxon(d, alternative='less').pvalue
                      if np.any(d != 0) else 1.0)
                 red = -np.median(d) / max(np.median(b), 1e-9)
+            else:
+                # Pre-registered floor-effect contingency (PHASE2_PREREG.md section 5): the
+                # continuous arm clears more than half its seeds, so day-42 burden has no dynamic
+                # range. Switch to time to clearance, censored at the horizon, compared by
+                # log-rank, with the same 10% minimum effect applied to the median.
+                ta, ea = zip(*[clearance(arm[s]) for s in sorted(arm)])
+                tb, eb = zip(*[clearance(cont[s]) for s in sorted(arm)])
+                p = logrank(ta, ea, tb, eb)
+                mb = np.median(tb)
+                red = (mb - np.median(ta)) / max(mb, 1e-9)
             ok = (name != SCH.CONTINUOUS and p < 0.05 and red >= MIN_EFFECT)
             if ok:
                 passes.append((label, infl, name, float(p), float(red)))
@@ -173,6 +216,7 @@ def analyse(res, arch, combos, out_name):
                   f'{np.median([arm[s]["Ed_end"] for s in sorted(arm)]):6.3f} '
                   f'{"PASS" if ok else ""}')
             table.append(dict(rep=label, influx=infl, sched=name, duty=SCH.duty_cycle(on, off),
+                              endpoint=endpoint,
                               med_nB42=float(np.median(v)), med_diff=float(np.median(d)),
                               p=float(p) if p == p else None, reduction=float(red),
                               med_integ=float(np.median([arm[s]['integ_burden'] for s in sorted(arm)])),
