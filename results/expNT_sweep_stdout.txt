@@ -1,0 +1,59 @@
+Phase 3 N_T sweep: 144 runs, continuous arm only
+  20/144  2.2 min, eta 14 min
+  40/144  3.5 min, eta 9 min
+  60/144  5.5 min, eta 8 min
+  80/144  6.9 min, eta 5 min
+  100/144  8.9 min, eta 4 min
+  120/144  10.4 min, eta 2 min
+  140/144  12.0 min, eta 0 min
+  144/144  12.1 min, eta 0 min
+
+======================================================================================
+WINDOW CRITERION (PHASE3_PREREG.md section 3), continuous arm only
+======================================================================================
+  lattice capacity 14400, ceiling 70% = 10080 cells
+
+--- [rec_high] influx 0.0e+00 ---
+    N_T     E:T  med nB42   % n0  cleared  peak %cap  f_end  verdict
+    200    1:28     11353   205%       0%      79.4%  0.005  no effect, hits ceiling
+    400    1:14     11252   203%       0%      78.5%  0.009  no effect, hits ceiling
+    800     1:7      6218   112%       0%      43.2%  0.358  no effect
+   1400     1:4        65     1%       0%      38.5%  0.999  ADMISSIBLE
+   2000     1:3         0     0%     100%      38.5%  1.000  eradicated, clears>25%
+   2800     1:2         0     0%     100%      38.5%  1.000  eradicated, clears>25%
+
+--- [rec_low] influx 0.0e+00 ---
+    N_T     E:T  med nB42   % n0  cleared  peak %cap  f_end  verdict
+    200    1:28     11313   204%       0%      79.7%  0.001  no effect, hits ceiling
+    400    1:14     11290   204%       0%      79.2%  0.002  no effect, hits ceiling
+    800     1:7     11105   200%       0%      77.2%  0.007  no effect, hits ceiling
+   1400     1:4      1235    22%       0%      38.5%  0.532  ADMISSIBLE
+   2000     1:3         0     0%      83%      38.5%  0.823  eradicated, clears>25%
+   2800     1:2         0     0%     100%      38.5%  0.882  eradicated, clears>25%
+
+--- [rec_low] influx 2.5e-05 ---
+    N_T     E:T  med nB42   % n0  cleared  peak %cap  f_end  verdict
+    200    1:28      9611   173%       0%      67.8%  0.322  no effect
+    400    1:14      9513   172%       0%      66.3%  0.309  no effect
+    800     1:7      7918   143%       0%      55.1%  0.332  no effect
+   1400     1:4        66     1%       0%      38.5%  0.898  ADMISSIBLE
+   2000     1:3         0     0%     100%      38.5%  0.844  eradicated, clears>25%
+   2800     1:2         0     0%     100%      38.5%  0.887  eradicated, clears>25%
+
+--- [rec_mid] influx 0.0e+00 ---
+    N_T     E:T  med nB42   % n0  cleared  peak %cap  f_end  verdict
+    200    1:28     11332   205%       0%      79.0%  0.003  no effect, hits ceiling
+    400    1:14     11250   203%       0%      78.6%  0.006  no effect, hits ceiling
+    800     1:7      7254   131%       0%      50.4%  0.183  no effect
+   1400     1:4        16     0%      17%      38.5%  0.997  ADMISSIBLE
+   2000     1:3         0     0%     100%      38.5%  1.000  eradicated, clears>25%
+   2800     1:2         0     0%     100%      38.5%  1.000  eradicated, clears>25%
+
+SELECTED N_T (closest median nB42 to n0/2) per combination:
+    [rec_high] influx 0.0e+00  ->  N_T = 1400  (E:T 1:4)
+    [rec_low] influx 0.0e+00  ->  N_T = 1400  (E:T 1:4)
+    [rec_low] influx 2.5e-05  ->  N_T = 1400  (E:T 1:4)
+    [rec_mid] influx 0.0e+00  ->  N_T = 1400  (E:T 1:4)
+
+  Most frequently selected across combinations: N_T = 1400
+  written /home/user/cancer-research/results/expNT_sweep_verdict.json
