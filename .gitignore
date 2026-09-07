@@ -12,3 +12,4 @@ results/expE_poscontrol_stdout.txt
 results/expF_*_stdout.txt
 results/expG_*_stdout.txt
 results/expH_*_stdout.txt
+results/expNT_sweep_stdout.txt
