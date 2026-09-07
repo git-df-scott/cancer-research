@@ -1,2 +1,41 @@
 Phase C: 60 runs, 28 simulated days, dispersed architecture, continuous dosing.
 
+  10/60  1.4 min, eta 7 min
+  20/60  1.9 min, eta 4 min
+  30/60  3.0 min, eta 3 min
+  40/60  3.6 min, eta 2 min
+  50/60  4.7 min, eta 1 min
+  60/60  5.2 min, eta 0 min
+
+External anchor: patient peripheral T-cell function fell to 0.238 of baseline by
+day 14 of continuous infusion (Philipp Fig 1B). Admissible if model <= 0.40.
+
+  [rec_high]
+    influx     f(d7)   f(d14)   f(d28)   T pool d28   naive frac d28   verdict
+    0.0e+00   0.856   0.370   0.042          27           0.000   ADMISSIBLE
+    2.5e-05   0.899   0.665   0.601         170           0.003   EXCLUDED
+    1.0e-04   0.953   0.901   0.943         753           0.127   EXCLUDED
+/home/user/cancer-research/.venv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py:3824: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/home/user/cancer-research/.venv/lib/python3.11/site-packages/numpy/_core/_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+    4.0e-04   0.994   0.997     nan         nan             nan   EXCLUDED
+    1.6e-03   1.000     nan     nan         nan             nan   EXCLUDED
+
+  [rec_low]
+    influx     f(d7)   f(d14)   f(d28)   T pool d28   naive frac d28   verdict
+    0.0e+00   0.355   0.122   0.014          25           0.000   ADMISSIBLE
+    2.5e-05   0.476   0.343   0.346         160           0.004   ADMISSIBLE
+    1.0e-04   0.591   0.533   0.590         740           0.039   EXCLUDED
+    4.0e-04   0.774   0.873     nan         nan             nan   EXCLUDED
+    1.6e-03   0.937     nan     nan         nan             nan   EXCLUDED
+
+  [rec_mid]
+    influx     f(d7)   f(d14)   f(d28)   T pool d28   naive frac d28   verdict
+    0.0e+00   0.701   0.264   0.030          30           0.000   ADMISSIBLE
+    2.5e-05   0.789   0.580   0.525         154           0.006   EXCLUDED
+    1.0e-04   0.884   0.828   0.907         762           0.129   EXCLUDED
+    4.0e-04   0.979   0.990     nan         nan             nan   EXCLUDED
+    1.6e-03   0.999     nan     nan         nan             nan   EXCLUDED
+
+Admissible under EVERY exhaustion representative: [0.0]

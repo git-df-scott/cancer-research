@@ -1,0 +1,23 @@
+{
+ "verdict": {
+  "rec_high|0.0e+00": true,
+  "rec_high|2.5e-05": false,
+  "rec_high|1.0e-04": false,
+  "rec_high|4.0e-04": false,
+  "rec_high|1.6e-03": false,
+  "rec_low|0.0e+00": true,
+  "rec_low|2.5e-05": true,
+  "rec_low|1.0e-04": false,
+  "rec_low|4.0e-04": false,
+  "rec_low|1.6e-03": false,
+  "rec_mid|0.0e+00": true,
+  "rec_mid|2.5e-05": false,
+  "rec_mid|1.0e-04": false,
+  "rec_mid|4.0e-04": false,
+  "rec_mid|1.6e-03": false
+ },
+ "admissible_all": [
+  0.0
+ ],
+ "threshold": 0.4
+}
