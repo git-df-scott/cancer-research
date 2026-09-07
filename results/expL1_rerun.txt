@@ -8,3 +8,20 @@ missing 25 cells: [('dispersed', 14), ('follicle', 14), ('multi', 0), ('multi', 
   7/25 follicle_14_9.json
   8/25 follicle_14_8.json
   9/25 multi_0_0.json
+  10/25 multi_0_2.json
+  11/25 multi_0_1.json
+  12/25 multi_0_3.json
+  13/25 multi_0_4.json
+  14/25 multi_0_6.json
+  15/25 multi_0_5.json
+  16/25 multi_0_7.json
+  17/25 multi_0_9.json
+  18/25 multi_0_8.json
+  19/25 multi_2_0.json
+  20/25 multi_2_1.json
+  21/25 multi_2_2.json
+  22/25 multi_2_3.json
+  23/25 multi_2_4.json
+  24/25 multi_2_5.json
+  25/25 dispersed_14_9.json
+merged 150 runs -> expL1.json
