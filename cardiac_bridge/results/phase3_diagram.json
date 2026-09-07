@@ -1,0 +1,41 @@
+{
+  "mcid": 0.05,
+  "diagram": {
+    "dev0.01_s1.0": {
+      "required_pi": 0.26,
+      "T_star": 9.0
+    },
+    "dev0.01_s2.0": {
+      "required_pi": 0.22,
+      "T_star": 10.0
+    },
+    "dev0.01_s3.0": {
+      "required_pi": 0.2,
+      "T_star": 10.0
+    },
+    "dev0.025_s1.0": {
+      "required_pi": 0.4,
+      "T_star": 5.0
+    },
+    "dev0.025_s2.0": {
+      "required_pi": 0.36,
+      "T_star": 6.0
+    },
+    "dev0.025_s3.0": {
+      "required_pi": 0.34,
+      "T_star": 7.0
+    },
+    "dev0.045_s1.0": {
+      "required_pi": 0.56,
+      "T_star": 4.0
+    },
+    "dev0.045_s2.0": {
+      "required_pi": 0.5,
+      "T_star": 4.0
+    },
+    "dev0.045_s3.0": {
+      "required_pi": 0.48,
+      "T_star": 4.0
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "R1_ci": [
+    0.44431630173793774,
+    0.584112934867816
+  ],
+  "R1_cleared": false,
+  "organs_saved_per_100": 41.8245,
+  "futile_averted_per_100": 36.93966666666667,
+  "survivors_lost_per_100": 2.7501666666666646,
+  "organs_per_survivor_lost": 15.207987394703363
+}

@@ -1,0 +1,27 @@
+REGISTRY SIZE: distinguishing pi = 0.07 (cardiac evidence) from pi = 0.20 (boundary)
+  single-arm, one-sided alpha = 0.05, exact binomial
+
+  n =  45  reject H0 if >= 7 of 45 achieve durable clearance   power = 0.823
+    n= 20: power 0.59 (reject if >= 4 events)
+    n= 30: power 0.57 (reject if >= 6 events)
+    n= 40: power 0.71 (reject if >= 7 events)
+    n= 50: power 0.81 (reject if >= 8 events)
+    n= 60: power 0.87 (reject if >= 9 events)
+    n= 80: power 0.94 (reject if >= 11 events)
+
+
+DEVICE AXIS: what device hazard would let the cardiac-evidence pi reach the MCID?
+  at pi = 0.07 with every other parameter at its most favourable value:
+
+   device hazard /mo   benefit (pp)   T*
+              0.0450           0.00    0   
+              0.0250           0.11    1   
+              0.0100           1.35    6   
+              0.0050           2.74   24   
+              0.0020           4.81   24   
+              0.0010           5.53   24   MEETS MCID
+              0.0001           6.17   24   MEETS MCID
+
+  ceiling as device hazard -> 0 : 6.17 pp
+  -> the cardiac-evidence pi CAN reach the MCID even
+     with a physically perfect device and every other parameter at its best value.

@@ -1,0 +1,20 @@
+R1  interior optimum in 51.4% of 208 draws
+    95% CI [44.4%, 58.4%]   threshold 50%
+    -> CI STRADDLES 50%: not meaningfully cleared
+R2  median best-worst RMST gap 3.17 mo; 5% of draws below 1.0 mo -> not negligible
+R3  T* by Weibull shape: 1.0->7mo, 1.5->7mo, 2.0->8mo, 3.0->8mo -> passed
+E2  100% of draws put the cure-maximising T at 0
+
+Organ stewardship, per 100 patients reaching cardiectomy + TAH:
+ bridge  organs used  futile organs  futility rate  5yr survivors
+      0        100.0           65.0          65.0%           24.2
+      3         75.2           42.7          56.7%           22.8
+      6         58.2           28.0          48.2%           21.5
+      9         46.4           18.4          39.7%           20.2
+     12         38.1           12.1          31.7%           19.0
+
+  6-month bridge vs immediate transplant, per 100 patients:
+    donor organs not consumed : 41.8
+    futile transplants averted: 36.9
+    5-year survivors lost     : 2.8
+    organs saved per survivor lost: 15.2

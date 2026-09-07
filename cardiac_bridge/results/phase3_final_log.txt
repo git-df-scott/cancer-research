@@ -1,0 +1,46 @@
+calibrated k = 2.203   MCID = 5 pp (pre-registered)
+
+C2  absolute sensitivity: pp change in benefit per 10% of admissible range
+
+  evidence centre: benefit 0.00 pp at T*=0  (pi = 0.068)
+      p_R          +0.000 pp
+      p_dur        +0.000 pp
+      m_clear      +0.000 pp
+      a_clear      +0.000 pp
+      tx_stasis    +0.000 pp
+      med_unmask   +0.000 pp
+      dev_rate     +0.000 pp
+
+  generous corner: benefit 6.23 pp at T*=9  (pi = 0.210)
+      dev_rate     -0.470 pp
+      m_clear      -0.424 pp
+      p_R          +0.369 pp
+      p_dur        +0.275 pp
+      a_clear      +0.134 pp
+      med_unmask   +0.054 pp
+      tx_stasis    +0.019 pp
+
+
+F  PHASE BOUNDARY: minimum pi = p_R x p_dur reaching the 5 pp MCID
+   admissible ceiling is pi = 0.30 x 0.70 = 0.21
+
+ device hazard        stasis 1.0        stasis 2.0        stasis 3.0
+         0.010    pi>=0.26 (T=9)   pi>=0.22 (T=10)   pi>=0.22 (T=12)
+         0.025    pi>=0.40 (T=5)    pi>=0.36 (T=6)    pi>=0.34 (T=6)
+         0.045    pi>=0.56 (T=4)    pi>=0.52 (T=4)    pi>=0.50 (T=5)
+
+   best case for the hypothesis (dev=0.010, s=3), varying the clearance/unmasking race:
+      clearance 2 mo vs unmasking   12 mo -> pi >= 0.16 (T*=8)
+      clearance 3 mo vs unmasking    9 mo -> pi >= 0.18 (T*=9)
+      clearance 4 mo vs unmasking    6 mo -> pi >= 0.22 (T*=12)
+      clearance 6 mo vs unmasking    3 mo -> pi >= 0.30 (T*=12)
+
+
+ADMISSIBLE-REGION MONTE CARLO (robustness threshold: MCID in >=50% of draws)
+    usable draws                      : 300
+    reaching the 5 pp MCID            : 0.3%   (threshold 50%) -> FAILS
+    with any benefit at all (T* > 0)  : 21.7%
+    median benefit                    : 0.00 pp
+    90th percentile benefit           : 1.05 pp
+    max benefit anywhere in the region: 5.31 pp (at pi=0.183)
+    admissible pi: median 0.058, max 0.204

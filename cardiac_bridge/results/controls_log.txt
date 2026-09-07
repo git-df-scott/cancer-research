@@ -1,0 +1,7 @@
+PC1 median OS at T=0, target 9.0 mo
+    before calibration (k=2.8):  7.13 mo
+    calibrated k = 2.189  ->  8.98 mo   PASS
+PC2 p_occ=0: T* = 0 mo (must be 0)   RMST 0mo=48.0 24mo=34.7   PASS
+PC3 dev_rate=0: T* = 24 mo (must be 24)   RMST 0mo=21.4 24mo=30.2   PASS
+
+ALL CONTROLS PASSED
