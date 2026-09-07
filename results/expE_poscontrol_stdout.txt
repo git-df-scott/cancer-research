@@ -1,3 +1,4 @@
 Phase E positive control: 320 runs (4 parameter combinations x 10 schedules x 8 seeds)
   20/320  3.4 min, eta 51 min
   40/320  5.9 min, eta 42 min
+  60/320  8.4 min, eta 36 min

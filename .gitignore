@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 .venv/
 *_partial.json
+
+# in-flight partial outputs from running experiments; final results are committed
+results/*_partial.json
+results/*.json.partial
