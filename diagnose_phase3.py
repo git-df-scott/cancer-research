@@ -117,8 +117,10 @@ def main():
     sub = [r for r in p3 if r['rep'] == 'rec_low' and r['influx'] == 2.5e-05]
     print('  rec_low x 2.5e-5, the combination flagged in advance as physiologically sensible:\n')
     print(f'  {"schedule":12s} {"duty":>5s} {"med nB42":>9s} {"f_end":>7s}')
+    # secondary key on the name: three schedules share duty 0.86, and set iteration order
+    # varies between processes under hash randomisation, so ties must break deterministically
     for s in sorted({r['sched'] for r in sub},
-                    key=lambda x: -np.median([r['duty'] for r in sub if r['sched'] == x])):
+                    key=lambda x: (-np.median([r['duty'] for r in sub if r['sched'] == x]), x)):
         ss = [r for r in sub if r['sched'] == s]
         print(f'  {s:12s} {ss[0]["duty"]:5.2f} {np.median([r["nB42"] for r in ss]):9.0f} '
               f'{np.median([r["f_end"] for r in ss]):7.3f}')

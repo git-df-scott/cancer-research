@@ -97,7 +97,9 @@ def main():
     print('  flagged in advance as physiologically sensible (stable T pool AND the required')
     print('  functional collapse). End-of-run T-cell function by schedule:\n')
     c = [r for r in res if r['rep'] == 'rec_low' and r['influx'] == 2.5e-05]
-    for s in sorted({r['sched'] for r in c}, key=lambda x: -np.median([r['f_end'] for r in c if r['sched'] == x])):
+    # secondary key on the name so tied values break deterministically across processes
+    for s in sorted({r['sched'] for r in c},
+                    key=lambda x: (-np.median([r['f_end'] for r in c if r['sched'] == x]), x)):
         sub = [r for r in c if r['sched'] == s]
         print(f'    {s:12s} f_end={np.median([r["f_end"] for r in sub]):.3f}   '
               f'med nB42={np.median([r["nB42"] for r in sub]):6.0f}')

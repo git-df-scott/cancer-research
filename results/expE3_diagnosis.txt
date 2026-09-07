@@ -100,8 +100,8 @@ pre-registration. PHASE3_PREREG.md section 4 forbids reaching for it now, and it
   A_tfi7        0.75       184   0.895
   B_MO_FR       0.71      1188   0.815
   B_4on3off     0.57      3804   0.711
-  B_7on7off     0.50      3265   0.789
   A_tfi14       0.50       580   0.841
+  B_7on7off     0.50      3265   0.789
 
   Terminal T-cell function is 0.90 under continuous dosing. Exhaustion is simply not
   the binding constraint at this effector:target ratio, so a rest period has nothing
