@@ -93,9 +93,17 @@ def launch(jobs, out_file, tag):
 
 
 # --------------------------------------------------------------------------- analysis
-def benefit(res, arch, sched, rep, infl, swap):
-    """Per-seed benefit of a schedule over continuous, as a fraction of the initial burden.
-    Positive means the schedule left LESS disease than continuous dosing."""
+def benefit(res, arch, sched, rep, infl, swap, metric='nB42'):
+    """Per-seed benefit of a schedule over continuous. Positive means the schedule did BETTER.
+
+    metric='nB42'  : the pre-registered primary, day-42 burden as a fraction of initial burden.
+    metric='integ' : integrated burden over the whole run, a pre-registered secondary
+                     (PHASE2_PREREG.md section 5). It is reported alongside the primary because
+                     the Phase 4 positive control showed the day-42 snapshot is sensitive to
+                     WHERE IN ITS CYCLE a schedule lands: A_tfi14 is mid-break at day 42 and
+                     gains +49% on the primary while LOSING 13% on integrated burden. Integrated
+                     burden has no floor, no ceiling and no cycle-phase sensitivity, so any
+                     architecture conclusion must hold on both."""
     sub = {r['seed']: r for r in res
            if r['arch'] == arch and r['rep'] == rep and r['influx'] == infl
            and r.get('swap_prob', 0.0) == swap}
@@ -106,7 +114,11 @@ def benefit(res, arch, sched, rep, infl, swap):
         c = [r for r in res if r['arch'] == arch and r['rep'] == rep and r['influx'] == infl
              and r.get('swap_prob', 0.0) == swap and r['seed'] == s and r['sched'] == SCH.CONTINUOUS]
         if a and c:
-            out[s] = (c[0]['nB42'] - a[0]['nB42']) / float(c[0]['n0'])
+            if metric == 'integ':
+                base = float(c[0]['integ_burden'])
+                out[s] = (base - a[0]['integ_burden']) / max(base, 1e-9)
+            else:
+                out[s] = (c[0]['nB42'] - a[0]['nB42']) / float(c[0]['n0'])
     return out
 
 
@@ -139,7 +151,8 @@ def analyse(res, swaps):
             print(f'{"="*82}')
             print(f'  {"schedule":12s} {"duty":>5s} | '
                   + ' '.join(f'{a[:9]:>10s}' for a in ARCHS)
-                  + f' | {"disp-foll":>10s} {"p":>8s} {"p_holm":>8s} {"cliff":>6s}')
+                  + f' | {"disp-foll":>10s} {"p":>8s} {"p_holm":>8s} {"cliff":>6s}'
+                  + f' | {"INTEG d-f":>9s} {"p":>7s}')
             rows, praw = [], []
             for name in [n for n, _o, _f in SCH.ALL if n in names]:
                 on, off = SCH.by_name(name)
@@ -149,22 +162,36 @@ def analyse(res, swaps):
                     print(f'  {name:12s} {SCH.duty_cycle(on,off):5.2f} | '
                           + ' '.join(f'{med[a]:10.4f}' for a in ARCHS) + ' | (reference)')
                     continue
+                bi = {a: benefit(res, a, name, rep, infl, swap, 'integ') for a in ARCHS}
+                medi = {a: (np.median(list(bi[a].values())) if bi[a] else float('nan'))
+                        for a in ARCHS}
                 d, f = list(b['dispersed'].values()), list(b['follicle'].values())
                 p = stats.mannwhitneyu(d, f, alternative='two-sided').pvalue if d and f else 1.0
+                di, fi = list(bi['dispersed'].values()), list(bi['follicle'].values())
+                pi = (stats.mannwhitneyu(di, fi, alternative='two-sided').pvalue
+                      if di and fi else 1.0)
                 rows.append((name, on, off, med, med['dispersed'] - med['follicle'],
-                             p, cliffs_delta(d, f)))
+                             p, cliffs_delta(d, f), medi,
+                             medi['dispersed'] - medi['follicle'], pi))
                 praw.append(p)
             padj = holm(np.array(praw)) if praw else []
-            for (name, on, off, med, inter, p, cd), pa in zip(rows, padj):
+            for (name, on, off, med, inter, p, cd, medi, interi, pi), pa in zip(rows, padj):
+                agree = '' if (inter == inter and interi == interi and
+                               (inter > 0) == (interi > 0)) else '  <-- ENDPOINTS DISAGREE'
                 print(f'  {name:12s} {SCH.duty_cycle(on,off):5.2f} | '
                       + ' '.join(f'{med[a]:10.4f}' for a in ARCHS)
-                      + f' | {inter:10.4f} {p:8.4f} {pa:8.4f} {cd:6.2f}')
+                      + f' | {inter:10.4f} {p:8.4f} {pa:8.4f} {cd:6.2f}'
+                      + f' | {interi:9.4f} {pi:7.4f}{agree}')
                 report.append(dict(rep=rep, influx=infl, swap=swap, sched=name,
                                    duty=SCH.duty_cycle(on, off),
                                    **{f'benefit_{a}': (None if med[a] != med[a] else float(med[a]))
                                       for a in ARCHS},
+                                   **{f'integ_{a}': (None if medi[a] != medi[a] else float(medi[a]))
+                                      for a in ARCHS},
                                    interaction=float(inter), p=float(p), p_holm=float(pa),
-                                   cliffs_delta=float(cd)))
+                                   cliffs_delta=float(cd),
+                                   interaction_integ=float(interi), p_integ=float(pi),
+                                   endpoints_agree=bool(agree == '')))
     return report
 
 

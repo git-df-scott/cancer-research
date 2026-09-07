@@ -1,4 +1,106 @@
-# Findings — final status
+# Findings — live status
+
+**Phase 4: the positive control PASSED.** After three failures, the model reproduces the reference
+result — short repeating treatment-free intervals beat continuous dosing in leukaemia-like
+geometry — on two independent endpoints. The architecture comparison is now unlocked for the first
+time in the project.
+
+**The architecture hypothesis is still UNTESTED.** A positive control validates the instrument, not
+the claim. The trafficking attack, exhaustion knockout, dose matching and robustness checks are all
+still ahead, and `TRAFFICKING_PREREG.md`'s category-B rule remains the most likely thing to end the
+hypothesis.
+
+L1, Phase 2 and Phase 3 are preserved unaltered and all still reproduce bit-identically.
+
+---
+
+## What fixed it: recruits arrive exhausted, because the recruits were measured to be exhausted
+
+Three experiments failed for one reason — recruited T cells arrived with zero exhaustion, so any
+influx large enough to sustain an effector pool also reset its function. Tumour control and binding
+exhaustion never co-occurred in 24 of 24 regimes.
+
+That defect is contradicted by direct measurement. Blinatumomab is a 28-day **continuous IV
+infusion**, so the whole circulating pool is engager-exposed. Philipp Figure 1B assayed exactly
+that pool — peripheral T cells — and found 73.1% → 17.4% specific lysis by day 14. **The cells
+available for recruitment are measured to be exhausted.**
+
+Adding a systemic compartment, calibrated to those three values and nothing else:
+
+| | per-cell (tissue) | systemic (circulating) |
+|---|---|---|
+| accrual rate | 0.159 /day | **0.102 /day** (0.086–0.125, well identified) |
+| fraction a 7-day break reverses | 4–10% | **34–72%, median ~60%** |
+
+`rho_sys` is forced to be a separate parameter: the per-cell value 0.93 would floor function at
+0.123 against a measured 0.663. It is also expected — the circulating pool recovers by **turnover**
+as well as in-place de-exhaustion, a route no tissue-resident cell has.
+
+**The window opened.** Regimes now exist with tumour control *and* binding exhaustion. The decisive
+one holds the tumour roughly static (against 2.06× untreated) with 794 T cells sustained, pool
+function 0.366 and the systemic pool 98.6% exhausted — partial control with persistent antigen and
+a progressively exhausting effector pool, the clinically relevant state, unreachable before.
+
+Note the closure: **influx 1.0e-4 is L1's original value**, excluded in Phase C. It passes the same
+unchanged external check once recruits carry exhaustion, so that exclusion was an artefact of the
+naive-arrival assumption — exactly as the Phase 3 diagnosis predicted before this model existed.
+
+## The positive control, and how hard it was interrogated
+
+PC-1 passed in all four admissible regimes. Because a pass arriving after three failures deserves
+more scrutiny than a failure, it was attacked on two fronts before being accepted.
+
+**Cycle-phase contamination of the day-42 snapshot.** Only `A_tfi14` sits mid-break at day 42. It
+gains +49% on the primary endpoint while **losing 13%** on integrated burden. Its apparent win is
+an artefact of when the snapshot lands, and it is discounted.
+
+**Corroboration by an endpoint with no floor, ceiling or phase sensitivity.** Integrated burden is
+a pre-registered secondary. The short intervals survive both, in both post-timing variants:
+
+| schedule | duty | day-42 burden | integrated burden | verdict |
+|---|---|---|---|---|
+| `B_6on1off` | 0.86 | +58% | **+32%** | robust, best on the cleaner endpoint |
+| `A_tfi7` | 0.75 | +60% | +18% | robust |
+| `A_tfi4` | 0.86 | +56% | +20% | robust |
+| `B_12on2off` | 0.86 | +46% | +26% | robust |
+| `A_tfi14` | 0.50 | +49% | **−13%** | **artefact — discounted** |
+| `B_7on7off` | 0.50 | −2% | −27% | loses on both |
+
+**PC-2 is satisfied properly**: the outright best schedule on the cleaner endpoint is
+`B_6on1off` — a *short repeating* interval. That reproduces Obertopp/Basanta's finding that shorter
+intervals consistently outperform both the 7-day interval and continuous dosing, and that a
+Monday-to-Friday regimen performs comparably.
+
+**Recorded deviations and weaknesses:**
+
+- The floor contingency was written for the *continuous* arm only. In the `N_T=200` regime the
+  continuous arm leaves 20 cells while the treatment arms clear entirely, so "100% reduction" is an
+  artefact of a 20-cell denominator. That asymmetry is a flaw in my own criterion. The `N_T=800`
+  regime carries the weight and is reported as such.
+- `p = 0.0039` is the minimum achievable for a one-sided Wilcoxon at n = 8. It indicates a
+  consistent sign, not a large effect.
+- Long breaks win on the primary and lose on the secondary. Any architecture conclusion must hold
+  on **both** endpoints; `exp_arch2.py` now reports them side by side and flags disagreement.
+
+## Still ahead, and none of it is skippable
+
+Architecture comparison → trafficking attack (unchanged category-B rule) → exhaustion knockout →
+dose matching → exhaustion distribution → geometry continuum → numerical robustness. The
+trafficking attack is still the most likely thing to end the hypothesis: at `swap_prob = 0.5` the
+follicle engaged fraction rises 0.048 → 0.576 with T cells reaching 93% of the way to the core
+without any killing.
+
+`p_div` also remains a leukaemia-rate placeholder that is too fast for indolent follicular
+lymphoma, and it must be faced before any architecture claim.
+
+---
+
+## Superseded status: the previous line (classification A)
+
+*Everything below is the record of the closed line, preserved verbatim. It was correct when
+written. Phase 4 did not modify that model — it built a different one, for a reason that
+section identifies itself. The empty-window finding below is what Phase 4's systemic
+compartment repaired.*
 
 **CLASSIFICATION A — MODEL NOT VALIDATED FOR THE SCHEDULING QUESTION.**
 
