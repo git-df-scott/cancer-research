@@ -1,0 +1,19 @@
+E4  208 usable draws (42 discarded: 9-month anchor unreachable)
+    interior optimum in 51.4% of draws   (R1 threshold 50%)  -> SURVIVES
+    T* (RMST-60)     median 5 mo, IQR 0-15, range 0-24
+    RMST best-worst gap: median 3.17 mo, 5% of draws below the 1.0-mo R2 negligibility threshold
+    T* by P(alive at 60mo): 100% of draws put it at T=0
+    futile transplant rate: 0.653 at T=0  ->  0.290 at 6mo  ->  0.137 at 12mo
+
+E5  one-at-a-time sensitivity of T* (RMST-60)
+    p_occ          0.35: n/a     0.5:T*= 2(gap 2.65)    0.65:T*= 7(gap 1.32)     0.8:T*=12(gap 1.23)
+    med_unmask        3:T*= 2(gap 2.71)       6:T*= 7(gap 1.32)       9:T*=12(gap 0.87)      12:T*=17(gap 1.23)
+    dev_rate       0.01:T*=24(gap 4.31)    0.02:T*=10(gap 1.40)    0.03:T*= 2(gap 2.26)   0.045:T*= 0(gap 5.55)
+    med_met           4:T*= 2(gap 1.94)       6:T*= 7(gap 1.32)       9:T*=11(gap 1.50)
+
+R3  non-memoryless unmasking (Weibull shape > 1)
+    shape 1.0: T* =  7 mo, gap 1.27 mo, k=2.20, T*(alive60)=0
+    shape 1.5: T* =  7 mo, gap 1.58 mo, k=1.95, T*(alive60)=0
+    shape 2.0: T* =  8 mo, gap 1.80 mo, k=1.83, T*(alive60)=0
+    shape 3.0: T* =  8 mo, gap 2.05 mo, k=1.76, T*(alive60)=0
+    result inverts under shape=2.0? False  -> R3 passed

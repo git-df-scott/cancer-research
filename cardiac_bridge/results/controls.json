@@ -1,0 +1,24 @@
+{
+  "PC1": {
+    "target": 9.0,
+    "median_before_calibration": 7.132000146494418,
+    "k_uncalibrated": 2.8,
+    "k_calibrated": 2.189453125,
+    "median_after_calibration": 8.983118728795324,
+    "passed": true
+  },
+  "PC2": {
+    "T_star": 0.0,
+    "rmst_at_0": 47.9715033950275,
+    "rmst_at_24": 34.71985537487151,
+    "passed": true
+  },
+  "PC3": {
+    "T_star": 24.0,
+    "rmst_at_0": 21.411031832038333,
+    "rmst_at_24": 30.221751550034227,
+    "passed": true
+  },
+  "all_passed": true,
+  "k_calibrated": 2.189453125
+}
