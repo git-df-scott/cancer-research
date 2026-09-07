@@ -2,6 +2,7 @@ calibrated k = 2.203   (therapy has no effect at T=0, so the PC1 anchor is uncha
 
 PC4  therapy-off vs Phase 1 reference formula, all 25 bridge durations, 600,000 patients each
      max element-wise |difference| = 0.0e+00   PASS (bitwise identical)
+PC5  eradication fires: carried disease at T=12 by rate  0.0/mo:0.1206  0.05/mo:0.0662  0.3/mo:0.0032  1.0/mo:0.0000   PASS
 
 F1  PURE CYTOSTASIS (slows occult disease, does not clear it), eradication = 0
  stasis s  T*(RMST)  T*(alive60)  P(alive60)@T=6   carried disease@T=6
@@ -16,16 +17,19 @@ F2  ERADICATION during the bridge: what is the efficacy bar?
  rate/mo  P(clear by 6mo)  T*(alive60)  P(alive60)@T*  P(alive60)@T=0
    0.000            0.000            0         0.2421          0.2421
    0.010            0.058            0         0.2421          0.2421
-   0.020            0.113            0         0.2421          0.2421
-   0.030            0.165            0         0.2421          0.2421
-   0.050            0.259            0         0.2421          0.2421
-   0.075            0.362            0         0.2421          0.2421
-   0.100            0.451            0         0.2421          0.2421
-   0.150            0.593            0         0.2421          0.2421
-   0.200            0.699            0         0.2421          0.2421
-   0.300            0.835            0         0.2421          0.2421
-    F2: no tested rate moved T* off zero
+   0.020            0.113            4         0.2493          0.2421
+   0.030            0.165            5         0.2625          0.2421
+   0.050            0.259            7         0.2916          0.2421
+   0.075            0.362            8         0.3241          0.2421
+   0.100            0.451            8         0.3523          0.2421
+   0.150            0.593            7         0.3968          0.2421
+   0.200            0.699            7         0.4308          0.2421
+   0.300            0.835            6         0.4781          0.2421
+    F2 efficacy bar: eradication rate ~0.02/month (= 11% chance of clearing occult disease over 6 months)
 
 F3  efficacy bar as a function of device hazard
-    device hazard 0.010/mo -> bar unreachable
-    device hazard 0.020/mo -> bar unreachable
+    device hazard 0.010/mo -> bar 0.005/mo (3% clearance by 6mo)
+    device hazard 0.020/mo -> bar 0.010/mo (6% clearance by 6mo)
+    device hazard 0.025/mo -> bar 0.020/mo (11% clearance by 6mo)
+    device hazard 0.035/mo -> bar 0.020/mo (11% clearance by 6mo)
+    device hazard 0.045/mo -> bar 0.030/mo (16% clearance by 6mo)

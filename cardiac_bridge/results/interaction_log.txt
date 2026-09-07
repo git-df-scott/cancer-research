@@ -1,0 +1,16 @@
+P(alive at 60 months) at the best bridge duration, and that duration in brackets
+                      erad 0.0         erad 0.02         erad 0.05          erad 0.1          erad 0.2
+stasis  1.0        0.2416 (T=0)      0.2487 (T=4)      0.2907 (T=7)      0.3509 (T=8)      0.4287 (T=7)
+stasis  1.5        0.2416 (T=0)      0.2510 (T=5)      0.3016 (T=9)      0.3694 (T=9)      0.4501 (T=8)
+stasis  2.0        0.2416 (T=0)      0.2527 (T=6)     0.3094 (T=10)     0.3812 (T=10)      0.4631 (T=8)
+stasis  3.0        0.2416 (T=0)      0.2548 (T=7)     0.3193 (T=11)     0.3953 (T=11)      0.4778 (T=9)
+
+Effect of adding cytostasis on top of a fixed eradication rate:
+    erad   0.0/mo (vs no stasis, P=0.2416):  s=1.5:+0.0000  s=2.0:+0.0000  s=3.0:+0.0000
+    erad  0.02/mo (vs no stasis, P=0.2487):  s=1.5:+0.0023  s=2.0:+0.0040  s=3.0:+0.0061
+    erad  0.05/mo (vs no stasis, P=0.2907):  s=1.5:+0.0109  s=2.0:+0.0186  s=3.0:+0.0286
+    erad   0.1/mo (vs no stasis, P=0.3509):  s=1.5:+0.0186  s=2.0:+0.0303  s=3.0:+0.0445
+    erad   0.2/mo (vs no stasis, P=0.4287):  s=1.5:+0.0213  s=2.0:+0.0343  s=3.0:+0.0491
+
+  neither: 0.2416   cytostasis only: 0.2416   eradication only: 0.2907   both: 0.3094
+  additive prediction 0.2907 vs observed 0.3094  -> interaction +0.0186 (SYNERGY)
