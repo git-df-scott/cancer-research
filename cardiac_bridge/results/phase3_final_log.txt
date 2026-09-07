@@ -1,0 +1,29 @@
+calibrated k = 2.203   MCID = 5 pp (pre-registered)
+
+C2  absolute sensitivity: pp change in benefit per 10% of admissible range
+
+  evidence centre: benefit 0.00 pp at T*=0  (pi = 0.068)
+      p_R          +0.000 pp
+      p_dur        +0.000 pp
+      m_clear      +0.000 pp
+      a_clear      +0.000 pp
+      tx_stasis    +0.000 pp
+      med_unmask   +0.000 pp
+      dev_rate     +0.000 pp
+
+  generous corner: benefit 6.23 pp at T*=9  (pi = 0.210)
+      dev_rate     -0.470 pp
+      m_clear      -0.424 pp
+      p_R          +0.369 pp
+      p_dur        +0.275 pp
+      a_clear      +0.134 pp
+      med_unmask   +0.054 pp
+      tx_stasis    +0.019 pp
+
+
+F  PHASE BOUNDARY: minimum pi = p_R x p_dur reaching the 5 pp MCID
+   admissible ceiling is pi = 0.30 x 0.70 = 0.21
+
+ device hazard        stasis 1.0        stasis 2.0        stasis 3.0
+         0.010    pi>=0.26 (T=9)   pi>=0.22 (T=10)   pi>=0.22 (T=12)
+         0.025    pi>=0.40 (T=5)    pi>=0.36 (T=6)    pi>=0.34 (T=6)

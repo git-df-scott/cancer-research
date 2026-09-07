@@ -28,3 +28,10 @@ F  PHASE BOUNDARY: minimum effective durable clearance fraction pi = p_R x p_dur
  device hazard      stasis 1.0      stasis 2.0      stasis 3.0
          0.010  pi>=0.26 (T=9) pi>=0.22 (T=10) pi>=0.20 (T=10)
          0.025  pi>=0.40 (T=5)  pi>=0.36 (T=6)  pi>=0.34 (T=7)
+         0.045  pi>=0.56 (T=4)  pi>=0.50 (T=4)  pi>=0.48 (T=4)
+
+   effect of faster clearance and slower unmasking (both favourable), dev=0.010, s=3:
+      m_clear=2 mo, med_unmask=  12 mo -> pi >= 0.16 (T*=8)
+      m_clear=3 mo, med_unmask=   9 mo -> pi >= 0.18 (T*=10)
+      m_clear=4 mo, med_unmask=   6 mo -> pi >= 0.20 (T*=10)
+      m_clear=6 mo, med_unmask=   3 mo -> pi >= 0.30 (T*=12)

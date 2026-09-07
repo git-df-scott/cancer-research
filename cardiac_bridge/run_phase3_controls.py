@@ -5,7 +5,7 @@ that endpoint agreement is not evidence a mechanism fired."""
 import sys, json, numpy as np
 from dataclasses import replace
 from phase3_model import (P3, draw_latents3, survival3, metrics3, carried3,
-                          calibrate_k3, analytic_ceiling)
+                          calibrate_k3, analytic_ceiling, _resolve)
 from bridge_model import HORIZON
 
 N = 300_000
@@ -20,6 +20,7 @@ def check(name, ok, detail):
 
 def reference_no_eradication(T, p, L):
     """Phase 2 logic (cytostasis only, no clearance mechanism) on Phase 3 latents."""
+    L = _resolve(p, L) if "occ_u" in L else L
     U, D, s = L["U"], L["D"], p.tx_stasis
     U_bridge = U * s
     U_det = np.where(L["occult"], np.ceil(U_bridge / p.q) * p.q, np.inf)
@@ -90,6 +91,30 @@ L9 = draw_latents3(p9, N, np.random.default_rng(99))
 a9 = np.array([metrics3(float(T), p9, L9)["alive60"] for T in T_GRID])
 check("PC9", int(np.argmax(a9)) == 0,
       f"dev_rate=0.60/mo collapses T* to {T_GRID[int(np.argmax(a9))]:.0f}")
+
+# PC13 -- EVERY parameter must be live. This is the control that would have caught both
+# the Phase 2 eradication no-op and the Phase 3 dev_rate/med_unmask no-op. A parameter
+# frozen into the latent draw silently does nothing and every endpoint still looks sane.
+# A parameter must be REACHABLE -- it must move at least one model output. Asserting it
+# must move the PRIMARY endpoint is too strong: s_detect legitimately shifts who gets
+# transplanted (carried disease 0.19 -> 0.33) while leaving 5-year survival unchanged,
+# because detected-before-transplant and carried-through-transplant are both uniformly
+# fatal within the horizon. That is a finding, not a dead parameter.
+pc13 = replace(P, p_R=0.30, p_dur=0.60, tx_stasis=2.0)
+KEYS = ("alive60", "rmst", "carried", "tx_rate")
+m0 = metrics3(8.0, pc13, L)
+dead = []
+for nme, val in [("p_occ", 0.45), ("med_unmask", 12.0), ("unmask_shape", 2.0),
+                 ("dev_rate", 0.045), ("med_met", 9.0), ("periop_mort", 0.20),
+                 ("med_graft", 90.0), ("tx_stasis", 3.0), ("p_R", 0.60),
+                 ("m_clear", 8.0), ("a_clear", 2.5), ("p_dur", 0.20),
+                 ("m_regrow", 18.0), ("s_detect", 3.0)]:
+    m1 = metrics3(8.0, replace(pc13, **{nme: val}), L)
+    d = max(abs(m1[kk] - m0[kk]) for kk in KEYS)
+    if d < 1e-4:
+        dead.append(f"{nme}({d:.1e})")
+check("PC13", not dead,
+      "all 14 parameters reachable" if not dead else f"DEAD PARAMETERS: {', '.join(dead)}")
 
 print()
 json.dump(dict(passed=len(fails) == 0, failures=fails, k=P.k),

@@ -4,8 +4,9 @@ PC6    PASS  p_R=0 vs no-eradication reference, max|diff| = 0.0e+00 over 25 T x 
 PC11   PASS  cytostasis-only (s=2, p_R=0), max|diff| = 0.0e+00
 PC10   PASS  s=1 eradication-only branch self-consistent
 PC7    PASS  carried disease at perfect clearance: T=3:0.00e+00, T=6:0.00e+00, T=12:0.00e+00
-PC12   PASS  simulated vs CLOSED FORM P(alive60): T=3 0.6487 vs 0.6487, T=6 0.6108 vs 0.6106, T=12 0.5407 vs 0.5409  max|diff|=2.6e-04
-PC8    PASS  dev_rate=0 monotone in T: min step +1.45e-03, P(alive60) 0.2397 -> 0.3014
+PC12   PASS  simulated vs CLOSED FORM P(alive60): T=3 0.6490 vs 0.6487, T=6 0.6110 vs 0.6106, T=12 0.5404 vs 0.5409  max|diff|=5.7e-04
+PC8    PASS  dev_rate=0 monotone in T: min step +1.40e-03, P(alive60) 0.2392 -> 0.3007
 PC9    PASS  dev_rate=0.60/mo collapses T* to 0
+PC13   PASS  all 14 parameters reachable
 
 ALL PHASE 3 CONTROLS PASSED - main experiment unblocked

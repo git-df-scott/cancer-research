@@ -41,24 +41,47 @@ class P3:
 
 
 def draw_latents3(p: P3, n, rng):
-    occult = rng.random(n) < p.p_occ
-    U = np.where(occult, weibull_median(rng, p.med_unmask, p.unmask_shape, n), np.inf)
-    D = rng.exponential(1.0 / p.dev_rate, n)
-    met = rng.exponential(p.med_met / np.log(2.0), n)
-    met_after_tx = rng.exponential(p.med_met / np.log(2.0), n)
-    dev_resid = rng.exponential(1.0 / p.dev_rate, n)
-    graft = rng.exponential(p.med_graft / np.log(2.0), n)
-    periop_death = rng.random(n) < p.periop_mort
-    # Phase 3 latents drawn as UNIFORMS so that p_R, m_clear, a_clear and p_dur can all be
-    # varied at evaluation time without redrawing. Baking a rate into the draw is exactly
-    # the Phase 2 dead-code bug; PC6/PC12 exist to catch a recurrence.
-    R_u = rng.random(n)             # -> responder if R_u < p_R
-    C_u = rng.random(n)             # -> clearance time by inverse-CDF at evaluation time
-    dur_u = rng.random(n)           # -> durable if dur_u < p_dur
-    G_unit = rng.exponential(1.0, n)
-    return dict(occult=occult, U=U, D=D, met=met, met_after_tx=met_after_tx,
-                dev_resid=dev_resid, graft=graft, periop_death=periop_death,
-                R_u=R_u, C_u=C_u, dur_u=dur_u, G_unit=G_unit)
+    """Store UNIT / UNIFORM draws only.
+
+    Every parameter is applied at evaluation time. This kills an entire bug class:
+    Phase 2's eradication rate was baked in at draw time and became a silent no-op,
+    and the first Phase 3 sensitivity pass repeated the mistake with dev_rate and
+    med_unmask. Nothing that a caller can vary via dataclasses.replace() may be
+    frozen into the draw.
+    """
+    return dict(
+        occ_u=rng.random(n),        # -> occult if occ_u < p_occ
+        U_u=rng.random(n),          # -> unmasking time by inverse-CDF (median AND shape at eval)
+        D_u=rng.exponential(1.0, n),        # -> device event: D_u / dev_rate
+        met_u=rng.exponential(1.0, n),
+        mtx_u=rng.exponential(1.0, n),
+        devr_u=rng.exponential(1.0, n),
+        graft_u=rng.exponential(1.0, n),
+        periop_u=rng.random(n),
+        R_u=rng.random(n),
+        C_u=rng.random(n),
+        dur_u=rng.random(n),
+        G_unit=rng.exponential(1.0, n),
+    )
+
+
+def _resolve(p: P3, L):
+    """Apply every parameter to the stored unit draws. Called at evaluation time."""
+    occult = L["occ_u"] < p.p_occ
+    scale_U = p.med_unmask / (np.log(2.0) ** (1.0 / p.unmask_shape))
+    U = np.where(occult,
+                 scale_U * (-np.log1p(-L["U_u"])) ** (1.0 / p.unmask_shape),
+                 np.inf)
+    return dict(
+        occult=occult, U=U,
+        D=L["D_u"] / p.dev_rate,
+        met=L["met_u"] * (p.med_met / np.log(2.0)),
+        met_after_tx=L["mtx_u"] * (p.med_met / np.log(2.0)),
+        dev_resid=L["devr_u"] / p.dev_rate,
+        graft=L["graft_u"] * (p.med_graft / np.log(2.0)),
+        periop_death=L["periop_u"] < p.periop_mort,
+        R_u=L["R_u"], C_u=L["C_u"], dur_u=L["dur_u"], G_unit=L["G_unit"],
+    )
 
 
 def _clearance_time(p: P3, L):
@@ -68,6 +91,7 @@ def _clearance_time(p: P3, L):
 
 
 def disease_state(T, p: P3, L):
+    L = _resolve(p, L) if "occ_u" in L else L
     """Resolve each patient's occult-disease trajectory under bridge therapy.
 
     Returns (U_eff, cured, s_eff):
@@ -94,9 +118,10 @@ def disease_state(T, p: P3, L):
 
 
 def survival3(T, p: P3, L):
-    D = L["D"]
+    Lr = _resolve(p, L) if "occ_u" in L else L
+    D = Lr["D"]
     U_eff, cured, s_eff = disease_state(T, p, L)
-    has_disease = L["occult"] & ~cured
+    has_disease = Lr["occult"] & ~cured
 
     U_det = np.where(has_disease, np.ceil(U_eff / p.q) * p.q, np.inf)
     transplanted = (D > T) & (U_det > T)
@@ -105,36 +130,38 @@ def survival3(T, p: P3, L):
 
     surv = np.empty_like(D)
     surv[dev_first] = D[dev_first]
-    surv[det_first] = U_det[det_first] + np.minimum(L["met"][det_first],
-                                                    L["dev_resid"][det_first])
+    surv[det_first] = U_det[det_first] + np.minimum(Lr["met"][det_first],
+                                                    Lr["dev_resid"][det_first])
 
     tx = transplanted
     occ_tx = tx & has_disease & (U_eff > T)     # transplanted still carrying disease
     free_tx = tx & ~occ_tx
-    surv[free_tx] = T + L["graft"][free_tx]
+    surv[free_tx] = T + Lr["graft"][free_tx]
 
     resid = (U_eff[occ_tx] - T) / (s_eff[occ_tx] * p.k)
-    post = L["met_after_tx"][occ_tx] / p.k
-    surv[occ_tx] = T + np.minimum(resid + post, L["graft"][occ_tx])
+    post = Lr["met_after_tx"][occ_tx] / p.k
+    surv[occ_tx] = T + np.minimum(resid + post, Lr["graft"][occ_tx])
 
-    surv[tx & L["periop_death"]] = T
+    surv[tx & Lr["periop_death"]] = T
     return surv
 
 
 def carried3(T, p: P3, L):
-    D = L["D"]
+    Lr = _resolve(p, L) if "occ_u" in L else L
+    D = Lr["D"]
     U_eff, cured, _ = disease_state(T, p, L)
-    has_disease = L["occult"] & ~cured
+    has_disease = Lr["occult"] & ~cured
     U_det = np.where(has_disease, np.ceil(U_eff / p.q) * p.q, np.inf)
     tx = (D > T) & (U_det > T)
     return float(np.mean(tx & has_disease & (U_eff > T)))
 
 
 def tx_rate3(T, p: P3, L):
+    Lr = _resolve(p, L) if "occ_u" in L else L
     U_eff, cured, _ = disease_state(T, p, L)
-    has_disease = L["occult"] & ~cured
+    has_disease = Lr["occult"] & ~cured
     U_det = np.where(has_disease, np.ceil(U_eff / p.q) * p.q, np.inf)
-    return float(np.mean((L["D"] > T) & (U_det > T)))
+    return float(np.mean((Lr["D"] > T) & (U_det > T)))
 
 
 def metrics3(T, p: P3, L):
