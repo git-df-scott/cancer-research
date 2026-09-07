@@ -192,3 +192,142 @@ transplant — while the patient still pays full device hazard.
   F-R2. Report F1 direction as found, including if it is the opposite of predicted.
   F-R3. Therapy is modelled as active only during the bridge and stopping at transplant.
         This is a stated simplification, not a claim about practice.
+
+---
+
+# Phase 3 pre-registration — realistic response heterogeneity
+
+Written after the Phase 3 literature audit (PROVENANCE.md) and **before any Phase 3 model
+code was executed**. Nothing below is changed after seeing results.
+
+## Why this phase exists
+
+Phase 2's eradication model gave every patient a continuous per-month probability of cure.
+That is biologically dubious: it implies universal partial curability. Real systemic
+therapy in angiosarcoma works in a minority and fails outright in the rest. Phase 3 exists
+to determine whether the Phase 2 result survives when that assumption is made realistic.
+
+The objective is NOT to make Phase 2 survive. It is to find out whether it deserves to.
+
+## The replacement model (fixed before running)
+
+For each patient with occult micrometastatic disease:
+
+    R_i ~ Bernoulli(p_R)                        latent responder status
+    R_i = 0  ->  eradication probability is exactly ZERO, forever
+    R_i = 1  ->  clearance achieved at C_i ~ Weibull(median m_clear, shape a_clear)
+                 eradication occurs only if C_i < min(unmasking time, T)
+    among patients who achieve clearance:
+        durable with probability p_dur   -> cured
+        otherwise                        -> disease re-emerges after G_i ~ Exp(median m_regrow)
+                                            (acquired escape / residual disease)
+
+Cytostasis is unchanged from Phase 2: disease progress accrues at rate 1/s during therapy.
+
+Terminology held strictly distinct throughout, per the audit:
+**tumour shrinkage != radiographic response != clearance of occult disease != cure.**
+
+## Primary endpoint
+
+  **P(alive at 60 months)**, as a function of bridge duration T.
+
+Chosen because the strategy is curative-intent and because Phase 1 established that RMST
+and the cure proxy diverge and can recommend opposite actions. The cure proxy is the
+clinically meaningful one here.
+
+## Primary question
+
+Across externally admissible responder fractions and clearance kinetics (PROVENANCE.md),
+does there remain a nonzero bridge duration T* > 0 that improves P(alive at 60 months)
+relative to immediate transplantation, by a clinically meaningful margin?
+
+## Secondary endpoints
+
+  S1. RMST-60 as a function of T (reported for continuity with Phases 1-2).
+  S2. Fraction of the cohort transplanted while still carrying occult disease.
+  S3. Donor organs consumed per 100 patients.
+  S4. The T* = 0 / T* > 0 phase boundary in (p_R, p_dur, m_clear, s, h_device) space.
+  S5. Which parameter moves that boundary most strongly.
+  S6. Whether the Phase 2 cytostasis x eradication synergy survives responder
+      heterogeneity, and whether any surviving interaction is biological or an artefact
+      of cytostasis changing WHEN occult disease becomes observable.
+  S7. Required (p_R x p_dur) for benefit, compared against the observed/plausible region.
+
+## Minimum clinically meaningful improvement (MCID)
+
+  **5 percentage points absolute** in P(alive at 60 months) versus T = 0.
+
+Fixed in advance. Justification: a bridge commits a patient to months of total artificial
+heart support with substantial morbidity and quality-of-life cost that this model does not
+capture. An absolute five-year survival gain below 5 points does not justify that.
+
+## Robustness threshold
+
+  The benefit must reach MCID in **at least 50%** of draws from the externally admissible
+  parameter region defined in PROVENANCE.md.
+
+## Decision rule for whether a finite bridge is supported
+
+  D1. If the (p_R x p_dur) required to reach MCID lies ENTIRELY ABOVE the externally
+      admissible region -> classification **A, bridge hypothesis fails**.
+  D2. If MCID is reached in >=50% of admissible draws AND survives every Phase 3 attack
+      (G-series below) -> classification **D, robust**.
+  D3. If MCID is reached only above a quantifiable efficacy / device-performance boundary
+      that lies partly inside the admissible region -> classification **C, conditional
+      regime**, and the boundary must be reported as the deliverable, not a point estimate.
+  D4. If the admissible region cannot be constrained enough by external evidence to
+      distinguish A from C -> classification **B, model-indeterminate**. Report that
+      rather than manufacturing precision.
+
+## Stopping rules
+
+  ST1. If any Phase 3 positive control fails, the main experiment is BLOCKED until fixed.
+       Controls are asserted automatically and abort the run.
+  ST2. If identifiability analysis shows the parameters are not constrainable from
+       available external evidence, stop and report classification B. Do not select a
+       favourite point in an unidentified region.
+  ST3. If the required efficacy region and the evidence-supported region do not overlap,
+       stop and report classification A. Do not soften.
+
+## Positive controls (D) — asserted automatically, failure blocks the experiment
+
+  PC6.  p_R = 0 must reproduce the Phase 2 no-eradication result exactly.
+  PC7.  p_R = 1, immediate clearance (m_clear -> 0), p_dur = 1 must drive the carried-
+        disease fraction to ~0 and P(alive60) toward the analytic ceiling
+        (1 - periop_mort) x P(graft survives 60 mo) x P(no device event before T).
+  PC8.  Device hazard = 0 must be monotone non-decreasing in T for the primary endpoint.
+  PC9.  Very high device hazard must collapse T* to 0.
+  PC10. Disabling cytostasis (s = 1) must reproduce the eradication-only branch exactly.
+  PC11. Disabling eradication (p_R = 0) must reproduce the cytostasis-only branch exactly.
+  PC12. Hand-calculation check: for p_R = 1, p_dur = 1, m_clear small, the cured fraction
+        must match a closed-form expression to within Monte Carlo error.
+
+PC12 exists specifically because the Phase 2 dead-code bug was caught by a hand
+calculation and NOT by any pre-registered endpoint. Endpoint agreement is not evidence
+that a mechanism fired.
+
+## Attacks the surviving result must withstand (G)
+
+  G1. Responder subpopulation only (the core Phase 3 change).
+  G2. Cytostasis delays radiographic detectability (already in model; isolate its effect).
+  G3. Non-exponential clearance kinetics (Weibull shape > 1).
+  G4. Acquired escape / non-durable clearance (p_dur < 1).
+  G5. Device hazard varying by centre quality.
+  G6. Heterogeneous metastatic burden.
+  G7. Separation of true biological synergy from decision-process interaction, by holding
+      the observation process fixed while varying only the biology.
+
+## What Phase 3 will NOT do
+
+  - Will not model ATR-inhibitor efficacy. No defensible preclinical basis exists
+    (PROVENANCE.md); simulating it would manufacture the result.
+  - Will not treat KDR alteration as universal on the basis of an 11-patient cohort.
+  - Will not tune any parameter toward a positive result.
+  - Will not issue a clinical recommendation under any classification.
+
+## Final classification must be exactly one of
+
+  A — Bridge hypothesis fails. Realistic response heterogeneity removes the benefit.
+  B — Model-indeterminate. Available data cannot constrain the parameters enough.
+  C — Conditional bridge regime survives, above a quantified boundary.
+  D — Robust bridge signal across the admissible region and all attacks.

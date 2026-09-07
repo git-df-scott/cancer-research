@@ -1,0 +1,17 @@
+C1  p_R x p_dur degeneracy: benefit (pp gain in 5-yr survival) on a grid
+
+  pR\pdur     0.10     0.20     0.30     0.50     0.70     1.00
+      0.05     0.00     0.00     0.00     0.00     0.00     0.00
+      0.10     0.00     0.00     0.00     0.00     0.00     0.16
+      0.15     0.00     0.00     0.00     0.00     0.21     0.73
+      0.20     0.00     0.00     0.00     0.15     0.58     1.46
+      0.30     0.00     0.00     0.08     0.71     1.62     3.15
+      0.40     0.00     0.03     0.36     1.48     2.82     5.03
+      0.60     0.00     0.40     1.14     3.17     5.42     8.93
+
+    total SD of gain across the grid       : 1.82 pp
+    mean SD WITHIN constant-product bins   : 0.15 pp
+    variance explained by the product alone: 99.1%
+    -> p_R and p_dur are NOT separately identifiable (product only)
+
+C2  normalised sensitivity of the benefit to each parameter (central point)
