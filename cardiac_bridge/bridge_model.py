@@ -25,6 +25,9 @@ class Params:
     periop_mort: float = 0.08  # perioperative mortality at transplant
     med_graft: float = 144.0   # median graft survival if truly disease-free
     q: float = 1.0             # surveillance imaging interval
+    # --- Phase 2: systemic therapy during the bridge (inactive at these defaults) ---
+    tx_erad_rate: float = 0.0  # /month hazard of clearing occult micrometastatic disease
+    tx_stasis: float = 1.0     # >1 slows occult disease growth; disease progress accrues at 1/s
 
 
 def weibull_median(rng, median, shape, size):
@@ -48,44 +51,79 @@ def draw_latents(p: Params, n, rng):
     dev_resid = rng.exponential(1.0 / p.dev_rate, n)                   # residual device life, branch B
     graft = rng.exponential(p.med_graft / np.log(2.0), n)
     periop_death = rng.random(n) < p.periop_mort
+    # Drawn LAST so every Phase 1 variable keeps its exact random stream (PC4).
+    # UNIT exponential: the eradication rate is applied in _eradicated() at evaluation
+    # time. Baking the rate in here made tx_erad_rate a silent no-op, because latents are
+    # drawn once and the rate is then varied via dataclasses.replace(). Caught by PC5.
+    E_unit = rng.exponential(1.0, n)
     return dict(occult=occult, U=U, U_det=U_det, D=D, met=met,
                 met_after_tx=met_after_tx, dev_resid=dev_resid,
-                graft=graft, periop_death=periop_death)
+                graft=graft, periop_death=periop_death, E_unit=E_unit)
+
+
+def _eradicated(T, p: Params, L, U_bridge):
+    """Occult disease cleared by bridge therapy before it unmasks or the bridge ends."""
+    if p.tx_erad_rate <= 0:
+        return np.zeros(len(L["D"]), dtype=bool)
+    E = L["E_unit"] / p.tx_erad_rate
+    return L["occult"] & (E < np.minimum(U_bridge, T))
 
 
 def survival(T, p: Params, L):
-    """Overall survival from cardiectomy under bridge duration T."""
-    U, U_det, D = L["U"], L["U_det"], L["D"]
+    """Overall survival from cardiectomy under bridge duration T.
 
-    transplanted = (D > T) & (U_det > T)          # neither event happened before transplant
-    dev_first    = (~transplanted) & (D <= U_det)  # branch A: died on device
-    det_first    = (~transplanted) & (D > U_det)   # branch B: mets found, transplant cancelled
+    Bridge therapy (Phase 2) acts only during [0, T] and stops at transplant.
+    Cytostasis stretches occult disease progress: it accrues at rate 1/s while on
+    therapy, so unmasking that would occur at U occurs at U*s instead.
+    Eradication clears occult disease at hazard tx_erad_rate while on therapy.
+    At s = 1 and rate = 0 this is identical to Phase 1.
+    """
+    U, D, s = L["U"], L["D"], p.tx_stasis
+
+    U_bridge = U * s                                    # unmasking time under therapy
+    eradicated = _eradicated(T, p, L, U_bridge)
+    U_det = np.where(L["occult"] & ~eradicated,
+                     np.ceil(U_bridge / p.q) * p.q, np.inf)
+
+    transplanted = (D > T) & (U_det > T)
+    dev_first    = (~transplanted) & (D <= U_det)
+    det_first    = (~transplanted) & (D > U_det)
 
     surv = np.empty_like(D)
-
-    # A. device event before anything else
     surv[dev_first] = D[dev_first]
-
-    # B. metastases detected during the bridge -> no transplant, stays on device
     surv[det_first] = U_det[det_first] + np.minimum(L["met"][det_first],
                                                     L["dev_resid"][det_first])
 
-    # C/D. transplanted at T
     tx = transplanted
-    occ_tx = tx & L["occult"] & (U > T)   # D: occult disease carried through transplant
-    free_tx = tx & ~occ_tx                # C: truly disease-free (or occult already excluded)
+    occ_tx = tx & L["occult"] & ~eradicated & (U_bridge > T)   # disease carried through
+    free_tx = tx & ~occ_tx
 
-    # C: disease-free graft survival
     surv[free_tx] = T + L["graft"][free_tx]
 
-    # D: immunosuppression accelerates residual unmasking AND post-detection survival by k
-    resid = (U[occ_tx] - T) / p.k
+    # residual natural progress left at transplant, then accelerated by immunosuppression
+    resid = (U[occ_tx] - T / s) / p.k
     post = L["met_after_tx"][occ_tx] / p.k
     surv[occ_tx] = T + np.minimum(resid + post, L["graft"][occ_tx])
 
-    # perioperative mortality applies to everyone actually transplanted
     surv[tx & L["periop_death"]] = T
     return surv
+
+
+def carried_disease(T, p: Params, L):
+    """Fraction of the whole cohort transplanted while still carrying occult disease."""
+    U, s = L["U"], p.tx_stasis
+    U_bridge = U * s
+    eradicated = _eradicated(T, p, L, U_bridge)
+    U_det = np.where(L["occult"] & ~eradicated, np.ceil(U_bridge / p.q) * p.q, np.inf)
+    tx = (L["D"] > T) & (U_det > T)
+    return float(np.mean(tx & L["occult"] & ~eradicated & (U_bridge > T)))
+
+
+def transplant_rate(T, p: Params, L):
+    U_bridge = L["U"] * p.tx_stasis
+    eradicated = _eradicated(T, p, L, U_bridge)
+    U_det = np.where(L["occult"] & ~eradicated, np.ceil(U_bridge / p.q) * p.q, np.inf)
+    return float(np.mean((L["D"] > T) & (U_det > T)))
 
 
 def metrics(T, p: Params, L):
@@ -94,8 +132,8 @@ def metrics(T, p: Params, L):
         rmst=float(np.mean(np.minimum(s, HORIZON))),     # E1
         alive60=float(np.mean(s >= HORIZON)),            # E2
         median=float(np.median(s)),
-        tx_rate=float(np.mean((L["D"] > T) & (L["U_det"] > T))),
-        futile_tx=float(np.mean((L["D"] > T) & (L["U_det"] > T) & L["occult"] & (L["U"] > T))),
+        tx_rate=transplant_rate(T, p, L),
+        futile_tx=carried_disease(T, p, L),
     )
 
 

@@ -122,3 +122,73 @@ Outcome branches:
   C. Corner solution (transplant immediately, or bridge indefinitely)
   D. Clinically negligible
   E. Model artefact
+
+---
+
+# Phase 2 pre-registration — systemic therapy during the bridge
+
+Written after Phase 1 completed and before any Phase 2 code was executed.
+
+## Why this phase exists
+
+Phase 1 found the bridge to be pure attrition for curable patients: they wait, they pay
+device hazard, they get nothing back. But the bridge window is the one period in this
+disease when a patient has no allograft and therefore **no immunosuppression suppressing
+their systemic therapy**. Cardiac angiosarcoma carries KDR alterations in 9/11 profiled
+cases with a mechanistic account of their origin (POT1 loss -> unrepressed ATR-dependent
+damage signalling -> somatic activating VEGF-pathway mutations), so KDR-directed and
+DDR-directed therapy during the bridge is mechanistically indicated.
+
+If therapy during the bridge works, waiting stops being dead time and becomes treatment
+time. That is the only route by which a bridge could win on cure fraction rather than only
+on organ arithmetic.
+
+## The distinction being tested, which Phase 1 could not see
+
+Therapy can act two ways, and the model separates them deliberately:
+
+  CYTOSTATIC (parameter `tx_stasis` = s > 1). Slows growth of occult disease. Disease
+      progress accrues at rate 1/s during the bridge. Does not remove disease.
+  ERADICATING (parameter `tx_erad_rate` = per-month hazard). Some probability per unit
+      time of actually clearing occult micrometastatic disease.
+
+These have opposite effects on the *filter*, and that is the point of the phase. The bridge
+is a diagnostic intervention. Slowing disease growth makes the diagnostic window less
+informative — occult disease stays hidden longer and is more likely to be carried through
+transplant — while the patient still pays full device hazard.
+
+## Pre-registered predictions (direction stated in advance)
+
+  F1. Pure cytostasis (s > 1, eradication = 0) will REDUCE five-year survival relative to
+      s = 1 at any fixed bridge duration T > 0. Direction: HARMFUL. If cytostasis is
+      neutral or beneficial, F1 is falsified and the "treating during a diagnostic window
+      degrades the diagnostic" reasoning is wrong.
+  F2. There exists a threshold eradication rate above which the five-year-survival-
+      maximising bridge duration becomes > 0 — i.e. an efficacy bar that a bridge-period
+      regimen must clear before waiting is justified at all. Report the bar as a number.
+  F3. The F2 threshold rises with device hazard. Higher device hazard demands more
+      effective therapy before waiting pays.
+
+## Endpoints
+
+  F-E1. T* by RMST-60 and by P(alive at 60 mo), over a grid of (eradication rate, stasis).
+  F-E2. The eradication-rate threshold at which argmax P(alive60) leaves 0, in the base case.
+  F-E3. That threshold as a function of device hazard.
+  F-E4. Sign and size of the pure-cytostasis effect on P(alive60) at fixed T.
+  F-E5. Whether cytostasis and eradication interact, or are separable.
+
+## Positive control
+
+  PC4. With eradication rate = 0 and stasis = 1, Phase 2 must reproduce the Phase 1 base
+       case exactly (same T*, same RMST curve to Monte Carlo error). If it does not, the
+       therapy machinery has changed the model rather than extended it, and Phase 2 is
+       void.
+
+## Decision rules
+
+  F-R1. If the eradication rate required to move T* off zero exceeds what any systemic
+        therapy plausibly achieves in metastatic angiosarcoma, report that the bar is
+        UNREACHABLE and say so plainly. Do not soften it.
+  F-R2. Report F1 direction as found, including if it is the opposite of predicted.
+  F-R3. Therapy is modelled as active only during the bridge and stopping at transplant.
+        This is a stated simplification, not a claim about practice.
