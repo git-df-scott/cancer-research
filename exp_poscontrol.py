@@ -241,6 +241,13 @@ def analyse(res, arch, combos, out_name):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1 and sys.argv[1].upper() == 'A':
+        # Analysis only, from stored raw results. The simulation process imports this module at
+        # launch, so a later fix to analyse() is not picked up by a run already in flight; this
+        # recomputes the verdict from results/expE_poscontrol.json with the current code.
+        res = json.load(open(f'{OUT}/expE_poscontrol.json'))
+        analyse(res, ARCH, load_combos(), 'expE_poscontrol_verdict.json')
+        sys.exit(0)
     combos = load_combos()
     jobs = [(ARCH, name, label, p, infl, s)
             for label, p, infl in combos
