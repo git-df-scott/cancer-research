@@ -40,6 +40,11 @@ OUT = S.OUT
 DAYS = 42
 SEEDS = list(range(8))
 ARCH = 'dispersed'
+# Phase 3: initial T-cell number selected by the schedule-blind sweep in exp_ntsweep.py, per
+# PHASE3_PREREG.md section 3. N_T = 1400 is E:T 1:4, matching Philipp's assay, and was the only
+# value admissible in any combination. Phase 2 used exp_schedule.N_T = 200 (E:T 1:28).
+# Set N_T_OVERRIDE = None to reproduce the Phase 2 positive control exactly.
+N_T_OVERRIDE = 1400
 MIN_EFFECT = 0.10      # median paired reduction must be at least this fraction of continuous
 
 
@@ -54,7 +59,7 @@ def build(arch, seed, params, influx):
         m.seed_follicles([(c - d, c - d), (c - d, c + d), (c + d, c - d), (c + d, c + d)], r)
     else:
         m.seed_dispersed(S.N_B, occupancy=0.95)
-    m.seed_tcells(S.N_T)
+    m.seed_tcells(S.N_T if N_T_OVERRIDE is None else N_T_OVERRIDE)
     return m
 
 
@@ -244,9 +249,9 @@ if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1].upper() == 'A':
         # Analysis only, from stored raw results. The simulation process imports this module at
         # launch, so a later fix to analyse() is not picked up by a run already in flight; this
-        # recomputes the verdict from results/expE_poscontrol.json with the current code.
-        res = json.load(open(f'{OUT}/expE_poscontrol.json'))
-        analyse(res, ARCH, load_combos(), 'expE_poscontrol_verdict.json')
+        # recomputes the verdict from results/expE3_poscontrol.json with the current code.
+        res = json.load(open(f'{OUT}/expE3_poscontrol.json'))
+        analyse(res, ARCH, load_combos(), 'expE3_poscontrol_verdict.json')
         sys.exit(0)
     combos = load_combos()
     jobs = [(ARCH, name, label, p, infl, s)
@@ -265,6 +270,6 @@ if __name__ == '__main__':
                 el = time.time() - t0
                 print(f'  {i}/{len(jobs)}  {el/60:.1f} min, eta {(el/i*(len(jobs)-i))/60:.0f} min',
                       flush=True)
-                json.dump(res, open(f'{OUT}/expE_poscontrol_partial.json', 'w'))
-    json.dump(res, open(f'{OUT}/expE_poscontrol.json', 'w'))
-    analyse(res, ARCH, combos, 'expE_poscontrol_verdict.json')
+                json.dump(res, open(f'{OUT}/expE3_poscontrol_partial.json', 'w'))
+    json.dump(res, open(f'{OUT}/expE3_poscontrol.json', 'w'))
+    analyse(res, ARCH, combos, 'expE3_poscontrol_verdict.json')
