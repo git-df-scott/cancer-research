@@ -118,7 +118,20 @@ class Lymphoid:
                  c50_exh=11520.0,         # cumulative engaged-exposure minutes at half-max rate
                  n_exh=4.0,               # Hill exponent of the lag
                  frac_durable=0.35,       # rho: share of accrual that does NOT recover on a TFI
-                 recover_tau_r=2880.0):   # reversible-component recovery time constant, minutes
+                 recover_tau_r=2880.0,    # reversible-component recovery time constant, minutes
+                 # ---- systemic compartment (see PHASE4_PREREG.md, calib_systemic.py) ----
+                 systemic=False,          # if True, recruited T cells arrive carrying the
+                                          # exhaustion of the circulating pool instead of naive.
+                 k_sys=0.0,               # systemic accrual per min on remaining function
+                 tau_sys=20160.0,         # systemic reversible recovery constant, minutes
+                 rho_sys=0.15,            # durable share of SYSTEMIC exhaustion. Deliberately a
+                                          # separate parameter from frac_durable: the circulating
+                                          # pool recovers by TURNOVER as well as by cells
+                                          # de-exhausting in place, so it recovers faster than any
+                                          # of its members. Reusing the per-cell value (0.93) is
+                                          # arithmetically impossible against Philipp Figure 1B -
+                                          # it floors function at 0.123 against a measured 0.663.
+                 ):
         self.L = L
         self.rng = np.random.default_rng(seed)
         self.p_div, self.p_death = p_div, p_death
@@ -137,6 +150,18 @@ class Lymphoid:
         self.exhaust_model = exhaust_model
         self.k_exh, self.c50_exh, self.n_exh = float(k_exh), float(c50_exh), float(n_exh)
         self.frac_durable, self.recover_tau_r = float(frac_durable), float(recover_tau_r)
+        # The systemic compartment. Blinatumomab is given by 28-day continuous IV infusion, so the
+        # ENTIRE circulating T-cell pool is drug-exposed, not only the cells inside the lesion.
+        # Philipp Figure 1B assayed exactly that pool - PERIPHERAL T cells - and found specific
+        # lysis falling 73.1% -> 17.4% by day 14. The cells available for recruitment are therefore
+        # measured to be exhausted, so a model in which recruits arrive naive is contradicted by
+        # direct observation of the recruits. This is what the earlier model could not represent,
+        # and why sustaining an effector pool always reset its function.
+        self.systemic = bool(systemic)
+        self.k_sys, self.tau_sys, self.rho_sys = float(k_sys), float(tau_sys), float(rho_sys)
+        self.Er_sys = 0.0     # reversible systemic exhaustion
+        self.Ed_sys = 0.0     # durable systemic exhaustion
+        self.C_sys = 0.0      # cumulative systemic engager exposure, minutes
 
         self.B = np.zeros((L, L), bool)     # tumour B cells
         self.T = np.zeros((L, L), bool)     # T cells
@@ -239,6 +264,19 @@ class Lymphoid:
                 self.E += self.exhaust_tonic * self.dt * engaged
             np.clip(self.E, 0.0, 1.0, out=self.E)
 
+        # ---- 1b. The systemic compartment advances on drug exposure alone. A circulating T cell
+        #          is engager-exposed whether or not it is touching a blast, which is why the
+        #          peripheral pool in Philipp Figure 1B loses function at all.
+        if self.systemic:
+            if self.drug > 0:
+                E_s = min(self.Er_sys + self.Ed_sys, 1.0)
+                rate = self.k_sys * (1.0 - E_s) * self.dt * self.drug
+                self.Er_sys = min(self.Er_sys + (1.0 - self.rho_sys) * rate, 1.0)
+                self.Ed_sys = min(self.Ed_sys + self.rho_sys * rate, 1.0)
+                self.C_sys += self.dt
+            elif self.tau_sys > 0:
+                self.Er_sys *= np.exp(-self.dt / self.tau_sys)
+
         # ---- 2. Exhaustion recovery when the engager is absent (Philipp 2022 TFI effect)
         if self.drug == 0:
             if self.exhaust_model == 'twostate':
@@ -288,7 +326,14 @@ class Lymphoid:
             free = border & ~self.B & ~self.T
             newT = free & (rng.random((L, L)) < self.t_influx * self.dt)
             self.T[newT] = True
-            self.E[newT] = self.Er[newT] = self.Ed[newT] = self.C[newT] = 0.0
+            if self.systemic:
+                # recruits carry the circulating pool's exhaustion, and its accrued exposure
+                self.Er[newT] = self.Er_sys
+                self.Ed[newT] = self.Ed_sys
+                self.E[newT] = min(self.Er_sys + self.Ed_sys, 1.0)
+                self.C[newT] = self.C_sys
+            else:
+                self.E[newT] = self.Er[newT] = self.Ed[newT] = self.C[newT] = 0.0
 
         self.t += self.dt
         self._record(killed_now)
@@ -379,6 +424,7 @@ class Lymphoid:
         nT = int(self.T.sum())
         nEng = int(self._n_engaged) if hasattr(self, '_n_engaged') else 0
         rec = dict(t=self.t, nB=int(self.B.sum()), nT=nT, drug=self.drug, killed=killed,
+                   E_sys=(min(self.Er_sys + self.Ed_sys, 1.0) if self.systemic else 0.0),
                    meanE=float(self.E[self.T].mean()) if nT else 0.0,
                    engaged=nEng, engFrac=(nEng / nT) if nT else 0.0)
         self.history.append(rec)
