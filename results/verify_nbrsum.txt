@@ -1,0 +1,6 @@
+  legacy    follicle    IDENTICAL
+  legacy    dispersed   IDENTICAL
+  twostate  follicle    IDENTICAL
+  twostate  dispersed   IDENTICAL
+
+ALL IDENTICAL

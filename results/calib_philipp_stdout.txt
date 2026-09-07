@@ -1,0 +1,153 @@
+Phase B calibration. Fitting the exhaustion clock to five measured points,
+Philipp et al. Blood 2022. No schedule ranking is used as a target.
+
+grid: 244800 parameter sets x 200 assay-saturation values
+
+--- M0  no lag (C50 = 0)   SSE = 414.01   RMSE = 7.69 percentage points ---
+    k = 0.1590/day   rho = 0.930   tau_r = 0.10 d   C50 = 0.0 d   a = 5.76
+    lysis %    cont      d7   measured  88.4   model  84.8
+    lysis %    cont      d14  measured  34.9   model  46.1
+    lysis %    cont      d28  measured   8.6   model   6.4
+    lysis %    tfi       d14  measured  93.4   model  88.4
+    lysis %    tfi       d28  measured  58.7   model  55.4
+    GzB ratio  cont/tfi  d14  measured  32.0   model  28.6
+    GzB ratio  cont/tfi  d28  measured  23.2   model   8.2
+    -- held out of the fit --
+    prolif     cont/tfi  d14  measured  26.8   model  28.6
+    prolif     cont/tfi  d28  measured   2.1   model   8.2
+    remaining function f = 1 - E:  contd7=0.327  contd14=0.107  contd28=0.011  tfid7=0.327  tfid14=0.374  tfid28=0.140
+
+--- M1  best overall   SSE = 414.01   RMSE = 7.69 percentage points ---
+    k = 0.1590/day   rho = 0.930   tau_r = 0.10 d   C50 = 0.0 d   a = 5.76
+    lysis %    cont      d7   measured  88.4   model  84.8
+    lysis %    cont      d14  measured  34.9   model  46.1
+    lysis %    cont      d28  measured   8.6   model   6.4
+    lysis %    tfi       d14  measured  93.4   model  88.4
+    lysis %    tfi       d28  measured  58.7   model  55.4
+    GzB ratio  cont/tfi  d14  measured  32.0   model  28.6
+    GzB ratio  cont/tfi  d28  measured  23.2   model   8.2
+    -- held out of the fit --
+    prolif     cont/tfi  d14  measured  26.8   model  28.6
+    prolif     cont/tfi  d28  measured   2.1   model   8.2
+    remaining function f = 1 - E:  contd7=0.327  contd14=0.107  contd28=0.011  tfid7=0.327  tfid14=0.374  tfid28=0.140
+
+PRE-REGISTERED RULE: adopt the lag only if it more than halves SSE.
+  414.01 -> 414.01.  Adopted: M0, no lag (parsimony)
+
+Day-28 CONT/TFI functional ratio, as measured three independent ways:
+    proliferation (CD2+ fold change)    2.1
+    specific lysis                     14.7
+    granzyme B MFI                     23.2
+    -> the readouts span a 10-fold range; no model can satisfy all three.
+
+PRE-REGISTERED absolute rule (RMSE <= 5 pp, SSE <= 175): 0 of 244800 sets qualify.
+DEVIATION, recorded: the absolute rule is unreachable given the readout disagreement above (best SSE 414.0).
+The equivalence class is therefore defined relative to the best fit, SSE <= 2 x min = 828.0: 20720 of 244800 sets.
+
+IDENTIFIABILITY. Profile over rho, everything else free:
+    rho=0.00  best SSE=  431.0  k=0.159/d  tau_r= 120.00d  a= 3.99  7-day TFI recovers 0.057
+    rho=0.09  best SSE=  429.9  k=0.159/d  tau_r= 120.00d  a= 4.05  7-day TFI recovers 0.052
+    rho=0.18  best SSE=  428.6  k=0.159/d  tau_r= 120.00d  a= 4.80  7-day TFI recovers 0.046
+    rho=0.27  best SSE=  427.6  k=0.159/d  tau_r= 120.00d  a= 4.80  7-day TFI recovers 0.041
+    rho=0.36  best SSE=  426.9  k=0.159/d  tau_r= 120.00d  a= 5.68  7-day TFI recovers 0.036
+    rho=0.45  best SSE=  426.5  k=0.159/d  tau_r= 120.00d  a= 5.76  7-day TFI recovers 0.031
+    rho=0.54  best SSE=  426.1  k=0.159/d  tau_r=  88.17d  a= 5.76  7-day TFI recovers 0.035
+    rho=0.63  best SSE=  426.4  k=0.159/d  tau_r=  64.78d  a= 5.68  7-day TFI recovers 0.038
+    rho=0.72  best SSE=  425.9  k=0.159/d  tau_r=  47.59d  a= 5.68  7-day TFI recovers 0.038
+    rho=0.81  best SSE=  424.9  k=0.159/d  tau_r=  34.97d  a= 5.76  7-day TFI recovers 0.034
+    rho=0.90  best SSE=  416.7  k=0.159/d  tau_r=   0.10d  a= 4.66  7-day TFI recovers 0.100
+    rho=0.93  best SSE=  414.0  k=0.159/d  tau_r=   0.10d  a= 5.76  7-day TFI recovers 0.070 <-- best
+    rho=0.99  best SSE=  470.2  k=0.159/d  tau_r=   1.18d  a= 6.27  7-day TFI recovers 0.010
+
+    k (/day)       range    0.095 ..    0.634   median    0.189
+    rho            range    0.000 ..    0.990   median    0.690
+    tau_r (days)   range    0.100 ..  120.000   median   10.190
+    C50 (days)     range    0.000 ..   12.000   median    4.000
+    a              range    1.783 ..   13.848   median    2.763
+    fraction of accrued exhaustion recovered by a 7-day TFI: 0.001 .. 0.578, median 0.116
+
+PROFILE over the identified combination: fraction of accrued exhaustion
+reversed by a 7-day treatment-free interval, everything else free:
+    recovered 0.00-0.05  best SSE=  420.7  k=0.159/d  rho=0.93  tau_r=   7.49d  a= 5.85
+    recovered 0.05-0.10  best SSE=  414.0  k=0.159/d  rho=0.93  tau_r=   0.10d  a= 5.76
+    recovered 0.10-0.15  best SSE=  416.7  k=0.159/d  rho=0.90  tau_r=   0.10d  a= 4.66
+    recovered 0.15-0.20  best SSE=  435.6  k=0.159/d  rho=0.84  tau_r=   2.18d  a= 3.27
+    recovered 0.20-0.25  best SSE=  471.0  k=0.159/d  rho=0.78  tau_r=   2.18d  a= 2.72
+    recovered 0.25-0.30  best SSE=  492.9  k=0.159/d  rho=0.75  tau_r=   0.10d  a= 2.65
+    recovered 0.30-0.35  best SSE=  543.6  k=0.159/d  rho=0.69  tau_r=   1.60d  a= 2.57
+    recovered 0.35-0.40  best SSE=  595.0  k=0.159/d  rho=0.63  tau_r=   2.18d  a= 2.24
+    recovered 0.40-0.45  best SSE=  631.0  k=0.159/d  rho=0.60  tau_r=   0.10d  a= 2.17
+    recovered 0.45-0.50  best SSE=  690.0  k=0.159/d  rho=0.54  tau_r=   1.60d  a= 2.14
+    recovered 0.50-0.55  best SSE=  758.0  k=0.159/d  rho=0.48  tau_r=   1.60d  a= 2.08
+    recovered 0.55-0.60  best SSE=  798.8  k=0.159/d  rho=0.45  tau_r=   0.10d  a= 1.89
+    recovered 0.60-0.65  best SSE=  853.6  k=0.159/d  rho=0.39  tau_r=   1.60d  a= 1.86
+    recovered 0.65-0.70  best SSE=  915.8  k=0.159/d  rho=0.33  tau_r=   1.60d  a= 1.81
+    recovered 0.70-0.75  best SSE=  964.5  k=0.159/d  rho=0.27  tau_r=   2.18d  a= 1.81
+    recovered 0.75-0.80  best SSE= 1013.3  k=0.159/d  rho=0.24  tau_r=   1.60d  a= 1.78
+    recovered 0.80-0.85  best SSE= 1080.2  k=0.159/d  rho=0.18  tau_r=   1.60d  a= 1.76
+    recovered 0.85-0.90  best SSE= 1147.7  k=0.134/d  rho=0.12  tau_r=   1.60d  a= 1.73
+    recovered 0.90-0.95  best SSE= 1183.4  k=0.134/d  rho=0.09  tau_r=   1.18d  a= 1.61
+    recovered 0.95-1.00  best SSE= 1231.7  k=0.134/d  rho=0.03  tau_r=   1.60d  a= 1.59
+
+    admissible (SSE <= 2 x min): recovered fraction 0.043 .. 0.550
+
+REPRESENTATIVE PARAMETER SETS carried into every architecture run as a
+pre-registered sensitivity axis. None is preferred over the others.
+
+  [rec_low] 7-day TFI reverses 4.3% of accrued exhaustion   SSE=420.7
+    k=0.1590/d  rho=0.93  tau_r=7.49d  C50=0d  a=5.85
+    lysis %    cont      d7   measured  88.4   model  85.2
+    lysis %    cont      d14  measured  34.9   model  46.5
+    lysis %    cont      d28  measured   8.6   model   6.5
+    lysis %    tfi       d14  measured  93.4   model  87.5
+    lysis %    tfi       d28  measured  58.7   model  55.3
+    GzB ratio  cont/tfi  d14  measured  32.0   model  30.1
+    GzB ratio  cont/tfi  d28  measured  23.2   model   8.3
+    -- held out of the fit --
+    prolif     cont/tfi  d14  measured  26.8   model  30.1
+    prolif     cont/tfi  d28  measured   2.1   model   8.3
+    remaining function f = 1 - E:  contd7=0.327  contd14=0.107  contd28=0.011  tfid7=0.327  tfid14=0.356  tfid28=0.138
+
+  [rec_mid] 7-day TFI reverses 30.6% of accrued exhaustion   SSE=543.6
+    k=0.1590/d  rho=0.69  tau_r=1.60d  C50=4d  a=2.57
+    lysis %    cont      d7   measured  88.4   model  80.9
+    lysis %    cont      d14  measured  34.9   model  42.9
+    lysis %    cont      d28  measured   8.6   model   5.8
+    lysis %    tfi       d14  measured  93.4   model  85.6
+    lysis %    tfi       d28  measured  58.7   model  65.0
+    GzB ratio  cont/tfi  d14  measured  32.0   model  28.9
+    GzB ratio  cont/tfi  d28  measured  23.2   model   5.7
+    -- held out of the fit --
+    prolif     cont/tfi  d14  measured  26.8   model  28.9
+    prolif     cont/tfi  d28  measured   2.1   model   5.7
+    remaining function f = 1 - E:  contd7=0.642  contd14=0.217  contd28=0.023  tfid7=0.642  tfid14=0.752  tfid28=0.408
+
+  [rec_high] 7-day TFI reverses 55.0% of accrued exhaustion   SSE=798.8
+    k=0.1590/d  rho=0.45  tau_r=0.10d  C50=6d  a=1.89
+    lysis %    cont      d7   measured  88.4   model  78.1
+    lysis %    cont      d14  measured  34.9   model  43.6
+    lysis %    cont      d28  measured   8.6   model   6.1
+    lysis %    tfi       d14  measured  93.4   model  82.1
+    lysis %    tfi       d28  measured  58.7   model  71.0
+    GzB ratio  cont/tfi  d14  measured  32.0   model  33.3
+    GzB ratio  cont/tfi  d28  measured  23.2   model   5.1
+    -- held out of the fit --
+    prolif     cont/tfi  d14  measured  26.8   model  33.3
+    prolif     cont/tfi  d28  measured   2.1   model   5.1
+    remaining function f = 1 - E:  contd7=0.805  contd14=0.304  contd28=0.033  tfid7=0.805  tfid14=0.912  tfid28=0.657
+
+  [best_fit] 7-day TFI reverses 7.0% of accrued exhaustion   SSE=414.0
+    k=0.1590/d  rho=0.93  tau_r=0.10d  C50=0d  a=5.76
+    lysis %    cont      d7   measured  88.4   model  84.8
+    lysis %    cont      d14  measured  34.9   model  46.1
+    lysis %    cont      d28  measured   8.6   model   6.4
+    lysis %    tfi       d14  measured  93.4   model  88.4
+    lysis %    tfi       d28  measured  58.7   model  55.4
+    GzB ratio  cont/tfi  d14  measured  32.0   model  28.6
+    GzB ratio  cont/tfi  d28  measured  23.2   model   8.2
+    -- held out of the fit --
+    prolif     cont/tfi  d14  measured  26.8   model  28.6
+    prolif     cont/tfi  d28  measured   2.1   model   8.2
+    remaining function f = 1 - E:  contd7=0.327  contd14=0.107  contd28=0.011  tfid7=0.327  tfid14=0.374  tfid28=0.140
+
+written /home/user/cancer-research/results/calib_philipp.json

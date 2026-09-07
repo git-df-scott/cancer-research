@@ -58,7 +58,24 @@ _K3 = np.ones((3, 3), np.float32); _K3[1, 1] = 0.0
 
 
 def nbr_sum(a):
-    """Moore-neighbourhood sum, one optimized pass instead of eight np.roll allocations."""
+    """Moore-neighbourhood sum with zero padding.
+
+    Eight padded slices rather than scipy.ndimage.convolve: same values, roughly three times
+    faster, and this is the single hottest call in the model (six per step). Inputs are boolean
+    masks or small non-negative hazards cast to float32, so the different summation order is
+    exact for the mask cases and immaterial for the hazard case. Verified bit-identical against
+    the convolve implementation on the legacy experiment L1 code path."""
+    x = np.asarray(a, np.float32)
+    n, m = x.shape
+    p = np.zeros((n + 2, m + 2), np.float32)
+    p[1:-1, 1:-1] = x
+    return (p[:-2, :-2] + p[:-2, 1:-1] + p[:-2, 2:]
+            + p[1:-1, :-2] + p[1:-1, 2:]
+            + p[2:, :-2] + p[2:, 1:-1] + p[2:, 2:])
+
+
+def _nbr_sum_reference(a):
+    """The original scipy implementation, kept so the fast path can be checked against it."""
     return ndimage.convolve(np.asarray(a, np.float32), _K3, mode='constant', cval=0.0)
 
 
@@ -92,7 +109,29 @@ class Lymphoid:
                  exhaust_tonic=2.48e-5,   # per min in contact under engager; 28 d contact -> E=1
                  multi_hit=False,         # require cooperative hits (Halle 2016)
                  hits_needed=3, hit_decay=3000.0, dt=1.0,
-                 swap_prob=0.0):
+                 swap_prob=0.0,
+                 # ---- two-component exhaustion (see calib_philipp.py, PHASE2_PREREG.md) ----
+                 exhaust_model='legacy',  # 'legacy' = single-state linear accrual (experiment L1);
+                                          # 'twostate' = reversible + durable, lagged accrual,
+                                          # calibrated to Philipp 2022 (5 measured points).
+                 k_exh=8.0e-5,            # max accrual per min, acting on REMAINING function
+                 c50_exh=11520.0,         # cumulative engaged-exposure minutes at half-max rate
+                 n_exh=4.0,               # Hill exponent of the lag
+                 frac_durable=0.35,       # rho: share of accrual that does NOT recover on a TFI
+                 recover_tau_r=2880.0,    # reversible-component recovery time constant, minutes
+                 # ---- systemic compartment (see PHASE4_PREREG.md, calib_systemic.py) ----
+                 systemic=False,          # if True, recruited T cells arrive carrying the
+                                          # exhaustion of the circulating pool instead of naive.
+                 k_sys=0.0,               # systemic accrual per min on remaining function
+                 tau_sys=20160.0,         # systemic reversible recovery constant, minutes
+                 rho_sys=0.15,            # durable share of SYSTEMIC exhaustion. Deliberately a
+                                          # separate parameter from frac_durable: the circulating
+                                          # pool recovers by TURNOVER as well as by cells
+                                          # de-exhausting in place, so it recovers faster than any
+                                          # of its members. Reusing the per-cell value (0.93) is
+                                          # arithmetically impossible against Philipp Figure 1B -
+                                          # it floors function at 0.123 against a measured 0.663.
+                 ):
         self.L = L
         self.rng = np.random.default_rng(seed)
         self.p_div, self.p_death = p_div, p_death
@@ -108,10 +147,28 @@ class Lymphoid:
         # impede motility. Real lymphocytes migrate through densely packed lymphoid tissue, so 0 is
         # almost certainly too restrictive. See TRAFFICKING_PREREG.md.
         self.swap_prob = float(swap_prob)
+        self.exhaust_model = exhaust_model
+        self.k_exh, self.c50_exh, self.n_exh = float(k_exh), float(c50_exh), float(n_exh)
+        self.frac_durable, self.recover_tau_r = float(frac_durable), float(recover_tau_r)
+        # The systemic compartment. Blinatumomab is given by 28-day continuous IV infusion, so the
+        # ENTIRE circulating T-cell pool is drug-exposed, not only the cells inside the lesion.
+        # Philipp Figure 1B assayed exactly that pool - PERIPHERAL T cells - and found specific
+        # lysis falling 73.1% -> 17.4% by day 14. The cells available for recruitment are therefore
+        # measured to be exhausted, so a model in which recruits arrive naive is contradicted by
+        # direct observation of the recruits. This is what the earlier model could not represent,
+        # and why sustaining an effector pool always reset its function.
+        self.systemic = bool(systemic)
+        self.k_sys, self.tau_sys, self.rho_sys = float(k_sys), float(tau_sys), float(rho_sys)
+        self.Er_sys = 0.0     # reversible systemic exhaustion
+        self.Ed_sys = 0.0     # durable systemic exhaustion
+        self.C_sys = 0.0      # cumulative systemic engager exposure, minutes
 
         self.B = np.zeros((L, L), bool)     # tumour B cells
         self.T = np.zeros((L, L), bool)     # T cells
-        self.E = np.zeros((L, L))           # per-T-cell exhaustion in [0,1]
+        self.E = np.zeros((L, L))           # per-T-cell exhaustion in [0,1] (total, = Er + Ed)
+        self.Er = np.zeros((L, L))          # reversible component, recovers during a TFI
+        self.Ed = np.zeros((L, L))          # durable component, does not recover
+        self.C = np.zeros((L, L))           # per-T-cell cumulative engaged-exposure, minutes
         self.hits = np.zeros((L, L))        # sublethal damage on B cells (multi-hit mode)
         self.drug = 0.0
         self.t = 0
@@ -185,13 +242,53 @@ class Lymphoid:
             # engager is present accrues exhaustion per unit time, whether or not it kills.
             # Calibrated so ~28 d of continuous contact drives E->1 (Philipp 2022: specific
             # lysis 88.4% at day 7 -> 8.6% at day 28 under continuous exposure).
-            if self.exhaust_tonic:
-                self.E += self.exhaust_tonic * self.dt * (self.T & (ncontact_B > 0))
+            engaged = self.T & (ncontact_B > 0)
+            if self.exhaust_model == 'twostate':
+                # Accrual acts on REMAINING function and is gated by a Hill function of the cell's
+                # own cumulative engaged-exposure C. The lag is required by the measured curve:
+                # specific lysis is still 88.4% at day 7 (function intact) while >60% of T cells
+                # already coexpress PD-1/Tim-3/LAG-3, then collapses to 34.9% by day 14.
+                if self.c50_exh > 0:
+                    cn = self.C ** self.n_exh
+                    h = cn / (cn + self.c50_exh ** self.n_exh)
+                else:
+                    h = 1.0          # no lag; guard against 0/0 when C == 0 and C50 == 0
+                rate = self.k_exh * h * (1.0 - self.E) * self.dt * self.drug
+                self.Er += (1.0 - self.frac_durable) * rate * engaged
+                self.Ed += self.frac_durable * rate * engaged
+                self.C += self.dt * engaged
+                np.clip(self.Ed, 0.0, 1.0, out=self.Ed)
+                np.clip(self.Er, 0.0, 1.0, out=self.Er)
+                self.E = np.clip(self.Er + self.Ed, 0.0, 1.0)
+            elif self.exhaust_tonic:
+                self.E += self.exhaust_tonic * self.dt * engaged
             np.clip(self.E, 0.0, 1.0, out=self.E)
 
+        # ---- 1b. The systemic compartment advances on drug exposure alone. A circulating T cell
+        #          is engager-exposed whether or not it is touching a blast, which is why the
+        #          peripheral pool in Philipp Figure 1B loses function at all.
+        if self.systemic:
+            if self.drug > 0:
+                E_s = min(self.Er_sys + self.Ed_sys, 1.0)
+                rate = self.k_sys * (1.0 - E_s) * self.dt * self.drug
+                self.Er_sys = min(self.Er_sys + (1.0 - self.rho_sys) * rate, 1.0)
+                self.Ed_sys = min(self.Ed_sys + self.rho_sys * rate, 1.0)
+                self.C_sys += self.dt
+            elif self.tau_sys > 0:
+                self.Er_sys *= np.exp(-self.dt / self.tau_sys)
+
         # ---- 2. Exhaustion recovery when the engager is absent (Philipp 2022 TFI effect)
-        if self.drug == 0 and self.recover_tau > 0:
-            self.E *= np.exp(-self.dt / self.recover_tau)
+        if self.drug == 0:
+            if self.exhaust_model == 'twostate':
+                # only the reversible component recovers. The durable component is required by
+                # Philipp's day-28 TFI point: after a full 7-day rest the TFI arm returns to 58.7%
+                # specific lysis, not to the ~93% it reached after the first rest. Recovery is
+                # partial, and the shortfall grows with cumulative exposure.
+                if self.recover_tau_r > 0:
+                    self.Er *= np.exp(-self.dt / self.recover_tau_r)
+                self.E = np.clip(self.Er + self.Ed, 0.0, 1.0)
+            elif self.recover_tau > 0:
+                self.E *= np.exp(-self.dt / self.recover_tau)
 
         # ---- 3. B-cell death and division
         occupied = self.B | self.T
@@ -206,7 +303,8 @@ class Lymphoid:
         if self.T.any():
             adjB = nbr_sum(self.B) > 0
             tdie = self.T & (rng.random((L, L)) < self.t_death * self.dt)
-            self.T[tdie] = False; self.E[tdie] = 0.0
+            self.T[tdie] = False
+            self.E[tdie] = self.Er[tdie] = self.Ed[tdie] = self.C[tdie] = 0.0
             occupied = self.B | self.T
             empty = ~occupied
             twants = self.T & adjB & (self.drug > 0) & (rng.random((L, L)) < self.t_div * self.dt * (1.0 - self.E))
@@ -227,7 +325,15 @@ class Lymphoid:
             border[0, :] = border[-1, :] = border[:, 0] = border[:, -1] = True
             free = border & ~self.B & ~self.T
             newT = free & (rng.random((L, L)) < self.t_influx * self.dt)
-            self.T[newT] = True; self.E[newT] = 0.0
+            self.T[newT] = True
+            if self.systemic:
+                # recruits carry the circulating pool's exhaustion, and its accrued exposure
+                self.Er[newT] = self.Er_sys
+                self.Ed[newT] = self.Ed_sys
+                self.E[newT] = min(self.Er_sys + self.Ed_sys, 1.0)
+                self.C[newT] = self.C_sys
+            else:
+                self.E[newT] = self.Er[newT] = self.Ed[newT] = self.C[newT] = 0.0
 
         self.t += self.dt
         self._record(killed_now)
@@ -260,7 +366,8 @@ class Lymphoid:
             self.B[ty, tx] = True
         else:
             self.T[ty, tx] = True
-            self.E[ty, tx] = self.E[ys, xs]
+            for a in (self.E, self.Er, self.Ed, self.C):
+                a[ty, tx] = a[ys, xs]
 
     def _move(self, movers, empty):
         """T-cell random walk. A T cell can only step into an EMPTY site, so a packed follicle
@@ -301,18 +408,23 @@ class Lymphoid:
             ys, xs, ty, tx, swap = ys[keep], xs[keep], ty[keep], tx[keep], swap[keep]
         if not len(ys):
             return
-        e = self.E[ys, xs]
+        carried = [(a, a[ys, xs].copy()) for a in (self.E, self.Er, self.Ed, self.C)]
         sy, sx = ys[swap], xs[swap]             # B cells displaced backwards
         by, bx = ty[swap], tx[swap]
-        self.T[ys, xs] = False; self.E[ys, xs] = 0.0
+        self.T[ys, xs] = False
+        for a, _ in carried:
+            a[ys, xs] = 0.0
         self.B[by, bx] = False
-        self.T[ty, tx] = True;  self.E[ty, tx] = e
+        self.T[ty, tx] = True
+        for a, v in carried:
+            a[ty, tx] = v
         self.B[sy, sx] = True
 
     def _record(self, killed):
         nT = int(self.T.sum())
         nEng = int(self._n_engaged) if hasattr(self, '_n_engaged') else 0
         rec = dict(t=self.t, nB=int(self.B.sum()), nT=nT, drug=self.drug, killed=killed,
+                   E_sys=(min(self.Er_sys + self.Ed_sys, 1.0) if self.systemic else 0.0),
                    meanE=float(self.E[self.T].mean()) if nT else 0.0,
                    engaged=nEng, engFrac=(nEng / nT) if nT else 0.0)
         self.history.append(rec)

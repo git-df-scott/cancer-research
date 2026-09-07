@@ -2,9 +2,36 @@
 
 A spatial agent-based model asking one narrow question, under active adversarial testing.
 
-**Status as of 2026-09-07: UNRESOLVED, and currently leaning towards a negative result.**
-Nothing here is a validated biological claim. Read `FINDINGS.md` for the live status and
-`PRIOR_ART.md` before believing any novelty claim.
+**Status as of 2026-09-07: CLASSIFICATION A — MODEL NOT VALIDATED FOR THE SCHEDULING QUESTION.**
+Two positive controls have failed under two pre-registrations. This line of attack is closed and
+written up as a negative. The architecture hypothesis is **untested** — not falsified, not
+supported. Nothing here is a validated biological claim. Read `FINDINGS.md` first.
+
+**What the project does establish:** in this model, tumour control and binding T-cell exhaustion
+never co-occur. Across a 14-fold range of effector-to-target ratio, in 24 of 24 cells, there is no
+regime where the drug controls the disease *and* exhaustion is the limiting constraint. **The
+window in which an exhaustion-driven scheduling effect could exist is empty.**
+
+| E:T | burden at d42 / n0 | terminal T-cell function | controlled? | exhausted? |
+|---|---|---|---|---|
+| 1:28 | 2.04 | 0.004 | no | **yes** |
+| 1:7 | 1.37 | 0.258 | no | **yes** |
+| 1:4 | 0.01 | 0.947 | **yes** | no |
+| 1:2 | 0.00 | 0.943 | **yes** | no |
+
+That single fact explains three failed experiments:
+
+| | failure mode | why the endpoint could not separate the arms |
+|---|---|---|
+| L1 | **floor** | every arm cleared the tumour (medians 4 and 7 cells of 5,525) |
+| Phase 2 | **ceiling** | every arm saturated the lattice at 68–79% occupancy |
+| Phase 3 | **no effect to find** | full dynamic range, but exhaustion never binds where the drug works |
+
+The missing ingredient is identified precisely: recruited T cells arrive with **zero** exhaustion,
+so any influx high enough to sustain an engaged pool also prevents population-level functional
+collapse. Real patients occupy exactly the regime this cannot represent. Addressing it needs a
+different model, its own external calibration and its own pre-registration — and is not attempted
+here.
 
 ## The question
 
@@ -50,7 +77,16 @@ strongly enough to be a falsifiable prediction.
 |---|---|
 | `lymphoid.py` | the model: 2D lattice, malignant B cells, motile exhaustible T cells, engager schedule |
 | `exp_schedule.py` | experiment L1, pre-registered in its docstring (P1-P5) |
-| `exp_attacks.py` | experiment L2: exhaustion knockout, dose-matched controls, trafficking knockout, exhaustion distribution |
+| `exp_attacks.py` | experiment L2 against the legacy model: exhaustion knockout, dose-matched controls, trafficking knockout |
+| `calib_philipp.py` | Phase B: fits the exhaustion clock to seven measured points from Philipp 2022, by grid search. Reports identifiability, not one best value |
+| `calib_abm_check.py` | Phase B stage 2: rebuilds Philipp's assay on the lattice and checks the fit transfers to the real `Lymphoid.step` path |
+| `exp_influx_check.py` | Phase C: tests T-cell influx regimes against patient data not used in the fit, and excludes the incompatible ones |
+| `PHASE2_PREREG.md` | Phase D: the frozen Phase 2 pre-registration, committed before any Phase 2 result existed |
+| `schedules.py` | both schedule families, including the repeating family L1 never tested |
+| `exp_poscontrol.py` | Phase E: the positive control, dispersed architecture only |
+| `exp_arch2.py` | Phases F and G: architecture comparison and the trafficking attack |
+| `exp_attacks2.py` | Phase H: exhaustion knockout, dose matching, exhaustion distribution, geometry continuum |
+| `verify_nbrsum.py` | equivalence evidence for the optimised neighbour-sum against the original |
 | `TRAFFICKING_PREREG.md` | Phase 5 pre-registration, written before any alternative was run |
 | `analyze_L1_full.py` | reports every pre-registered endpoint regardless of outcome |
 | `UNDERSTANDING_NHL.md` | the biology, sourced, including what the first attempt got wrong |
@@ -66,8 +102,12 @@ strongly enough to be a falsifiable prediction.
 | T-cell speed, lymph node cortex | ~11 um/min | Miller/Cahalan, Science 2002 |
 | CTL killing capacity in vivo | 2-16 targets/CTL/day | Halle et al., Immunity 2016, PMID 26872694 |
 | Engage-kill-detach cycle | ~25 min | Cazaux et al., J Exp Med 2019 |
-| Exhaustion under continuous engager | specific lysis 88.4% (d7) -> 8.6% (d28) | Philipp et al., Blood 2022, PMID 35878001 |
-| Recovery on a treatment-free interval | d14 lysis 93.4% vs 34.9% continuous | same |
+| Exhaustion accrual on remaining function | k = 0.159 /day, identified | fitted to Philipp et al., Blood 2022, PMID 35878001 |
+| Exhaustion under continuous engager | specific lysis 88.4% (d7) -> 34.9% (d14) -> 8.6% (d28) | same |
+| Recovery on a treatment-free interval | d14 93.4% vs 34.9%; **d28 58.7% vs 8.6%** | same |
+| Scale of remaining function (non-saturating readout) | granzyme B MFI ratio, d14 144.5/451.8, d28 45.5/196.1 | same |
+| Fraction of exhaustion a 7-day break reverses | 4.3%-55%, not further identifiable | same, carried as a sensitivity axis |
+| Population-level functional collapse in patients | ex vivo lysis 73.1% -> 17.4% by d14 | same, Figure 1B; used only to exclude influx regimes |
 | Neoplastic follicle diameter | 757 um (577-930) | intestinal FL morphometry |
 | Malignant B-cell cycle | ~2 days | standard human tumour cell-cycle time |
 
@@ -79,9 +119,24 @@ discretisation is common-mode across arms).
 
 ```bash
 python -m venv .venv && .venv/bin/pip install numpy scipy matplotlib
-.venv/bin/python exp_schedule.py     # experiment L1
-.venv/bin/python analyze_L1_full.py  # all pre-registered endpoints
-.venv/bin/python exp_attacks.py      # the attack battery
+
+# Phase 1, preserved. Reproduces bit-identically.
+.venv/bin/python exp_schedule.py       # experiment L1
+.venv/bin/python analyze_L1_full.py    # all pre-registered endpoints
+
+# Phase 2, in order. Each step depends on the one before it.
+.venv/bin/python calib_philipp.py      # B   fit the exhaustion clock to external data
+.venv/bin/python calib_abm_check.py    # B   verify the fit in the real code path
+.venv/bin/python exp_influx_check.py   # C   exclude inadmissible influx regimes
+.venv/bin/python verify_nbrsum.py      #     optimisation equivalence evidence
+.venv/bin/python exp_poscontrol.py     # E   positive control. Everything after this is
+                                       #     gated on it passing.
+.venv/bin/python exp_arch2.py F        # F   architecture comparison
+.venv/bin/python exp_arch2.py G        # G   trafficking attack
+.venv/bin/python exp_attacks2.py K     # H   exhaustion knockout
+.venv/bin/python exp_attacks2.py D     # H   dose matching
+.venv/bin/python exp_attacks2.py P     # H   exhaustion distribution
+.venv/bin/python exp_attacks2.py C     # H   geometry continuum
 ```
 
 ## Known deviations, recorded rather than hidden

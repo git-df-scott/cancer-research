@@ -1,0 +1,116 @@
+
+Why the Phase 3 positive control failed, and what that failure actually establishes.
+
+Diagnosis only. Nothing is tuned and no parameter is changed. Per PHASE3_PREREG.md section 4,
+two failed positive controls under two pre-registrations ends this line of attack; the model is
+not modified a third time.
+
+THE HEADLINE
+------------
+Unlike Phase 2, this failure is informative, because this time the endpoint had full dynamic
+range: the continuous arm left 22-1296 malignant cells and the worst schedule left 7546, a
+spread of two orders of magnitude, with no arm anywhere near the lattice ceiling. The experiment
+could have detected a scheduling benefit of almost any size. There was none to detect. Every
+non-continuous schedule was worse than continuous, monotonically in duty cycle, in all four
+combinations.
+
+THE REASON, and it is structural rather than parametric
+-------------------------------------------------------
+For a treatment-free interval to help, exhaustion has to be the binding constraint. In this model
+it never is, in any regime where the drug also works:
+
+  - At a low effector:target ratio (Phase 2, 1:28 to 1:7) exhaustion binds hard - terminal T-cell
+    function 0.001 to 0.36 - but the tumour is never controlled. It grows past its starting burden
+    and saturates the domain. The endpoint cannot measure anything.
+
+  - At a high effector:target ratio (Phase 3, 1:4 and above) the tumour is controlled, but it is
+    killed so fast that the antigen disappears before exhaustion accrues. Terminal function is
+    0.53 to 1.00. There is nothing for a rest period to restore.
+
+Those two regimes do not overlap. The sweep covered a 14-fold range of effector:target ratio, and
+in 24 of 24 (N_T x parameter combination) cells, tumour control and binding exhaustion never
+co-occur. The window in which an exhaustion-driven scheduling effect could exist is EMPTY.
+
+That is why both positive controls failed, at opposite ends of the same axis, and it is one
+finding rather than two accidents.
+
+WHAT THE MODEL IS MISSING, stated precisely
+-------------------------------------------
+Real patients occupy the regime this model cannot reach. Philipp's Figure 1B measured exactly it:
+patients on continuous blinatumomab with persistent disease AND peripheral T-cell function down
+to 0.238 of baseline. Partial control with persistent antigen and a progressively exhausting
+effector pool is the clinically relevant state, and it is precisely the state that is unreachable
+here.
+
+It is unreachable for one identifiable reason. Sustaining an engaged effector pool against
+persistent antigen requires ongoing recruitment; but in this model recruited T cells arrive with
+zero exhaustion, so any influx rate high enough to sustain the pool also resets the population
+mean and prevents functional collapse. That is what Phase C measured and excluded, and it is what
+PHASE2_PREREG.md section 2 recorded as a structural limitation BEFORE any of these runs:
+
+    "within this model's structure, recruitment and population-level functional collapse cannot
+     both be represented at a realistic influx rate, because arrivals enter with zero exhaustion"
+
+Every thread in this project converges on that single sentence.
+
+WHAT WOULD BE REQUIRED, and it is not attempted here
+----------------------------------------------------
+A model able to test the architecture hypothesis needs recruited T cells that are not naive - an
+exhaustion state that is partly systemic rather than purely per-cell, so that a sustained pool can
+still lose function. That is a different model, requiring its own external calibration and its own
+pre-registration. PHASE3_PREREG.md section 4 forbids reaching for it now, and it is not run.
+
+====================================================================================
+1. THE ENDPOINT HAD DYNAMIC RANGE THIS TIME. The failure is real, not an artefact.
+====================================================================================
+  combination                 cont nB42  worst arm   ratio  peak %cap  ceiling?
+  rec_high x 0e+00                   54       2436     46x      25.6%  no
+  rec_low x 0e+00                  1296       7546      6x      54.3%  no
+  rec_low x 3e-05                    71       3804     54x      33.1%  no
+  rec_mid x 0e+00                    22       2833    129x      23.6%  no
+
+  No combination approaches the 70% ceiling. The pre-registered ceiling contingency
+  does not trigger; all four combinations count, and all four failed.
+
+====================================================================================
+2. CONTROL AND EXHAUSTION NEVER CO-OCCUR. 24 of 24 cells, 14-fold range of E:T.
+====================================================================================
+    N_T    E:T  nB42/n0   f_end   controlled   exhausted   both
+    200   1:28     2.04   0.004          no          yes   no
+    400   1:14     2.03   0.008          no          yes   no
+    800    1:7     1.37   0.258          no          yes   no
+   1400    1:4     0.01   0.947          yes         no    no
+   2000    1:3     0.00   0.922          yes         no    no
+   2800    1:2     0.00   0.943          yes         no    no
+
+  Any regime with both tumour control and binding exhaustion: False
+  The window in which an exhaustion-driven scheduling effect could exist is EMPTY.
+
+====================================================================================
+3. EVERY SCHEDULE IS WORSE THAN CONTINUOUS, MONOTONICALLY IN DUTY CYCLE
+====================================================================================
+  rec_low x 2.5e-5, the combination flagged in advance as physiologically sensible:
+
+  schedule      duty  med nB42   f_end
+  A_cont        1.00        71   0.901
+  A_tfi2        0.93        90   0.895
+  A_tfi4        0.86       137   0.896
+  B_12on2off    0.86       187   0.889
+  B_6on1off     0.86       292   0.878
+  A_tfi7        0.75       184   0.895
+  B_MO_FR       0.71      1188   0.815
+  B_4on3off     0.57      3804   0.711
+  A_tfi14       0.50       580   0.841
+  B_7on7off     0.50      3265   0.789
+
+  Terminal T-cell function is 0.90 under continuous dosing. Exhaustion is simply not
+  the binding constraint at this effector:target ratio, so a rest period has nothing
+  to restore and only costs drug time.
+
+====================================================================================
+CLASSIFICATION A - MODEL NOT VALIDATED FOR THE SCHEDULING QUESTION.
+The architecture hypothesis remains UNTESTED. It is not falsified.
+Two positive controls have now failed under two pre-registrations. Per
+PHASE3_PREREG.md section 4 this line of attack ends here and is written up as a
+negative. The model is NOT modified a third time.
+====================================================================================

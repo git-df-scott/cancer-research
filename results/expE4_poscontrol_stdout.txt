@@ -1,0 +1,120 @@
+Phase 4 positive control: 4 admissible regimes
+    post_d35_NT200  influx 4.0e-04  N_T 200
+    post_d35_NT800  influx 1.0e-04  N_T 800
+    post_d42_NT200  influx 4.0e-04  N_T 200
+    post_d42_NT800  influx 1.0e-04  N_T 800
+320 runs
+
+  20/320  3.4 min, eta 51 min
+  40/320  6.3 min, eta 44 min
+  60/320  8.5 min, eta 37 min
+  80/320  11.0 min, eta 33 min
+  100/320  13.5 min, eta 30 min
+  120/320  15.9 min, eta 26 min
+  140/320  18.4 min, eta 24 min
+  160/320  20.8 min, eta 21 min
+  180/320  24.1 min, eta 19 min
+  200/320  27.1 min, eta 16 min
+  220/320  29.7 min, eta 13 min
+  240/320  32.3 min, eta 11 min
+  260/320  34.7 min, eta 8 min
+  280/320  37.1 min, eta 5 min
+  300/320  39.5 min, eta 3 min
+  320/320  41.8 min, eta 0 min
+
+==============================================================================
+POSITIVE CONTROL, architecture = dispersed
+==============================================================================
+
+--- [post_d35_NT200]  influx 4.0e-04   continuous arm clears 0% of seeds -> primary endpoint = nB42 ---
+    continuous: median nB42 = 20  integrated burden = 37834  end function f = 0.073
+    schedule      duty  med nB42   vs cont p(1-sided)     integ  f_end Ed_end verdict
+    A_cont        1.00        20        -0        nan     37834  0.073  0.339 
+    A_tfi2        0.93         0       +20     0.0039     37736  0.338  0.360 PASS
+    A_tfi4        0.86         0       +20     0.0039     37901  0.455  0.349 PASS
+    A_tfi7        0.75         0       +20     0.0039     38722  0.537  0.346 PASS
+    A_tfi14       0.50         0       +20     0.0039     56828  0.563  0.350 PASS
+    B_6on1off     0.86         0       +20     0.0039     38851  0.438  0.372 PASS
+    B_MO_FR       0.71         0       +20     0.0039     44104  0.532  0.383 PASS
+    B_4on3off     0.57         0       +20     0.0039     53375  0.580  0.367 PASS
+    B_12on2off    0.86         0       +20     0.0039     38389  0.435  0.379 PASS
+    B_7on7off     0.50         0       +18     0.0039     61714  0.578  0.358 PASS
+
+--- [post_d35_NT800]  influx 1.0e-04   continuous arm clears 0% of seeds -> primary endpoint = nB42 ---
+    continuous: median nB42 = 5638  integrated burden = 98344  end function f = 0.031
+    schedule      duty  med nB42   vs cont p(1-sided)     integ  f_end Ed_end verdict
+    A_cont        1.00      5638        -0        nan     98344  0.031  0.404 
+    A_tfi2        0.93      3392     +2244     0.0039     82934  0.156  0.522 PASS
+    A_tfi4        0.86      2470     +3108     0.0039     78367  0.207  0.553 PASS
+    A_tfi7        0.75      2250     +3397     0.0039     80431  0.229  0.569 PASS
+    A_tfi14       0.50      2860     +2810     0.0039    110772  0.226  0.590 PASS
+    B_6on1off     0.86      2344     +3289     0.0039     67087  0.255  0.599 PASS
+    B_MO_FR       0.71      3524     +2171     0.0039     91961  0.302  0.632 PASS
+    B_4on3off     0.57      4958      +965     0.0117    124832  0.350  0.612 PASS
+    B_12on2off    0.86      3050     +2457     0.0039     72314  0.263  0.575 PASS
+    B_7on7off     0.50      5739      -188     0.6797    125158  0.449  0.525 
+
+--- [post_d42_NT200]  influx 4.0e-04   continuous arm clears 0% of seeds -> primary endpoint = nB42 ---
+    continuous: median nB42 = 20  integrated burden = 37834  end function f = 0.073
+    schedule      duty  med nB42   vs cont p(1-sided)     integ  f_end Ed_end verdict
+    A_cont        1.00        20        -0        nan     37834  0.073  0.289 
+    A_tfi2        0.93         0       +18     0.0039     37778  0.199  0.303 PASS
+    A_tfi4        0.86         0       +20     0.0039     37921  0.352  0.296 PASS
+    A_tfi7        0.75         0       +20     0.0039     38747  0.467  0.298 PASS
+    A_tfi14       0.50         0       +20     0.0039     56817  0.561  0.301 PASS
+    B_6on1off     0.86         0       +20     0.0039     40269  0.320  0.307 PASS
+    B_MO_FR       0.71         0       +20     0.0039     46041  0.454  0.305 PASS
+    B_4on3off     0.57         0       +20     0.0039     54737  0.545  0.308 PASS
+    B_12on2off    0.86         0       +19     0.0039     38925  0.331  0.303 PASS
+    B_7on7off     0.50         0       +19     0.0039     62476  0.573  0.297 PASS
+
+--- [post_d42_NT800]  influx 1.0e-04   continuous arm clears 0% of seeds -> primary endpoint = nB42 ---
+    continuous: median nB42 = 5638  integrated burden = 98344  end function f = 0.031
+    schedule      duty  med nB42   vs cont p(1-sided)     integ  f_end Ed_end verdict
+    A_cont        1.00      5638        -0        nan     98344  0.031  0.356 
+    A_tfi2        0.93      4226     +1388     0.0039     89114  0.094  0.413 PASS
+    A_tfi4        0.86      3288     +2249     0.0039     83307  0.141  0.452 PASS
+    A_tfi7        0.75      2818     +2939     0.0039     84826  0.188  0.492 PASS
+    A_tfi14       0.50      2845     +3028     0.0039    110318  0.227  0.538 PASS
+    B_6on1off     0.86      4263     +1482     0.0039     89923  0.193  0.462 PASS
+    B_MO_FR       0.71      4053     +2065     0.0039    101409  0.293  0.504 PASS
+    B_4on3off     0.57      4952      +408     0.0078    123590  0.366  0.510 
+    B_12on2off    0.86      4270     +1442     0.0039     84856  0.228  0.441 PASS
+    B_7on7off     0.50      5962      -350     0.9023    131606  0.462  0.456 
+
+==============================================================================
+POSITIVE CONTROL PASSED in the following combinations:
+    [post_d35_NT200] influx 4.0e-04  A_tfi2 (26 on / 2 off)  p=0.0039  reduction=100%
+    [post_d35_NT200] influx 4.0e-04  A_tfi4 (24 on / 4 off)  p=0.0039  reduction=100%   <-- PC-2 FLAG: not a short interval
+    [post_d35_NT200] influx 4.0e-04  A_tfi7 (21 on / 7 off)  p=0.0039  reduction=100%   <-- PC-2 FLAG: not a short interval
+    [post_d35_NT200] influx 4.0e-04  A_tfi14 (14 on / 14 off)  p=0.0039  reduction=100%   <-- PC-2 FLAG: not a short interval
+    [post_d35_NT200] influx 4.0e-04  B_6on1off (6 on / 1 off)  p=0.0039  reduction=100%
+    [post_d35_NT200] influx 4.0e-04  B_MO_FR (5 on / 2 off)  p=0.0039  reduction=100%
+    [post_d35_NT200] influx 4.0e-04  B_4on3off (4 on / 3 off)  p=0.0039  reduction=100%
+    [post_d35_NT200] influx 4.0e-04  B_12on2off (12 on / 2 off)  p=0.0039  reduction=100%
+    [post_d35_NT200] influx 4.0e-04  B_7on7off (7 on / 7 off)  p=0.0039  reduction=95%   <-- PC-2 FLAG: not a short interval
+    [post_d35_NT800] influx 1.0e-04  A_tfi2 (26 on / 2 off)  p=0.0039  reduction=40%
+    [post_d35_NT800] influx 1.0e-04  A_tfi4 (24 on / 4 off)  p=0.0039  reduction=55%   <-- PC-2 FLAG: not a short interval
+    [post_d35_NT800] influx 1.0e-04  A_tfi7 (21 on / 7 off)  p=0.0039  reduction=60%   <-- PC-2 FLAG: not a short interval
+    [post_d35_NT800] influx 1.0e-04  A_tfi14 (14 on / 14 off)  p=0.0039  reduction=50%   <-- PC-2 FLAG: not a short interval
+    [post_d35_NT800] influx 1.0e-04  B_6on1off (6 on / 1 off)  p=0.0039  reduction=58%
+    [post_d35_NT800] influx 1.0e-04  B_MO_FR (5 on / 2 off)  p=0.0039  reduction=39%
+    [post_d35_NT800] influx 1.0e-04  B_4on3off (4 on / 3 off)  p=0.0117  reduction=17%
+    [post_d35_NT800] influx 1.0e-04  B_12on2off (12 on / 2 off)  p=0.0039  reduction=44%
+    [post_d42_NT200] influx 4.0e-04  A_tfi2 (26 on / 2 off)  p=0.0039  reduction=92%
+    [post_d42_NT200] influx 4.0e-04  A_tfi4 (24 on / 4 off)  p=0.0039  reduction=100%   <-- PC-2 FLAG: not a short interval
+    [post_d42_NT200] influx 4.0e-04  A_tfi7 (21 on / 7 off)  p=0.0039  reduction=100%   <-- PC-2 FLAG: not a short interval
+    [post_d42_NT200] influx 4.0e-04  A_tfi14 (14 on / 14 off)  p=0.0039  reduction=100%   <-- PC-2 FLAG: not a short interval
+    [post_d42_NT200] influx 4.0e-04  B_6on1off (6 on / 1 off)  p=0.0039  reduction=100%
+    [post_d42_NT200] influx 4.0e-04  B_MO_FR (5 on / 2 off)  p=0.0039  reduction=100%
+    [post_d42_NT200] influx 4.0e-04  B_4on3off (4 on / 3 off)  p=0.0039  reduction=100%
+    [post_d42_NT200] influx 4.0e-04  B_12on2off (12 on / 2 off)  p=0.0039  reduction=97%
+    [post_d42_NT200] influx 4.0e-04  B_7on7off (7 on / 7 off)  p=0.0039  reduction=97%   <-- PC-2 FLAG: not a short interval
+    [post_d42_NT800] influx 1.0e-04  A_tfi2 (26 on / 2 off)  p=0.0039  reduction=25%
+    [post_d42_NT800] influx 1.0e-04  A_tfi4 (24 on / 4 off)  p=0.0039  reduction=40%   <-- PC-2 FLAG: not a short interval
+    [post_d42_NT800] influx 1.0e-04  A_tfi7 (21 on / 7 off)  p=0.0039  reduction=52%   <-- PC-2 FLAG: not a short interval
+    [post_d42_NT800] influx 1.0e-04  A_tfi14 (14 on / 14 off)  p=0.0039  reduction=54%   <-- PC-2 FLAG: not a short interval
+    [post_d42_NT800] influx 1.0e-04  B_6on1off (6 on / 1 off)  p=0.0039  reduction=26%
+    [post_d42_NT800] influx 1.0e-04  B_MO_FR (5 on / 2 off)  p=0.0039  reduction=37%
+    [post_d42_NT800] influx 1.0e-04  B_12on2off (12 on / 2 off)  p=0.0039  reduction=26%
+==============================================================================
