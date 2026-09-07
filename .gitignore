@@ -6,3 +6,9 @@ __pycache__/
 # in-flight partial outputs from running experiments; final results are committed
 results/*_partial.json
 results/*.json.partial
+
+# in-flight run logs; force-added with `git add -f` once the phase completes
+results/expE_poscontrol_stdout.txt
+results/expF_*_stdout.txt
+results/expG_*_stdout.txt
+results/expH_*_stdout.txt
