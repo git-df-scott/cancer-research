@@ -32,3 +32,8 @@ F  PHASE BOUNDARY: minimum pi = p_R x p_dur reaching the 5 pp MCID
    best case for the hypothesis (dev=0.010, s=3), varying the clearance/unmasking race:
       clearance 2 mo vs unmasking   12 mo -> pi >= 0.16 (T*=8)
       clearance 3 mo vs unmasking    9 mo -> pi >= 0.18 (T*=9)
+      clearance 4 mo vs unmasking    6 mo -> pi >= 0.22 (T*=12)
+      clearance 6 mo vs unmasking    3 mo -> pi >= 0.30 (T*=12)
+
+
+ADMISSIBLE-REGION MONTE CARLO (robustness threshold: MCID in >=50% of draws)

@@ -3,3 +3,44 @@ G7  is the cytostasis effect biology, or the observation process?
 
 condition                                   benefit (pp)   T*   carried@T*
 neither (s=1, detect=1)                             1.70    4       0.3309
+BIOLOGY only (s=3, detect=1)                        2.23    5       0.2859
+OBSERVATION only (s=1,det=3)                        1.70    4       0.4502
+both (s=3, detect=3)                                2.23    5       0.4105
+
+    biology +0.54 pp | observation -0.00 pp | combined +0.53 pp
+    -> observation share of the effect: -1%
+
+G   attacks at the most generous evidence-admissible corner
+    (p_R=0.30, p_dur=0.70 -> pi=0.21; m_clear=3, a=1, s=3, unmask=9 mo, dev=0.010)
+
+    no attack (best case)                        6.19 pp  T*=10  MEETS MCID
+    G3 non-exponential clearance (a=2.5)         7.48 pp  T*= 6  MEETS MCID
+    G4 acquired escape (p_dur 0.70->0.35)        2.56 pp  T*= 8  below
+    G5 mid-quality centre (dev 0.025)            3.22 pp  T*= 5  below
+    G5 poor centre (dev 0.045)                   1.29 pp  T*= 3  below
+    G6 IGR-anchored unmasking (3 mo)             5.22 pp  T*= 9  MEETS MCID
+    no cytostasis (s=1)                          5.22 pp  T*= 9  MEETS MCID
+    ALL attacks together                         0.85 pp  T*= 4  below
+
+H   required durable clearance fraction vs what the evidence supports
+
+      pi=0.02 ->   0.09 pp  T*= 3 
+      pi=0.05 ->   0.81 pp  T*= 6 
+      pi=0.07 ->   1.43 pp  T*= 6 
+      pi=0.10 ->   2.38 pp  T*= 7 
+      pi=0.15 ->   4.14 pp  T*= 9 
+      pi=0.21 ->   6.21 pp  T*=10 MEETS MCID
+      pi=0.25 ->   7.64 pp  T*=10 MEETS MCID
+      pi=0.30 ->   9.39 pp  T*=12 MEETS MCID
+      pi=0.40 ->  12.97 pp  T*=12 MEETS MCID
+
+    REQUIRED pi, single most favourable admissible setting : >= 0.21
+    ADMISSIBLE ceiling  (p_R 0.30 x p_dur 0.70)            : 0.21
+    CARDIAC-SPECIFIC evidence: DART cardiac 0/1; visceral 1/7 -> pi ~ 0.00-0.07
+      (1/7 responders x 2/4 durable = 0.07; adjuvant chemo in cardiac sarcoma ~ 0)
+
+    (secondary, NOT the pre-registered rule) required pi by MCID:
+      MCID 2 pp -> pi >= 0.1
+      MCID 3 pp -> pi >= 0.15
+      MCID 5 pp -> pi >= 0.21
+      MCID 8 pp -> pi >= 0.3
