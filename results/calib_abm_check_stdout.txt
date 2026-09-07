@@ -25,3 +25,29 @@
     per-cell state at day 28, continuous arm:  Er=0.301  Ed=0.670  contact=26.8 d
 
 === [rec_high]  k=0.1590/d  rho=0.45  tau_r=0.10d  C50=6d  a=1.89 ===
+    mean engaged fraction over the run:  cont 0.954   tfi 0.959   (assay condition requires ~1)
+    readout      arm       day  measured   ODE fit   ABM
+    lysis %    cont      d7      88.4      78.1      80.1
+    lysis %    cont      d14     34.9      43.6      48.8
+    lysis %    cont      d28      8.6       6.1       7.4
+    lysis %    tfi       d14     93.4      82.1      82.8
+    lysis %    tfi       d28     58.7      71.0      72.8
+    GzB ratio  cont/tfi  d14     32.0      33.3      37.9
+    GzB ratio  cont/tfi  d28     23.2       5.1       5.9
+    ABM SSE = 905.8   (ODE fit SSE = 798.8)
+    per-cell state at day 28, continuous arm:  Er=0.527  Ed=0.432  contact=26.7 d
+
+=== [best_fit]  k=0.1590/d  rho=0.93  tau_r=0.10d  C50=0d  a=5.76 ===
+    mean engaged fraction over the run:  cont 0.973   tfi 0.974   (assay condition requires ~1)
+    readout      arm       day  measured   ODE fit   ABM
+    lysis %    cont      d7      88.4      84.8      86.6
+    lysis %    cont      d14     34.9      46.1      49.2
+    lysis %    cont      d28      8.6       6.4       7.3
+    lysis %    tfi       d14     93.4      88.4      89.7
+    lysis %    tfi       d28     58.7      55.4      58.3
+    GzB ratio  cont/tfi  d14     32.0      28.6      29.8
+    GzB ratio  cont/tfi  d28     23.2       8.2       8.6
+    ABM SSE = 440.8   (ODE fit SSE = 414.0)
+    per-cell state at day 28, continuous arm:  Er=0.069  Ed=0.918  contact=27.3 d
+
+written /home/user/cancer-research/results/calib_abm_check.json
