@@ -1,0 +1,1 @@
+exp8: 768 main runs in 5029s; 96 cure runs in 1264s

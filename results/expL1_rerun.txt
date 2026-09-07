@@ -1,0 +1,10 @@
+missing 25 cells: [('dispersed', 14), ('follicle', 14), ('multi', 0), ('multi', 2)]
+  1/25 follicle_14_2.json
+  2/25 follicle_14_4.json
+  3/25 follicle_14_3.json
+  4/25 follicle_14_5.json
+  5/25 follicle_14_7.json
+  6/25 follicle_14_6.json
+  7/25 follicle_14_9.json
+  8/25 follicle_14_8.json
+  9/25 multi_0_0.json
