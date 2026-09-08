@@ -86,7 +86,30 @@ if __name__ == '__main__':
         [0.55, 0.60, 0.65],
         [6.0, 8.0, 12.0]))
 
-    grid = REFINE if (len(sys.argv) > 2 and sys.argv[2] == 'refine') else COARSE
+    # Analytically targeted grid. Rather than extend the box blindly a third time, solve for
+    # what the data demand. E accrues linearly in the replenished assay, so E(7):E(14):E(28) =
+    # 1:2:4. Setting lysis = 1/(1+(E/theta)^n) equal to the measured 0.884 / 0.349 / 0.086 gives
+    # (E/theta)^n = 0.131 / 1.865 / 10.628, and since E doubles between consecutive timepoints the
+    # ratio of those is 2^n. That yields hill = 3.83 from the first interval and 2.51 from the
+    # second, so hill ~ 3.2 -- BELOW the coarse grid's minimum of 4. Back-substituting, E/theta =
+    # 0.527 at day 7, so theta = E(7)/0.527, which for tonic 5e-5 at realistic contact fractions
+    # is 0.67 to 0.96 -- ABOVE the refined grid's maximum of 0.65.
+    #
+    # Both previous grids were therefore searching the wrong region, in opposite directions on the
+    # two axes, which is exactly why the optimum stayed pinned to a boundary.
+    #
+    # Note the two implied hill values disagree (3.83 vs 2.51). A Hill function of a
+    # linearly-accruing E cannot pass through all three points exactly either. It should get much
+    # closer than the linear form, and the residual that remains is itself informative: it bounds
+    # how much of the misfit is attributable to functional form alone.
+    SOLVE = list(itertools.product(
+        [5e-5, 7.5e-5],
+        [0.0],
+        [0.70, 0.85, 1.00, 1.20],
+        [2.5, 3.0, 3.5]))
+
+    mode = sys.argv[2] if len(sys.argv) > 2 else 'coarse'
+    grid = {'refine': REFINE, 'solve': SOLVE}.get(mode, COARSE)
     nproc = int(sys.argv[1]) if len(sys.argv) > 1 else os.cpu_count()
     print(f'{len(grid)} cells on {nproc} procs', flush=True)
     with Pool(nproc) as p:
