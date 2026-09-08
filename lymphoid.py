@@ -146,6 +146,17 @@ class Lymphoid:
         flat = np.zeros(self.L * self.L, bool); flat[pick] = True
         self.T |= flat.reshape(self.L, self.L)
 
+    def kill_efficiency(self):
+        """Remaining cytotoxic function per T cell, in [0,1]. Default: linear in exhaustion.
+
+        Factored out as a hook so an alternative exhaustion MECHANISM can be substituted by
+        subclassing, without duplicating step() or perturbing this class's behaviour. The default
+        return value is exactly the `1.0 - self.E` expression it replaces, so results are
+        unchanged. See exhaustion.py for why a linear mechanism cannot reproduce the shape of
+        Philipp's measured curve, only its endpoints.
+        """
+        return 1.0 - self.E
+
     # ------------------------------------------------------------------- step
     def step(self, drug=None):
         if drug is not None:
@@ -159,7 +170,7 @@ class Lymphoid:
         #         kills it. Kill hazard scales with drug and with remaining (1 - exhaustion).
         if self.drug > 0 and self.T.any() and self.B.any():
             # effective per-contact hazard carried by each T cell
-            pot = np.where(self.T, self.p_kill * self.dt * self.drug * (1.0 - self.E), 0.0)
+            pot = np.where(self.T, self.p_kill * self.dt * self.drug * self.kill_efficiency(), 0.0)
             # accumulate, for each B site, the hazard from all adjacent T cells
             haz = nbr_sum(pot) * self.B
             ncontact = nbr_sum(self.T)
@@ -209,7 +220,7 @@ class Lymphoid:
             self.T[tdie] = False; self.E[tdie] = 0.0
             occupied = self.B | self.T
             empty = ~occupied
-            twants = self.T & adjB & (self.drug > 0) & (rng.random((L, L)) < self.t_div * self.dt * (1.0 - self.E))
+            twants = self.T & adjB & (self.drug > 0) & (rng.random((L, L)) < self.t_div * self.dt * self.kill_efficiency())
             self._place(twants, empty, what='T')
 
         # ---- 5. T-cell motility. This is the crux: a T cell can ONLY move into an EMPTY
