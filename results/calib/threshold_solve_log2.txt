@@ -22,3 +22,4 @@
 21/24 tonic=7e-05 theta=1.20 hill=3 | d7= 88.5 d14= 78.9 d28= 72.8 d14tfi=103.2 | loss= 6157.3
 22/24 tonic=7e-05 theta=1.20 hill=4 | d7= 87.7 d14= 83.2 d28= 69.1 d14tfi=104.1 | loss= 6101.9
 23/24 tonic=7e-05 theta=0.85 hill=3 | d7= 61.0 d14= 63.4 d28= 34.1 d14tfi=109.7 | loss= 2477.8
+24/24 tonic=5e-05 theta=0.70 hill=4 | d7= 84.7 d14= 76.6 d28= 28.8 d14tfi=100.7 | loss= 2210.8
