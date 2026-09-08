@@ -64,11 +64,29 @@ def cell(job):
 
 
 if __name__ == '__main__':
-    grid = list(itertools.product(
-        [5e-5, 1e-4, 2e-4],       # exhaust_tonic
-        [0.0],                    # kill-driven accrual held at 0 for this first pass
-        [0.3, 0.5, 0.7],          # theta
-        [4.0, 8.0]))              # hill
+    # Coarse grid, run first. Its optimum landed on the grid boundary in two of three
+    # dimensions (lowest tonic, lowest hill), so it did NOT bracket the optimum and its best
+    # cell must not be quoted as a fit. The refined grid exists to bracket it properly.
+    COARSE = list(itertools.product(
+        [5e-5, 1e-4, 2e-4],            # exhaust_tonic
+        [0.0],                         # kill-driven accrual held at 0 for this first pass
+        [0.3, 0.5, 0.7],               # theta
+        [4.0, 8.0]))                   # hill
+
+    # Refined grid. The coarse scan showed the mechanism CAN produce a sharp collapse -- at
+    # theta=0.70, hill=8, tonic=5e-5 it gives d7=92.1 and d28=11.0 against targets of 88.4 and
+    # 8.6 -- but positions it between days 14 and 28 instead of between days 7 and 14 (d14=93.1
+    # against a target of 34.9). Dropping theta to 0.50 moves the collapse too early
+    # (d7=68.3, d28=0.6). The optimum is therefore bracketed between theta 0.5 and 0.7 at
+    # tonic 5e-5, and the grid is extended below 5e-5 and around hill because the coarse
+    # optimum sat on both of those edges.
+    REFINE = list(itertools.product(
+        [2.5e-5, 5e-5, 7.5e-5],
+        [0.0],
+        [0.55, 0.60, 0.65],
+        [6.0, 8.0, 12.0]))
+
+    grid = REFINE if (len(sys.argv) > 2 and sys.argv[2] == 'refine') else COARSE
     nproc = int(sys.argv[1]) if len(sys.argv) > 1 else os.cpu_count()
     print(f'{len(grid)} cells on {nproc} procs', flush=True)
     with Pool(nproc) as p:

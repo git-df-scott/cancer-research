@@ -1,0 +1,5 @@
+27 cells on 4 procs
+1/27 tonic=3e-05 theta=0.55 hill=12 | d7=103.9 d14= 97.5 d28=108.1 d14tfi=108.9 | loss=14292.9
+2/27 tonic=3e-05 theta=0.55 hill=6 | d7= 99.8 d14=104.7 d28= 66.7 d14tfi= 94.5 | loss= 8380.3
+3/27 tonic=3e-05 theta=0.60 hill=6 | d7=103.0 d14= 96.6 d28= 79.5 d14tfi=102.3 | loss= 9126.2
+4/27 tonic=3e-05 theta=0.55 hill=8 | d7=107.6 d14= 90.8 d28= 75.1 d14tfi=106.7 | loss= 8089.8
