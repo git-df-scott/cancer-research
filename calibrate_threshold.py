@@ -50,7 +50,7 @@ def evaluate(tonic, per_kill, theta, hill, recover_tau=10080.0, seed=0, dt=5.0,
 
 def cell(job):
     tonic, per_kill, theta, hill = job
-    path = f'{OUT}/t{tonic:.2e}_k{per_kill:.4f}_th{theta:.2f}_h{hill:.0f}.json'
+    path = f'{OUT}/t{tonic:.2e}_k{per_kill:.4f}_th{theta:.2f}_h{hill:.1f}.json'
     if os.path.exists(path):
         return path
     per_seed = [evaluate(tonic, per_kill, theta, hill, seed=s) for s in (0, 1)]
