@@ -1,6 +1,6 @@
 # EGFR-mutant lung adenocarcinoma: residual disease and relapse
 
-Status: planning only. Agreed 2026-09-07. No analyses, simulations, or intervention experiments have started for this project. Begin only when Scott asks to resume; no overnight or scheduled work is authorized.
+Status: initial evidence audit completed on Scott's subsequent authorization, 2026-09-07. See `AUDIT.md`, `SOURCES.json`, and `SEARCH_LOG.md`. No model implementation, biological-data analysis, simulations, or intervention experiments have started. Scott explicitly requested stopping after the audit; resume only when asked. No overnight or scheduled work is authorized.
 
 Branch: `codex/lung-adenocarcinoma-persisters`
 
@@ -46,6 +46,6 @@ Keep lung-project artifacts under `research/lung-adenocarcinoma/` initially. Pre
 
 Record source versions and access dates, data provenance, environment, seeds, parameter choices, failed checks and deviations. Never overwrite original data. Bound compute and preserve results incrementally. Separate observations, calculations, hypotheses and interpretations in all reports.
 
-## First session when resumed
+## Next session, only if authorized
 
-Read this plan and applicable repository instructions. Inspect the two source papers and their data availability. Produce a compact evidence-and-data inventory and recommend one benchmark with explicit reasons it can distinguish the proposed mechanisms. Do not begin a large simulation sweep merely because compute is available.
+Read `AUDIT.md` and applicable repository instructions. The audit supersedes the original generic simulator starting point: ResMap already provides a cross-context benchmark. Consider whether the BRD4 discrepancy between ResMap and sequential-treatment work supports a matched comparison, with Oren's lineage findings as a constraint on interpreting survivors. Further protocol appraisal, data analysis and modeling require Scott's next instruction. Do not begin a large simulation sweep merely because compute is available.

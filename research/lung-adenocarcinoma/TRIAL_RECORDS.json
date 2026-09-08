@@ -1,0 +1,132 @@
+{
+  "retrieved": "2026-09-07",
+  "interpretation": "Registry status and listed arms do not establish dosing or efficacy.",
+  "trials": [
+    {
+      "id": "NCT02520778",
+      "url": "https://clinicaltrials.gov/study/NCT02520778",
+      "title": "Osimertinib and Navitoclax in Treating Patients With EGFR-Positive Previously Treated Advanced or Metastatic Non-small Cell Lung Cancer",
+      "status": "COMPLETED",
+      "why_stopped": null,
+      "last_update": {
+        "date": "2024-08-21",
+        "type": "ACTUAL"
+      },
+      "enrollment": {
+        "count": 27,
+        "type": "ACTUAL"
+      },
+      "has_posted_results": false,
+      "arms": [
+        {
+          "label": "Treatment (navitoclax, osimertinib)",
+          "description": "Patients receive navitoclax PO QD on days 1-28 and osimertinib PO QD on days 4-28 (days 1-28 during dose-expansion). Cycles repeat every 28 days in the absence of disease progression or unacceptable toxicity"
+        }
+      ]
+    },
+    {
+      "id": "NCT04665206",
+      "url": "https://clinicaltrials.gov/study/NCT04665206",
+      "title": "Study to Evaluate VT3989 in Patients With Metastatic Solid Tumors",
+      "status": "RECRUITING",
+      "why_stopped": null,
+      "last_update": {
+        "date": "2026-04-02",
+        "type": "ACTUAL"
+      },
+      "enrollment": {
+        "count": 434,
+        "type": "ESTIMATED"
+      },
+      "has_posted_results": false,
+      "arms": [
+        {
+          "label": "VT3989 Dose Escalation [Not Recruiting]",
+          "description": "VT3989 dosed orally in 21 or 28 day cycles. Patients will be enrolled into escalating dose levels during the Dose Escalation Phase"
+        },
+        {
+          "label": "Dose Expansion [Not Recruiting]",
+          "description": "VT3989 dosed in 21 or 28 day cycles in patients with refractory metastatic solid tumors or mesothelioma."
+        },
+        {
+          "label": "Combination [Recruiting]",
+          "description": "For Cohort A and B, VT3989 dosed in 28 day cycles in patients with metastatic solid tumors or mesothelioma, in combination with immunotherapy (nivolumab/ipilimumab) or targeted therapy (osimertinib). For Cohort C, VT3989 dosed in 21 day cycles in patients with mesothelioma in combination with chemotherapy (pemetrexed+carboplatin) for 4-6 cycles, then continuing VT3989 as monotherapy on 28-day cycle."
+        }
+      ]
+    },
+    {
+      "id": "NCT04780568",
+      "url": "https://clinicaltrials.gov/study/NCT04780568",
+      "title": "Osimertinib and Tegavivint as First-Line Therapy for the Treatment of Metastatic EGFR-Mutant Non-small Cell Lung Cancer",
+      "status": "ACTIVE_NOT_RECRUITING",
+      "why_stopped": null,
+      "last_update": {
+        "date": "2026-08-13",
+        "type": "ACTUAL"
+      },
+      "enrollment": {
+        "count": 24,
+        "type": "ACTUAL"
+      },
+      "has_posted_results": false,
+      "arms": [
+        {
+          "label": "Treatment (osimertinib, tegavivint)",
+          "description": "Patients receive osimertinib PO QD on days 1-28 and tegavivint IV on day 1. Treatment repeats every 28 days for 4 cycles in the absence of disease progression or unacceptable toxicity. Patients then receive osimertinib PO QD on days 1-28. Treatment repeats every 28 days for 4 cycles in the absence of disease progression or unacceptable toxicity."
+        }
+      ]
+    },
+    {
+      "id": "NCT05228015",
+      "url": "https://clinicaltrials.gov/study/NCT05228015",
+      "title": "Oral TEAD Inhibitor Targeting the Hippo Pathway in Subjects with Advanced Solid Tumors",
+      "status": "TERMINATED",
+      "why_stopped": "Sponsor strategic reasons",
+      "last_update": {
+        "date": "2024-11-18",
+        "type": "ACTUAL"
+      },
+      "enrollment": {
+        "count": 67,
+        "type": "ACTUAL"
+      },
+      "has_posted_results": false,
+      "arms": [
+        {
+          "label": "IK-930 Single Agent Dose Escalation",
+          "description": null
+        },
+        {
+          "label": "IK-930 Single Agent Dose Expansion",
+          "description": null
+        },
+        {
+          "label": "IK-930 and Osimertinib Combination Dose Escalation",
+          "description": null
+        }
+      ]
+    },
+    {
+      "id": "NCT05401110",
+      "url": "https://clinicaltrials.gov/study/NCT05401110",
+      "title": "Study of Osimertinib With Carotuximab in Advanced, EGFR-mutated Non-Small Cell Lung Cancer",
+      "status": "RECRUITING",
+      "why_stopped": null,
+      "last_update": {
+        "date": "2026-08-06",
+        "type": "ACTUAL"
+      },
+      "enrollment": {
+        "count": 60,
+        "type": "ESTIMATED"
+      },
+      "has_posted_results": false,
+      "arms": [
+        {
+          "label": "Osimertinib with Carotuximab",
+          "description": null
+        }
+      ]
+    }
+  ]
+}
