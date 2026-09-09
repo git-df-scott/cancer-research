@@ -113,28 +113,38 @@ class Assay:
     def lysis_probe(self, probe_min=240):
         """Specific lysis over a short probe window, as a percentage of the naive-effector rate.
 
-        Philipp measures lysis in a fresh short co-culture against a reference. Here the probe is
-        the kill count over `probe_min` minutes at the current exhaustion state, normalised by the
-        same probe run at E=0 with an identical configuration.
+        Philipp measures lysis in a fresh short co-culture against a reference. Here the probe runs
+        on DEEP COPIES of the assay, so it cannot perturb the state it is measuring.
+
+        The copy is not a stylistic choice. The previous implementation saved `self.m.E`, ran the
+        probe in place, then restored the saved array. But `E` is indexed by lattice position and
+        T cells MIGRATE -- roughly one site per minute, so over a 480-minute probe their positions
+        fully decorrelate. Restoring the old array therefore handed each surviving T cell whatever
+        exhaustion happened to sit at its new coordinates, which was almost always zero. Every
+        probe silently reset the population's exhaustion to near zero: measured E fell from 0.473
+        to 0.024 across a single probe.
+
+        The consequence was that the day-14 reading did not measure 14 days of exhaustion, it
+        measured 7 days twice, and the day-28 reading measured 14. That flattened every simulated
+        decay curve and invalidated both calibration scans built on it. See CALIBRATION_BUG.md.
+
+        Both copies inherit the same RNG state, so the exhausted and naive arms see identical
+        random draws and the ratio is a paired comparison rather than two independent samples.
         """
-        saved_E = self.m.E.copy()
-        saved_kills = self.m.kills
-        # exhausted-state rate
-        k0 = self.m.kills
-        for _ in range(int(probe_min / self.m.dt)):
-            self._replenish()
-            self.m.step(1.0)
-        rate_now = self.m.kills - k0
-        # naive reference rate, same cells, E zeroed
-        self.m.E = np.zeros_like(self.m.E)
-        k1 = self.m.kills
-        for _ in range(int(probe_min / self.m.dt)):
-            self._replenish()
-            self.m.step(1.0)
-        rate_naive = self.m.kills - k1
-        # restore
-        self.m.E = saved_E
-        self.m.kills = saved_kills
+        import copy
+        exhausted = copy.deepcopy(self)
+        naive = copy.deepcopy(self)
+        naive.m.E = np.zeros_like(naive.m.E)
+
+        def kills_over(assay):
+            k0 = assay.m.kills
+            for _ in range(int(probe_min / assay.m.dt)):
+                assay._replenish()
+                assay.m.step(1.0)
+            return assay.m.kills - k0
+
+        rate_now = kills_over(exhausted)
+        rate_naive = kills_over(naive)
         return 100.0 * rate_now / rate_naive if rate_naive else 0.0
 
     def run_days(self, days, drug_fn):
