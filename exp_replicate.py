@@ -199,6 +199,14 @@ def jobs_ablation():
 
 
 if __name__ == '__main__':
+    # HARD GATE. R and T previously constructed Lymphoid with shipped defaults, so running
+    # them would have used uncalibrated parameters while appearing to run the calibrated
+    # experiment (Codex review, finding 3). They now refuse unless a VALIDATED calibration
+    # artifact exists. A good fit is not enough: validation requires a provenance-clean
+    # external prediction, which provenance.py shows is currently unavailable.
+    from calibration import require_validated
+    _calib = require_validated('experiment R')
+
     what = sys.argv[1] if len(sys.argv) > 1 else 'all'
     nproc = int(sys.argv[2]) if len(sys.argv) > 2 else os.cpu_count()
     jobs = []
