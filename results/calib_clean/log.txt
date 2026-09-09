@@ -1,0 +1,21 @@
+225 cells on 4 procs
+1/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 30.6 d14= 22.4 d28= 13.0 || held-out d14tfi= 50.8 (fail) | fit_loss=  3516.4
+2/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 25.4 d14= 11.6 d28=  2.6 || held-out d14tfi= 50.2 (fail) | fit_loss=  4547.9
+3/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 19.0 d14=  1.6 d28=  0.0 || held-out d14tfi= 58.0 (fail) | fit_loss=  5999.2
+4/225 M1 pk=5.0e-04 t=2.5e-05 | d7=  7.4 d14=  0.0 d28=  0.0 || held-out d14tfi= 61.6 (fail) | fit_loss=  7853.0
+5/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 49.8 d14= 32.2 d28= 23.2 || held-out d14tfi= 53.0 (fail) | fit_loss=  1710.4
+6/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 49.8 d14= 27.8 d28= 12.4 || held-out d14tfi= 60.6 (fail) | fit_loss=  1554.8
+7/225 M1 pk=5.0e-04 t=2.5e-05 | d7=  1.0 d14=  0.0 d28=  0.0 || held-out d14tfi= 60.8 (fail) | fit_loss=  8930.7
+8/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 56.6 d14= 17.2 d28=  1.6 || held-out d14tfi= 62.8 (fail) | fit_loss=  1373.5
+9/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 62.8 d14=  5.8 d28=  0.0 || held-out d14tfi= 60.8 (fail) | fit_loss=  1576.1
+10/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 49.6 d14= 40.2 d28= 28.4 || held-out d14tfi= 54.8 (fail) | fit_loss=  1925.6
+11/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 64.0 d14=  1.0 d28=  0.0 || held-out d14tfi= 60.8 (fail) | fit_loss=  1818.5
+12/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 58.6 d14= 43.2 d28= 21.2 || held-out d14tfi= 66.0 (fail) | fit_loss=  1115.7
+13/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 66.0 d14= 46.6 d28= 10.2 || held-out d14tfi= 63.2 (fail) | fit_loss=   641.2
+14/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 63.2 d14= 55.0 d28=  1.4 || held-out d14tfi= 60.8 (fail) | fit_loss=  1090.9
+15/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 60.8 d14= 64.2 d28=  0.0 || held-out d14tfi= 60.8 (fail) | fit_loss=  1694.2
+16/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 53.2 d14= 50.0 d28= 34.8 || held-out d14tfi= 62.2 (fail) | fit_loss=  2153.5
+17/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 61.8 d14= 50.2 d28= 32.6 || held-out d14tfi= 64.2 (fail) | fit_loss=  1517.7
+18/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 60.8 d14= 64.6 d28= 13.6 || held-out d14tfi= 60.8 (fail) | fit_loss=  1668.8
+19/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 62.8 d14= 61.0 d28= 23.8 || held-out d14tfi= 60.8 (fail) | fit_loss=  1567.6
+20/225 M1 pk=5.0e-04 t=2.5e-05 | d7= 60.8 d14= 60.8 d28=  4.2 || held-out d14tfi= 60.8 (fail) | fit_loss=  1451.9
