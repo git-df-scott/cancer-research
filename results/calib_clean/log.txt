@@ -200,3 +200,17 @@
 199/225 M1 pk=2.0e-03 t=5.0e-05 | d7= 98.4 d14= 99.4 d28= 72.6 || held-out d14tfi= 98.4 (PASS) | fit_loss=  8356.2
 200/225 M1 pk=2.0e-03 t=5.0e-05 | d7= 98.4 d14= 98.4 d28= 51.4 || held-out d14tfi= 98.4 (PASS) | fit_loss=  5964.1
 201/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 53.6 d14= 39.4 d28= 39.4 || held-out d14tfi= 76.0 (fail) | fit_loss=  2179.9
+202/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 19.4 d14= 10.2 d28= 10.2 || held-out d14tfi= 64.0 (fail) | fit_loss=  5373.7
+203/225 M1 pk=2.0e-03 t=1.0e-04 | d7=  1.6 d14=  0.4 d28=  0.4 || held-out d14tfi= 28.2 (fail) | fit_loss=  8791.7
+204/225 M1 pk=2.0e-03 t=1.0e-04 | d7=  0.0 d14=  0.0 d28=  0.0 || held-out d14tfi=  4.0 (fail) | fit_loss=  9106.5
+205/225 M1 pk=2.0e-03 t=1.0e-04 | d7=  0.0 d14=  0.0 d28=  0.0 || held-out d14tfi=  0.2 (fail) | fit_loss=  9106.5
+206/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 77.8 d14= 62.8 d28= 62.8 || held-out d14tfi= 89.6 (PASS) | fit_loss=  3828.4
+207/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 76.2 d14= 27.8 d28= 27.8 || held-out d14tfi= 95.0 (PASS) | fit_loss=   567.9
+208/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 77.0 d14=  3.6 d28=  3.6 || held-out d14tfi= 96.8 (PASS) | fit_loss=  1134.6
+209/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 79.6 d14=  0.0 d28=  0.0 || held-out d14tfi= 99.4 (PASS) | fit_loss=  1369.4
+210/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 89.2 d14= 73.2 d28= 73.2 || held-out d14tfi= 95.2 (PASS) | fit_loss=  5640.7
+211/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 81.0 d14=  0.0 d28=  0.0 || held-out d14tfi= 98.4 (PASS) | fit_loss=  1346.7
+212/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 93.8 d14= 52.8 d28= 55.2 || held-out d14tfi= 97.6 (PASS) | fit_loss=  2521.1
+213/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 95.6 d14= 27.0 d28= 20.6 || held-out d14tfi= 99.4 (PASS) | fit_loss=   258.2
+214/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 98.4 d14=  0.0 d28=  0.0 || held-out d14tfi= 98.4 (PASS) | fit_loss=  1392.0
+215/225 M1 pk=2.0e-03 t=1.0e-04 | d7= 98.0 d14=  2.4 d28=  2.6 || held-out d14tfi= 98.4 (PASS) | fit_loss=  1184.4
