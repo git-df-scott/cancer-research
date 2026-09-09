@@ -3,7 +3,7 @@ Experiment L2: the attack battery. Phases 3, 4 and 5 of the mandate, plus the Ph
 exhaustion-distribution measurement that L1 does not record.
 
 Every arm here is a control designed to DESTROY the L1 hypothesis, not to support it. Arms and
-decision rules were written before any L1 result was examined (see TRAFFICKING_PREREG.md for the
+decision rules were written before any L1 result was examined (see docs/calibration/TRAFFICKING_PREREG.md for the
 Phase 5 commitment, which was made before running anything).
 
   P3  exhaustion knockout      exhaust_tonic = 0. If the architecture x schedule interaction

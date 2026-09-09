@@ -1,0 +1,35 @@
+{
+ "model": "M0",
+ "p_kill": 0.001,
+ "exhaust_tonic": 0.0001,
+ "extra": {},
+ "measured": {
+  "d7_cont": 44.0,
+  "d14_cont": 0.0,
+  "d28_cont": 0.0,
+  "d14_tfi": 78.2
+ },
+ "seed_sd": {
+  "d7_cont": 4.399999999999999,
+  "d14_cont": 0.0,
+  "d28_cont": 0.0,
+  "d14_tfi": 0.20000000000000284
+ },
+ "target": {
+  "d7_cont": 88.4,
+  "d14_cont": 34.9,
+  "d28_cont": 8.6,
+  "d14_tfi": 93.4
+ },
+ "fit_loss": 3263.330000000001,
+ "full_loss": 3494.370000000001,
+ "err": {
+  "d7_cont": -44.4,
+  "d14_cont": -34.9,
+  "d28_cont": -8.6,
+  "d14_tfi": -15.2
+ },
+ "held_out": "d14_tfi",
+ "held_out_err": -15.2,
+ "held_out_pass": false
+}

@@ -1,0 +1,25 @@
+24 cells on 4 procs
+1/24 tonic=5e-05 theta=0.70 hill=4 | d7= 79.8 d14= 73.0 d28= 25.6 d14tfi=107.8 | loss= 2025.6
+2/24 tonic=5e-05 theta=0.85 hill=2 | d7= 80.9 d14= 83.9 d28= 57.0 d14tfi=101.9 | loss= 4873.8
+3/24 tonic=5e-05 theta=0.70 hill=2 | d7= 72.1 d14= 72.9 d28= 34.1 d14tfi= 97.0 | loss= 2368.9
+4/24 tonic=5e-05 theta=0.70 hill=3 | d7= 73.8 d14= 75.2 d28= 29.3 d14tfi= 96.4 | loss= 2272.0
+5/24 tonic=5e-05 theta=0.85 hill=3 | d7= 79.7 d14= 83.2 d28= 42.4 d14tfi= 99.8 | loss= 3588.4
+6/24 tonic=5e-05 theta=1.00 hill=2 | d7= 96.7 d14= 82.1 d28= 65.1 d14tfi= 98.4 | loss= 5515.8
+7/24 tonic=5e-05 theta=1.00 hill=4 | d7= 96.5 d14= 99.9 d28= 62.2 d14tfi=105.3 | loss= 7304.2
+8/24 tonic=5e-05 theta=0.85 hill=4 | d7= 91.0 d14= 83.7 d28= 38.8 d14tfi= 99.6 | loss= 3338.4
+9/24 tonic=5e-05 theta=1.00 hill=3 | d7= 92.7 d14= 90.5 d28= 60.7 d14tfi=110.2 | loss= 6104.0
+10/24 tonic=5e-05 theta=1.20 hill=2 | d7= 99.2 d14= 86.5 d28= 59.1 d14tfi=106.2 | loss= 5503.8
+11/24 tonic=7e-05 theta=0.70 hill=2 | d7= 54.0 d14= 46.7 d28= 28.4 d14tfi= 98.7 | loss= 1747.1
+12/24 tonic=5e-05 theta=1.20 hill=3 | d7=102.6 d14= 89.8 d28= 71.1 d14tfi=105.6 | loss= 7278.0
+13/24 tonic=5e-05 theta=1.20 hill=4 | d7= 93.4 d14= 98.5 d28= 89.0 d14tfi=108.1 | loss=10751.5
+14/24 tonic=7e-05 theta=0.70 hill=4 | d7= 52.2 d14= 49.6 d28= 15.1 d14tfi=106.8 | loss= 1749.9
+15/24 tonic=7e-05 theta=0.70 hill=3 | d7= 58.0 d14= 54.0 d28= 23.9 d14tfi= 99.9 | loss= 1561.5
+16/24 tonic=7e-05 theta=0.85 hill=2 | d7= 63.6 d14= 63.3 d28= 45.4 d14tfi= 89.1 | loss= 2793.5
+17/24 tonic=7e-05 theta=0.85 hill=3 | d7= 61.0 d14= 63.4 d28= 34.1 d14tfi=109.7 | loss= 2477.8
+18/24 tonic=7e-05 theta=0.85 hill=4 | d7= 65.0 d14= 75.2 d28= 35.8 d14tfi=103.7 | loss= 3012.9
+19/24 tonic=7e-05 theta=1.00 hill=2 | d7= 67.6 d14= 68.9 d28= 53.6 d14tfi= 91.4 | loss= 3622.5
+20/24 tonic=7e-05 theta=1.00 hill=3 | d7= 77.8 d14= 77.8 d28= 57.9 d14tfi= 97.8 | loss= 4405.8
+21/24 tonic=7e-05 theta=1.00 hill=4 | d7= 79.9 d14= 77.2 d28= 48.6 d14tfi=101.6 | loss= 3530.2
+22/24 tonic=7e-05 theta=1.20 hill=2 | d7= 73.4 d14= 88.5 d28= 65.9 d14tfi=100.1 | loss= 6421.4
+23/24 tonic=7e-05 theta=1.20 hill=3 | d7= 88.5 d14= 78.9 d28= 72.8 d14tfi=103.2 | loss= 6157.3
+24/24 tonic=7e-05 theta=1.20 hill=4 | d7= 87.7 d14= 83.2 d28= 69.1 d14tfi=104.1 | loss= 6101.9

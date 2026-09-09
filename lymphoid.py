@@ -5,7 +5,7 @@ WHY THIS IS NOT THE SOLID-TUMOUR MODEL (../tumor.py)
 ----------------------------------------------------
 The parent project models a spheroid with an oxygen field, where a diffusing drug kills
 cells that attempt division. Three of those assumptions are wrong for follicular lymphoma
-(see UNDERSTANDING_NHL.md):
+(see docs/recon/UNDERSTANDING_NHL.md):
   - Oxygen: FMISO-PET shows lymphoma is markedly less hypoxic than glioblastoma
     (tumour-to-normal 1.80 vs 2.75), and germinal-centre hypoxia is physiological
     signalling in a ~100 um structure, not diffusion-limited necrosis. NO OXYGEN FIELD HERE.
@@ -106,7 +106,7 @@ class Lymphoid:
         # bumps into, instead of being blocked. 0 = absolute volume exclusion (T cells can only
         # enter vacancies, so the tissue must be eaten from the rim inward); 1 = occupancy does not
         # impede motility. Real lymphocytes migrate through densely packed lymphoid tissue, so 0 is
-        # almost certainly too restrictive. See TRAFFICKING_PREREG.md.
+        # almost certainly too restrictive. See docs/calibration/TRAFFICKING_PREREG.md.
         self.swap_prob = float(swap_prob)
 
         self.B = np.zeros((L, L), bool)     # tumour B cells
@@ -117,6 +117,7 @@ class Lymphoid:
         self.t = 0
         self.kills = 0
         self.cum_contact = 0
+        self.cum_engaged_min = 0.0   # engaged T-cell-minutes, integrated EVERY step
         self._n_engaged = 0
         self.history = []
 
@@ -146,6 +147,17 @@ class Lymphoid:
         flat = np.zeros(self.L * self.L, bool); flat[pick] = True
         self.T |= flat.reshape(self.L, self.L)
 
+    def kill_efficiency(self):
+        """Remaining cytotoxic function per T cell, in [0,1]. Default: linear in exhaustion.
+
+        Factored out as a hook so an alternative exhaustion MECHANISM can be substituted by
+        subclassing, without duplicating step() or perturbing this class's behaviour. The default
+        return value is exactly the `1.0 - self.E` expression it replaces, so results are
+        unchanged. See exhaustion.py for why a linear mechanism cannot reproduce the shape of
+        Philipp's measured curve, only its endpoints.
+        """
+        return 1.0 - self.E
+
     # ------------------------------------------------------------------- step
     def step(self, drug=None):
         if drug is not None:
@@ -154,12 +166,15 @@ class Lymphoid:
         L = self.L
         killed_now = 0
         self._n_engaged = int(((nbr_sum(self.B) > 0) & self.T).sum()) if self.T.any() else 0
+        # Integrated here rather than sampled at a reporting boundary: a daily snapshot
+        # multiplied by 1440 is not the integral of a quantity that varies within the day.
+        self.cum_engaged_min += self._n_engaged * self.dt
 
         # ---- 1. T-cell killing. A T cell adjacent to a B cell, with engager present,
         #         kills it. Kill hazard scales with drug and with remaining (1 - exhaustion).
         if self.drug > 0 and self.T.any() and self.B.any():
             # effective per-contact hazard carried by each T cell
-            pot = np.where(self.T, self.p_kill * self.dt * self.drug * (1.0 - self.E), 0.0)
+            pot = np.where(self.T, self.p_kill * self.dt * self.drug * self.kill_efficiency(), 0.0)
             # accumulate, for each B site, the hazard from all adjacent T cells
             haz = nbr_sum(pot) * self.B
             ncontact = nbr_sum(self.T)
@@ -185,13 +200,24 @@ class Lymphoid:
             # engager is present accrues exhaustion per unit time, whether or not it kills.
             # Calibrated so ~28 d of continuous contact drives E->1 (Philipp 2022: specific
             # lysis 88.4% at day 7 -> 8.6% at day 28 under continuous exposure).
+            # Accrual scales with OCCUPANCY, not merely with the engager being present. With a
+            # binary 0/1 schedule this is identical to the previous behaviour; it differs only
+            # under a graded drug term, which is exactly what pk.py supplies. Without this, a
+            # half-life-extended agent at 20% occupancy would exhaust T cells as fast as one at
+            # full saturation, and experiment T could not test its own hypothesis.
             if self.exhaust_tonic:
-                self.E += self.exhaust_tonic * self.dt * (self.T & (ncontact_B > 0))
+                self.E += (self.exhaust_tonic * self.dt * self.drug
+                           * (self.T & (ncontact_B > 0)))
             np.clip(self.E, 0.0, 1.0, out=self.E)
 
         # ---- 2. Exhaustion recovery when the engager is absent (Philipp 2022 TFI effect)
-        if self.drug == 0 and self.recover_tau > 0:
-            self.E *= np.exp(-self.dt / self.recover_tau)
+        # Graded in (1 - occupancy) rather than gated on drug == 0 exactly. Binary schedules are
+        # unaffected: at drug 0 this is the old expression, at drug 1 the factor is exp(0) = 1.
+        # Under a PK tail the old form disabled recovery entirely for any positive concentration,
+        # however small, which made a treatment-free interval unrepresentable for a half-life-
+        # extended agent -- the very thing experiment T exists to measure.
+        if self.recover_tau > 0 and self.drug < 1.0:
+            self.E *= np.exp(-self.dt * (1.0 - self.drug) / self.recover_tau)
 
         # ---- 3. B-cell death and division
         occupied = self.B | self.T
@@ -209,7 +235,7 @@ class Lymphoid:
             self.T[tdie] = False; self.E[tdie] = 0.0
             occupied = self.B | self.T
             empty = ~occupied
-            twants = self.T & adjB & (self.drug > 0) & (rng.random((L, L)) < self.t_div * self.dt * (1.0 - self.E))
+            twants = self.T & adjB & (self.drug > 0) & (rng.random((L, L)) < self.t_div * self.dt * self.kill_efficiency())
             self._place(twants, empty, what='T')
 
         # ---- 5. T-cell motility. This is the crux: a T cell can ONLY move into an EMPTY

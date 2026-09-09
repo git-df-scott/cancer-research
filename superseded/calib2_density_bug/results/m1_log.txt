@@ -1,0 +1,17 @@
+16 cells on 4 procs
+1/16 M1 pk=3.0e-04 t=2.0e-04 | d7=  3.5 d14=  1.8 d28=  0.9 || held-out d14tfi= 21.7 (fail) | fit_loss=  8358.4
+2/16 M1 pk=3.0e-04 t=1.0e-04 | d7=  5.2 d14=  1.2 d28=  0.0 || held-out d14tfi= 26.1 (fail) | fit_loss=  8137.9
+3/16 M1 pk=3.0e-04 t=5.0e-05 | d7= 23.7 d14=  2.3 d28=  1.0 || held-out d14tfi= 25.1 (fail) | fit_loss=  5306.3
+4/16 M1 pk=3.0e-04 t=2.5e-05 | d7= 42.7 d14= 18.7 d28=  0.0 || held-out d14tfi= 24.9 (fail) | fit_loss=  2425.1
+5/16 M1 pk=5.0e-04 t=1.0e-04 | d7=  6.4 d14=  2.9 d28=  0.8 || held-out d14tfi= 34.3 (fail) | fit_loss=  7811.7
+6/16 M1 pk=5.0e-04 t=2.5e-05 | d7= 59.9 d14= 33.2 d28=  0.8 || held-out d14tfi= 34.3 (fail) | fit_loss=   877.3
+7/16 M1 pk=5.0e-04 t=5.0e-05 | d7= 46.0 d14=  5.6 d28=  0.8 || held-out d14tfi= 43.8 (fail) | fit_loss=  2718.6
+8/16 M1 pk=5.0e-04 t=2.0e-04 | d7=  4.7 d14=  4.6 d28=  0.0 || held-out d14tfi= 23.9 (fail) | fit_loss=  8000.4
+9/16 M1 pk=7.0e-04 t=1.0e-04 | d7= 15.5 d14=  6.4 d28=  1.1 || held-out d14tfi= 49.2 (fail) | fit_loss=  6175.8
+10/16 M1 pk=7.0e-04 t=2.0e-04 | d7=  8.0 d14=  2.8 d28=  2.4 || held-out d14tfi= 37.1 (fail) | fit_loss=  7527.4
+11/16 M1 pk=7.0e-04 t=5.0e-05 | d7= 66.7 d14= 11.8 d28=  2.9 || held-out d14tfi= 53.6 (fail) | fit_loss=  1034.5
+12/16 M1 pk=7.0e-04 t=2.5e-05 | d7= 70.3 d14= 41.7 d28=  2.2 || held-out d14tfi= 54.5 (fail) | fit_loss=   413.1
+13/16 M1 pk=1.0e-03 t=5.0e-05 | d7= 83.1 d14= 19.5 d28=  1.8 || held-out d14tfi= 69.1 (fail) | fit_loss=   311.3
+14/16 M1 pk=1.0e-03 t=2.5e-05 | d7= 81.4 d14= 62.3 d28=  8.6 || held-out d14tfi= 65.3 (fail) | fit_loss=   801.8
+15/16 M1 pk=1.0e-03 t=1.0e-04 | d7= 42.2 d14=  5.7 d28=  0.0 || held-out d14tfi= 67.4 (fail) | fit_loss=  3063.4
+16/16 M1 pk=1.0e-03 t=2.0e-04 | d7=  8.0 d14=  4.7 d28=  4.8 || held-out d14tfi= 45.0 (fail) | fit_loss=  7395.4

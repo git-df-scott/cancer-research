@@ -1,0 +1,28 @@
+27 cells on 4 procs
+1/27 tonic=3e-05 theta=0.55 hill=12 | d7=103.9 d14= 97.5 d28=108.1 d14tfi=108.9 | loss=14292.9
+2/27 tonic=3e-05 theta=0.55 hill=6 | d7= 99.8 d14=104.7 d28= 66.7 d14tfi= 94.5 | loss= 8380.3
+3/27 tonic=3e-05 theta=0.60 hill=6 | d7=103.0 d14= 96.6 d28= 79.5 d14tfi=102.3 | loss= 9126.2
+4/27 tonic=3e-05 theta=0.55 hill=8 | d7=107.6 d14= 90.8 d28= 75.1 d14tfi=106.7 | loss= 8089.8
+5/27 tonic=3e-05 theta=0.65 hill=8 | d7=107.1 d14=106.6 d28= 94.9 d14tfi=111.0 | loss=13256.3
+6/27 tonic=3e-05 theta=0.60 hill=12 | d7=103.9 d14= 99.5 d28= 93.7 d14tfi=108.9 | loss=11891.5
+7/27 tonic=3e-05 theta=0.65 hill=6 | d7= 99.9 d14= 96.9 d28= 84.1 d14tfi=104.2 | loss= 9793.8
+8/27 tonic=3e-05 theta=0.60 hill=8 | d7=107.1 d14=100.8 d28= 86.7 d14tfi=111.0 | loss=11094.1
+9/27 tonic=3e-05 theta=0.65 hill=12 | d7=103.9 d14= 98.8 d28= 92.0 d14tfi=108.9 | loss=11522.0
+10/27 tonic=5e-05 theta=0.55 hill=8 | d7= 74.3 d14= 75.3 d28=  0.5 d14tfi= 99.3 | loss= 1931.1
+11/27 tonic=5e-05 theta=0.55 hill=6 | d7= 71.9 d14= 72.1 d28=  2.6 d14tfi=110.5 | loss= 1984.2
+12/27 tonic=5e-05 theta=0.55 hill=12 | d7= 82.1 d14= 70.0 d28=  0.0 d14tfi=103.6 | loss= 1450.0
+13/27 tonic=5e-05 theta=0.60 hill=6 | d7= 80.8 d14= 74.2 d28=  9.7 d14tfi= 99.1 | loss= 1637.4
+14/27 tonic=5e-05 theta=0.60 hill=8 | d7= 86.3 d14= 76.6 d28=  2.4 d14tfi=103.8 | loss= 1890.4
+15/27 tonic=5e-05 theta=0.60 hill=12 | d7=100.2 d14= 83.4 d28=  0.4 d14tfi=107.4 | loss= 2750.7
+16/27 tonic=5e-05 theta=0.65 hill=6 | d7= 90.3 d14= 80.9 d28=  7.8 d14tfi=101.9 | loss= 2188.5
+17/27 tonic=5e-05 theta=0.65 hill=8 | d7= 95.4 d14= 90.6 d28=  5.5 d14tfi= 96.5 | loss= 3174.5
+18/27 tonic=7e-05 theta=0.55 hill=6 | d7= 15.9 d14= 13.9 d28=  2.0 d14tfi=107.1 | loss= 5930.7
+19/27 tonic=5e-05 theta=0.65 hill=12 | d7= 90.3 d14= 89.4 d28=  0.9 d14tfi=102.9 | loss= 3123.8
+20/27 tonic=7e-05 theta=0.55 hill=8 | d7= 10.5 d14= 12.6 d28=  0.9 d14tfi=102.5 | loss= 6704.4
+21/27 tonic=7e-05 theta=0.55 hill=12 | d7=  4.0 d14=  2.5 d28=  0.0 d14tfi=104.8 | loss= 8374.0
+22/27 tonic=7e-05 theta=0.60 hill=6 | d7= 27.4 d14= 24.2 d28=  7.7 d14tfi= 99.9 | loss= 3875.7
+23/27 tonic=7e-05 theta=0.60 hill=8 | d7= 19.8 d14= 18.0 d28=  1.9 d14tfi= 99.9 | loss= 5075.7
+24/27 tonic=7e-05 theta=0.60 hill=12 | d7= 11.4 d14= 12.4 d28=  0.0 d14tfi= 99.8 | loss= 6553.7
+25/27 tonic=7e-05 theta=0.65 hill=6 | d7= 34.8 d14= 36.1 d28=  9.9 d14tfi= 97.8 | loss= 2890.9
+26/27 tonic=7e-05 theta=0.65 hill=8 | d7= 35.5 d14= 28.6 d28=  3.9 d14tfi=103.0 | loss= 2949.9
+27/27 tonic=7e-05 theta=0.65 hill=12 | d7= 23.1 d14= 25.3 d28=  0.0 d14tfi=104.8 | loss= 4567.0

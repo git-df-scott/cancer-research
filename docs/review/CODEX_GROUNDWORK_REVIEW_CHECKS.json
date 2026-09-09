@@ -1,0 +1,131 @@
+{
+  "pk_selftest": true,
+  "exposure": {
+    "reference_cont": 0.6666666666666666,
+    "L1_cont": 1.0,
+    "L1_tfi14": 0.6666666666666666
+  },
+  "probe_mutation": {
+    "seed": 7,
+    "L": 20,
+    "before": {
+      "t": 0,
+      "nT": 40,
+      "meanE": 0.6,
+      "history": 0
+    },
+    "after": {
+      "t": 480.0,
+      "nT": 38,
+      "meanE": 0.031578947368421054,
+      "history": 96,
+      "E_on_nonT": 38,
+      "T_sites_changed": 74
+    },
+    "probe_value": 45.2991452991453
+  },
+  "comparators": {
+    "q2w": {
+      "total_mg": 71.0,
+      "mg_before84": 61.0,
+      "auc_0_84": 87.2776523567142
+    },
+    "infusion": {
+      "total_mg": 71.0,
+      "mg_before84": 71.0,
+      "auc_0_84": 95.52228098231605
+    },
+    "weekly_half": {
+      "total_mg": 61.0,
+      "mg_before84": 56.0,
+      "auc_0_84": 77.61803448593214
+    },
+    "q4w_double": {
+      "total_mg": 61.0,
+      "mg_before84": 61.0,
+      "auc_0_84": 87.91097187914936
+    }
+  },
+  "pk_ratio_sensitivity": [
+    {
+      "half_life": 5.8,
+      "feasible_range_fraction": 0.01,
+      "v_ratio": 0.0057866066073088245,
+      "day56_70_drop": 29.568291924751055,
+      "steady_state_drop_1nM": 29.582497309260358,
+      "EC50_threshold_nM": 0.7880018179223621
+    },
+    {
+      "half_life": 5.8,
+      "feasible_range_fraction": 0.1,
+      "v_ratio": 0.057866066073088245,
+      "day56_70_drop": 28.268008001325416,
+      "steady_state_drop_1nM": 28.289218734003086,
+      "EC50_threshold_nM": 0.8406210208237574
+    },
+    {
+      "half_life": 5.8,
+      "feasible_range_fraction": 0.5,
+      "v_ratio": 0.2893303303654412,
+      "day56_70_drop": 22.272844425100104,
+      "steady_state_drop_1nM": 22.30035015393127,
+      "EC50_threshold_nM": 1.1675449202935069
+    },
+    {
+      "half_life": 5.8,
+      "feasible_range_fraction": 0.9,
+      "v_ratio": 0.5207945946577942,
+      "day56_70_drop": 17.895038321791525,
+      "steady_state_drop_1nM": 17.91856599289552,
+      "EC50_threshold_nM": 1.5528462913888068
+    },
+    {
+      "half_life": 5.8,
+      "feasible_range_fraction": 0.99,
+      "v_ratio": 0.5728740541235736,
+      "day56_70_drop": 17.305947865116355,
+      "steady_state_drop_1nM": 17.328857729834713,
+      "EC50_threshold_nM": 1.6203903878091466
+    },
+    {
+      "half_life": 11.2,
+      "feasible_range_fraction": 0.01,
+      "v_ratio": 0.020484481724458423,
+      "day56_70_drop": 29.42640081361865,
+      "steady_state_drop_1nM": 29.43763918220046,
+      "EC50_threshold_nM": 0.7936574832708673
+    },
+    {
+      "half_life": 11.2,
+      "feasible_range_fraction": 0.1,
+      "v_ratio": 0.20484481724458423,
+      "day56_70_drop": 26.923578640937873,
+      "steady_state_drop_1nM": 26.920673791706974,
+      "EC50_threshold_nM": 0.9020218718205969
+    },
+    {
+      "half_life": 11.2,
+      "feasible_range_fraction": 0.5,
+      "v_ratio": 1.024224086222921,
+      "day56_70_drop": 17.27836112542177,
+      "steady_state_drop_1nM": 17.258057289051386,
+      "EC50_threshold_nM": 1.6288266915595289
+    },
+    {
+      "half_life": 11.2,
+      "feasible_range_fraction": 0.9,
+      "v_ratio": 1.8436033552012578,
+      "day56_70_drop": 11.496993369601094,
+      "steady_state_drop_1nM": 11.481098813464186,
+      "EC50_threshold_nM": 2.6951151373890982
+    },
+    {
+      "half_life": 11.2,
+      "feasible_range_fraction": 0.99,
+      "v_ratio": 2.027963690721384,
+      "day56_70_drop": 10.736121924840635,
+      "steady_state_drop_1nM": 10.72103701578726,
+      "EC50_threshold_nM": 2.927706572708619
+    }
+  ]
+}

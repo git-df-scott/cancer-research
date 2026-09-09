@@ -1,0 +1,40 @@
+{
+ "status": "FIT_NOT_VALIDATED",
+ "model": "M1 ThresholdLymphoid, Hill mapping; theta/hill INDEPENDENTLY RESELECTED (225-cell clean grid)",
+ "params": {
+  "p_kill": 0.001,
+  "exhaust_tonic": 5e-05,
+  "exhaust_per_kill": 0.0,
+  "recover_tau": 10080.0,
+  "theta": 0.5,
+  "hill": 4.0
+ },
+ "residuals": {
+  "d7_cont": -1.4,
+  "d14_cont": -1.5,
+  "d28_cont": 2.2,
+  "d14_tfi": -6.8
+ },
+ "fit_targets": [
+  "d7_cont",
+  "d14_cont",
+  "d28_cont"
+ ],
+ "held_out": {
+  "observation": "philipp_d14_tfi",
+  "predicted": 86.6,
+  "target": 93.4,
+  "tolerance": 15.0,
+  "passed": true,
+  "CONTAMINATED": true,
+  "contamination": "recover_tau and exhaust_tonic both cite Philipp 2022; pass is uninterpretable"
+ },
+ "seeds": [
+  0,
+  1
+ ],
+ "notes": "Classification B. Clean 225-cell reselection returns the SAME theta/hill as the superseded scan, so selection contamination did not drive the choice; optimum is interior on all four axes, next best 20x worse. NOT VALIDATED: no provenance-clean external observation exists. MECHANISM UNIDENTIFIED: one latent state vs two, chance concordance 0.25. See docs/findings/FINAL_VERDICT.md.",
+ "boundary": [],
+ "code_hash": "443fb2b22657bcb0",
+ "git_rev": "61712521329eef507ed93e8f43e7781808f453b7"
+}

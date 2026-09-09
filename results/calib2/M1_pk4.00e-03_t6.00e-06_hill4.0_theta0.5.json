@@ -1,0 +1,38 @@
+{
+ "model": "M1",
+ "p_kill": 0.004,
+ "exhaust_tonic": 6e-06,
+ "extra": {
+  "theta": 0.5,
+  "hill": 4.0
+ },
+ "measured": {
+  "d7_cont": 100.0,
+  "d14_cont": 100.0,
+  "d28_cont": 100.0,
+  "d14_tfi": 100.0
+ },
+ "seed_sd": {
+  "d7_cont": 0.0,
+  "d14_cont": 0.0,
+  "d28_cont": 0.0,
+  "d14_tfi": 0.0
+ },
+ "target": {
+  "d7_cont": 88.4,
+  "d14_cont": 34.9,
+  "d28_cont": 8.6,
+  "d14_tfi": 93.4
+ },
+ "fit_loss": 12726.529999999999,
+ "full_loss": 12770.089999999998,
+ "err": {
+  "d7_cont": 11.6,
+  "d14_cont": 65.1,
+  "d28_cont": 91.4,
+  "d14_tfi": 6.6
+ },
+ "held_out": "d14_tfi",
+ "held_out_err": 6.6,
+ "held_out_pass": true
+}

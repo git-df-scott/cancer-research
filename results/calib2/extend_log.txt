@@ -1,0 +1,19 @@
+18 cells on 4 procs
+1/18 M0 pk=1.0e-03 t=2.5e-05 | d7= 84.6 d14= 71.4 d28= 29.8 || held-out d14tfi= 85.2 (PASS) | fit_loss=  1796.1
+2/18 M0 pk=1.0e-03 t=1.2e-05 | d7= 85.2 d14= 82.2 d28= 71.0 || held-out d14tfi= 87.8 (PASS) | fit_loss=  6141.3
+3/18 M0 pk=2.0e-03 t=6.0e-06 | d7= 98.4 d14= 97.4 d28= 95.8 || held-out d14tfi= 99.4 (PASS) | fit_loss= 11610.1
+4/18 M0 pk=2.0e-03 t=1.2e-05 | d7= 97.4 d14= 97.0 d28= 95.0 || held-out d14tfi= 98.6 (PASS) | fit_loss= 11402.4
+5/18 M0 pk=1.0e-03 t=6.0e-06 | d7= 87.8 d14= 84.6 d28= 79.4 || held-out d14tfi= 89.0 (PASS) | fit_loss=  7483.1
+6/18 M0 pk=4.0e-03 t=6.0e-06 | d7=100.0 d14= 99.8 d28=100.0 || held-out d14tfi=100.0 (PASS) | fit_loss= 12700.5
+7/18 M0 pk=4.0e-03 t=1.2e-05 | d7=100.0 d14= 99.8 d28= 99.8 || held-out d14tfi=100.0 (PASS) | fit_loss= 12664.0
+8/18 M0 pk=4.0e-03 t=2.5e-05 | d7= 99.8 d14=100.0 d28= 98.2 || held-out d14tfi=100.0 (PASS) | fit_loss= 12396.1
+9/18 M1 pk=1.0e-03 t=2.5e-05 | d7= 88.6 d14= 84.6 d28= 23.0 || held-out d14tfi= 86.6 (PASS) | fit_loss=  2677.5
+10/18 M0 pk=2.0e-03 t=2.5e-05 | d7= 96.8 d14= 95.6 d28= 84.6 || held-out d14tfi= 98.4 (PASS) | fit_loss=  9531.0
+11/18 M1 pk=1.0e-03 t=6.0e-06 | d7= 86.6 d14= 86.6 d28= 89.0 || held-out d14tfi= 86.6 (PASS) | fit_loss=  9140.3
+12/18 M1 pk=1.0e-03 t=1.2e-05 | d7= 86.6 d14= 88.0 d28= 79.2 || held-out d14tfi= 86.6 (PASS) | fit_loss=  7807.2
+13/18 M1 pk=2.0e-03 t=1.2e-05 | d7= 98.4 d14= 99.4 d28= 98.2 || held-out d14tfi= 98.4 (PASS) | fit_loss= 12288.4
+14/18 M1 pk=2.0e-03 t=6.0e-06 | d7= 98.4 d14= 98.4 d28= 99.4 || held-out d14tfi= 98.4 (PASS) | fit_loss= 12376.9
+15/18 M1 pk=4.0e-03 t=6.0e-06 | d7=100.0 d14=100.0 d28=100.0 || held-out d14tfi=100.0 (PASS) | fit_loss= 12726.5
+16/18 M1 pk=2.0e-03 t=2.5e-05 | d7= 98.4 d14= 98.2 d28= 80.8 || held-out d14tfi= 98.4 (PASS) | fit_loss=  9319.7
+17/18 M1 pk=4.0e-03 t=1.2e-05 | d7=100.0 d14=100.0 d28=100.0 || held-out d14tfi=100.0 (PASS) | fit_loss= 12726.5
+18/18 M1 pk=4.0e-03 t=2.5e-05 | d7=100.0 d14=100.0 d28= 99.8 || held-out d14tfi=100.0 (PASS) | fit_loss= 12690.0

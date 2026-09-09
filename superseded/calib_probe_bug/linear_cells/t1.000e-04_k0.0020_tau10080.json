@@ -1,0 +1,28 @@
+{
+ "exhaust_tonic": 0.0001,
+ "exhaust_per_kill": 0.002,
+ "recover_tau": 10080.0,
+ "measured": {
+  "d7_cont": 0.0,
+  "d14_cont": 0.0,
+  "d28_cont": 0.0,
+  "d14_tfi": 69.03084065660752
+ },
+ "target": {
+  "d7_cont": 88.4,
+  "d14_cont": 34.9,
+  "d28_cont": 8.6,
+  "d14_tfi": 93.4
+ },
+ "loss": 9700.385927103654,
+ "err": {
+  "d7_cont": -88.4,
+  "d14_cont": -34.9,
+  "d28_cont": -8.6,
+  "d14_tfi": -24.4
+ },
+ "seeds": [
+  0,
+  1
+ ]
+}
