@@ -64,7 +64,7 @@ import philipp_assay as PA
 from lymphoid import Lymphoid
 from exhaustion import ThresholdLymphoid
 
-OUT = 'results/calib2'
+OUT = os.environ.get('FIT_OUT', 'results/calib2')
 os.makedirs(OUT, exist_ok=True)
 
 FIT_TARGETS = ('d7_cont', 'd14_cont', 'd28_cont')   # d14_tfi is held out
@@ -109,10 +109,18 @@ def grid(model, mode='base'):
     if mode == 'extend':
         pks = [1e-3, 2e-3, 4e-3]
         tonics = [6e-6, 1.2e-5, 2.5e-5]
+    if mode == 'clean':
+        # Phase 1 clean M1 reselection. See M1_RESELECTION_PREREG.md, committed before running.
+        # theta and hill ranges are defined from the reachable domain and structural limits, NOT
+        # from the previous optimum, which came from the superseded destructive-probe scan.
+        pks = [5e-4, 1e-3, 2e-3]
+        tonics = [2.5e-5, 5e-5, 1e-4]
     if model == 'M0':
         return [('M0', pk, t, {}) for pk, t in itertools.product(pks, tonics)]
+    thetas = [0.15, 0.30, 0.50, 0.70, 0.90] if mode == 'clean' else [0.5]
+    hills = [1.0, 2.0, 4.0, 8.0, 16.0] if mode == 'clean' else [4.0]
     return [('M1', pk, t, {'theta': th, 'hill': h})
-            for pk, t, th, h in itertools.product(pks, tonics, [0.5], [4.0])]
+            for pk, t, th, h in itertools.product(pks, tonics, thetas, hills)]
 
 
 if __name__ == '__main__':
