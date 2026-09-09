@@ -1,6 +1,6 @@
 {
  "status": "FIT_NOT_VALIDATED",
- "model": "M1 (ThresholdLymphoid, Hill mapping, theta=0.5 hill=4.0)",
+ "model": "M1 ThresholdLymphoid, Hill mapping; theta/hill INDEPENDENTLY RESELECTED (225-cell clean grid)",
  "params": {
   "p_kill": 0.001,
   "exhaust_tonic": 5e-05,
@@ -27,14 +27,14 @@
   "tolerance": 15.0,
   "passed": true,
   "CONTAMINATED": true,
-  "contamination": "recover_tau and exhaust_tonic both cite Philipp 2022; a pass is uninterpretable"
+  "contamination": "recover_tau and exhaust_tonic both cite Philipp 2022; pass is uninterpretable"
  },
  "seeds": [
   0,
   1
  ],
- "notes": "Classification B. M1 fits within simulation noise on a bracketed grid; M0 rejected by residual structure. NOT VALIDATED: no provenance-clean external observation exists, and M1 theta/hill were selected against the superseded destructive-probe instrument and never re-searched. See FINAL_CLASSIFICATION.md.",
+ "notes": "Classification B. Clean 225-cell reselection returns the SAME theta/hill as the superseded scan, so selection contamination did not drive the choice; optimum is interior on all four axes, next best 20x worse. NOT VALIDATED: no provenance-clean external observation exists. MECHANISM UNIDENTIFIED: one latent state vs two, chance concordance 0.25. See docs/findings/FINAL_VERDICT.md.",
  "boundary": [],
- "code_hash": "517957c61142b18c",
- "git_rev": "ca60e5d794d18beafd67679b5f1c7f7cde335785"
+ "code_hash": "443fb2b22657bcb0",
+ "git_rev": "61712521329eef507ed93e8f43e7781808f453b7"
 }
