@@ -1,0 +1,17 @@
+arm,chronic_day,endpoint,value,assay,figure,n,uncertainty,source
+continuous,7,specific_lysis_pct,88.4,72h E:T 1:1,Fig 2E,6,mean+/-SEM,Philipp Blood 2022 PMID 35878001 / PMC10652962
+continuous,14,specific_lysis_pct,34.9,72h E:T 1:1,Fig 3E,6,mean+/-SEM,Philipp Blood 2022 PMID 35878001 / PMC10652962
+continuous,28,specific_lysis_pct,8.6,72h E:T 1:1,Fig 2E,6,mean+/-SEM,Philipp Blood 2022 PMID 35878001 / PMC10652962
+TFI,14,specific_lysis_pct,93.4,72h E:T 1:1,Fig 3E,6,mean+/-SEM,Philipp Blood 2022 PMID 35878001 / PMC10652962
+TFI,28,specific_lysis_pct,58.7,72h E:T 1:1,Fig 3E,,mean+/-SEM,Philipp Blood 2022 PMID 35878001 / PMC10652962
+continuous,14,CD2_fold_change_3day,1.1,3-day proliferation assay,Fig 3,6,P=.002,Philipp Blood 2022 PMID 35878001 / PMC10652962
+TFI,14,CD2_fold_change_3day,4.1,3-day proliferation assay,Fig 3,6,P=.002,Philipp Blood 2022 PMID 35878001 / PMC10652962
+continuous,28,CD2_fold_change_3day,0.06,3-day proliferation assay,Fig 3,,P=.09,Philipp Blood 2022 PMID 35878001 / PMC10652962
+TFI,28,CD2_fold_change_3day,2.8,3-day proliferation assay,Fig 3,,P=.09,Philipp Blood 2022 PMID 35878001 / PMC10652962
+continuous,7,absolute_viable_Tcell_count_chronic,NOT_REPORTED,,,,,Philipp Blood 2022 - not reported
+TFI,7,absolute_viable_Tcell_count_chronic,NOT_REPORTED,,,,,Philipp Blood 2022 - not reported
+continuous,14,absolute_viable_Tcell_count_chronic,NOT_REPORTED,,,,,Philipp Blood 2022 - not reported
+TFI,14,absolute_viable_Tcell_count_chronic,NOT_REPORTED,,,,,Philipp Blood 2022 - not reported
+continuous,28,absolute_viable_Tcell_count_chronic,NOT_REPORTED,,,,,Philipp Blood 2022 - not reported
+TFI,28,absolute_viable_Tcell_count_chronic,NOT_REPORTED,,,,,Philipp Blood 2022 - not reported
+both,all,division_history_marker,NOT_MEASURED,,,,,Philipp Blood 2022 - no Ki-67/CFSE/CellTrace

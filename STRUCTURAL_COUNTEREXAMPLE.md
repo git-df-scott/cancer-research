@@ -85,3 +85,12 @@ recover the population dynamics that were never simulated.
 It does not show M1's Hill mapping is wrong. It shows the calibration cannot distinguish a
 per-cell recovery mechanism from a compositional one, because the model omits the compositional
 channel entirely. That is an identifiability failure with a specific, named, measured cause.
+
+---
+
+**SUPERSEDED IN PART — see `COUNTEREXAMPLE_VERDICT.md`.** The central claim here, that
+Philipp's chronic culture is measured to sustain and expand T cells while this model's does not,
+is RETRACTED. The 4.1-vs-1.1 fold change is a 3-day assay readout of proliferative capacity, not a
+chronic-culture population trajectory, and no absolute chronic-culture counts are reported. What
+survives is narrower: two functional axes were measured to diverge between arms, and M1 has one
+latent state.
