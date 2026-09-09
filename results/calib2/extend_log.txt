@@ -1,0 +1,2 @@
+18 cells on 4 procs
+1/18 M0 pk=1.0e-03 t=2.5e-05 | d7= 84.6 d14= 71.4 d28= 29.8 || held-out d14tfi= 85.2 (PASS) | fit_loss=  1796.1

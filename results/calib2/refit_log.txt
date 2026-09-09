@@ -27,3 +27,7 @@
 26/32 M1 pk=7.0e-04 t=5.0e-05 | d7= 67.2 d14= 17.2 d28= 11.0 || held-out d14tfi= 73.0 (fail) | fit_loss=   768.5
 27/32 M1 pk=7.0e-04 t=1.0e-04 | d7= 15.8 d14= 11.0 d28= 11.0 || held-out d14tfi= 72.4 (fail) | fit_loss=  5847.7
 28/32 M1 pk=7.0e-04 t=2.0e-04 | d7= 11.0 d14= 11.0 d28= 11.0 || held-out d14tfi= 54.4 (fail) | fit_loss=  6567.7
+29/32 M1 pk=1.0e-03 t=5.0e-05 | d7= 87.0 d14= 33.4 d28= 10.8 || held-out d14tfi= 86.6 (PASS) | fit_loss=     9.0
+30/32 M1 pk=1.0e-03 t=2.5e-05 | d7= 88.6 d14= 84.6 d28= 23.0 || held-out d14tfi= 86.6 (PASS) | fit_loss=  2677.5
+31/32 M1 pk=1.0e-03 t=1.0e-04 | d7= 46.2 d14= 10.8 d28= 10.8 || held-out d14tfi= 84.6 (PASS) | fit_loss=  2366.5
+32/32 M1 pk=1.0e-03 t=2.0e-04 | d7= 10.8 d14= 10.8 d28= 10.8 || held-out d14tfi= 62.2 (fail) | fit_loss=  6607.4
