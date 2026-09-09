@@ -60,3 +60,30 @@ cheap and is now owed: for every parameter default, record the source that set i
 held-out observation, assert no parameter default cites that source.
 
 That test does not exist yet and is listed as required work rather than claimed as done.
+
+---
+
+## Addendum: the cells that "pass" do so by saturation
+
+The extension grid brackets the optimum (the best-fit cell is now interior in both dimensions), and
+it produces six cells that pass the held-out tolerance. None of them is evidence of anything.
+
+| p_kill | tonic | d7 | d14 | d28 | fit SSE | d14_tfi |
+|---|---|---|---|---|---|---|
+| 1.0e-03 | 2.5e-05 | 79.0 | 45.6 | 9.7 | **204.2** | 67.5 FAIL |
+| 2.0e-03 | 2.5e-05 | 96.8 | 87.9 | 28.5 | 3271.6 | 90.3 PASS |
+| 4.0e-03 | 1.2e-05 | 99.8 | 98.1 | 66.0 | 7421.0 | 99.0 PASS |
+| target | | 88.4 | 34.9 | 8.6 | | 93.4 |
+
+Every passing cell sits at p_kill 2e-3 or 4e-3, where the readout is saturated: day 7, day 14 and
+the TFI arm all read 87–99% because the effectors clear the targets regardless of exhaustion. They
+pass the recovery test by being unable to represent loss of function at all. Their fit SSE is 16–36×
+worse than the best-fitting cell.
+
+**No cell both fits and passes.** The two criteria select disjoint regions of parameter space, and
+they do so for a comprehensible reason: fitting the decay requires enough exhaustion sensitivity to
+drop day 28 to 8.6, while passing the recovery test requires enough kill capacity to reach 93.4
+after a 7-day break, and this observation model cannot do both at one kill rate.
+
+That is a model-adequacy signature, not a search problem. The optimum is bracketed; there is no
+unexplored region left to appeal to within this grid.

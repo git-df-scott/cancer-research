@@ -1,2 +1,10 @@
 9 cells on 4 procs
 1/9 M0 pk=1.0e-03 t=2.5e-05 | d7= 79.0 d14= 45.6 d28=  9.7 || held-out d14tfi= 67.5 (fail) | fit_loss=   204.2
+2/9 M0 pk=2.0e-03 t=1.2e-05 | d7= 95.9 d14= 84.8 d28= 44.1 || held-out d14tfi= 87.0 (PASS) | fit_loss=  3814.2
+3/9 M0 pk=1.0e-03 t=6.0e-06 | d7= 84.1 d14= 66.1 d28= 28.2 || held-out d14tfi= 69.0 (fail) | fit_loss=  1378.7
+4/9 M0 pk=1.0e-03 t=1.2e-05 | d7= 80.5 d14= 59.2 d28= 23.2 || held-out d14tfi= 65.4 (fail) | fit_loss=   864.6
+5/9 M0 pk=2.0e-03 t=6.0e-06 | d7= 97.9 d14= 88.0 d28= 48.9 || held-out d14tfi= 89.4 (PASS) | fit_loss=  4532.6
+6/9 M0 pk=4.0e-03 t=6.0e-06 | d7= 99.8 d14= 97.5 d28= 65.8 || held-out d14tfi= 97.7 (PASS) | fit_loss=  7324.3
+7/9 M0 pk=4.0e-03 t=2.5e-05 | d7= 99.5 d14= 96.5 d28= 58.3 || held-out d14tfi= 98.8 (PASS) | fit_loss=  6386.3
+8/9 M0 pk=4.0e-03 t=1.2e-05 | d7= 99.8 d14= 98.1 d28= 66.0 || held-out d14tfi= 99.0 (PASS) | fit_loss=  7421.0
+9/9 M0 pk=2.0e-03 t=2.5e-05 | d7= 96.8 d14= 87.9 d28= 28.5 || held-out d14tfi= 90.3 (PASS) | fit_loss=  3271.6
