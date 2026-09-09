@@ -132,9 +132,42 @@ class TwoCompartmentPK:
         for d, mg in doses:
             self.add_dose(d, mg)
         t = doses[-1][0] + q_days
-        while t <= until_day:
+        while t < until_day:
             self.add_dose(t, maint_mg)
             t += q_days
+        return self
+
+    def scale_doses(self, factor):
+        """Multiply every dose by `factor`. Elimination is linear, so AUC scales identically."""
+        self.doses = [(t, mg * factor) for t, mg in self.doses]
+        return self
+
+    def auc(self, t0, t1, n=200001):
+        """Trapezoidal AUC of the central compartment over a FINITE window.
+
+        Exposure comparisons must be made on the window actually simulated. Equal eventual dose
+        does not imply equal AUC over a finite horizon: a bolus late in the window contributes
+        almost nothing to it, and a terminal tail extending past the horizon is never realised.
+        """
+        t = np.linspace(t0, t1, n)
+        return float(np.trapezoid(self.conc(t), t))
+
+    def add_infusion_auc_matched(self, target_auc, start=0.0, end=84.0, n_steps=2000):
+        """Infusion delivering the same AUC over [start, end] as `target_auc`.
+
+        Matching TOTAL DOSE is the wrong comparator, and measurably so. Codex's review integrated
+        the two arms over days 0-84 at the 11.2-day half-life and found Q2W gave AUC 87.278 against
+        the dose-matched infusion's 95.522, a 9% exposure advantage to the infusion -- because the
+        Q2W history contained a bolus at exactly day 84 that cannot influence the simulated
+        trajectory, yet its milligrams were spread across the whole infusion. Any timing conclusion
+        drawn against that comparator could be a dose effect.
+
+        Elimination is linear, so AUC is proportional to infused dose: scale a unit infusion.
+        """
+        probe = TwoCompartmentPK(self.t_half_terminal, self.CL, self.V1, self.v_ratio)
+        probe.add_infusion_matched(1.0, start, end, n_steps)
+        per_mg = probe.auc(start, end)
+        self.add_infusion_matched(target_auc / per_mg, start, end, n_steps)
         return self
 
     def add_infusion_matched(self, total_mg, start=0.0, end=84.0, n_steps=2000):

@@ -97,6 +97,18 @@ def regimen(kind, t_half):
         while t <= DAYS:
             m.add_dose(t, 5.0)
             t += 7.0
+    elif kind == 'weekly_matched':
+        # Fractionation at MATCHED windowed exposure. The plain weekly_half arm delivers ~11% less
+        # AUC over the horizon, so any advantage it showed could be a dose effect rather than a
+        # timing one. T4 asks whether peak-shaving helps at equal exposure, so the comparator has
+        # to be equal-exposure. Linear PK means a single scale factor suffices.
+        m.add_dose(0.0, 1.0)
+        tt = 7.0
+        while tt < DAYS:
+            m.add_dose(tt, 5.0)
+            tt += 7.0
+        ref = PK.TwoCompartmentPK(t_half_terminal=t_half).add_regimen(until_day=DAYS)
+        m.scale_doses(ref.auc(0.0, DAYS) / m.auc(0.0, DAYS))
     elif kind == 'q4w_double':
         m.add_dose(0.0, 1.0)
         t = 7.0
@@ -104,8 +116,10 @@ def regimen(kind, t_half):
             m.add_dose(t, 20.0)
             t += 28.0
     elif kind == 'infusion':
+        # Matched on AUC over the SIMULATED WINDOW, not on total milligrams. See
+        # pk.add_infusion_auc_matched for why dose-matching biased this comparator by ~9%.
         ref = PK.TwoCompartmentPK(t_half_terminal=t_half).add_regimen(until_day=DAYS)
-        m.add_infusion_matched(ref.total_mg(), 0.0, DAYS)
+        m.add_infusion_auc_matched(ref.auc(0.0, DAYS), 0.0, DAYS)
     elif kind == 'q2w_holiday':
         # genuine drug holiday: two cycles on, one cycle off, repeating
         t, i = 0.0, 0
@@ -144,17 +158,16 @@ def run_one(job):
     sim.seed_tcells(200)
 
     steps_per_day = int(1440 / DT)
-    dwell = 0.0
     snap = {}
     for day in range(DAYS):
         sim.run(steps_per_day, schedule=sched, record_every=10**9, stop_when_clear=False)
         nT = int(sim.T.sum())
-        dwell += sim._n_engaged * 1440.0
         snap[day + 1] = dict(nB=sim.nB, nT=nT,
                              meanE=float(sim.E[sim.T].mean()) if nT else 0.0,
                              occ=float(sched(sim)))
     rec = dict(kind=kind, t_half=t_half, ec50_nM=ec50_nM, seed=seed,
-               total_mg=m.total_mg(), dwell_Tmin=dwell,
+               total_mg=m.total_mg(), auc_window=m.auc(0.0, DAYS),
+               dwell_Tmin=float(sim.cum_engaged_min),
                nB84=sim.nB, meanE84=snap[DAYS]['meanE'], kills=int(sim.kills),
                occupancy=occupancy_stats(m, ec50), snap=snap)
     with open(path, 'w') as f:
@@ -178,7 +191,7 @@ def pk_only_table():
 
 
 def jobs():
-    kinds = ['q2w', 'infusion', 'weekly_half', 'q4w_double', 'q2w_holiday']
+    kinds = ['q2w', 'infusion', 'weekly_matched', 'weekly_half', 'q4w_double', 'q2w_holiday']
     return [(k, PK.THALF_POPPK, ec, s)
             for k in kinds for ec in (1.0, 10.0) for s in SEEDS]
 
