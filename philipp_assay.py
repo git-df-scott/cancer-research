@@ -96,16 +96,35 @@ class ChronicCulture:
 
 
 def readout_specific_lysis(chronic, assay_seed, hours=72, L=60, et_ratio=1.0,
-                           target_occ=0.20, model_cls=None, **kw):
+                           target_occ=0.20, model_cls=None, n_plate=250, **kw):
     """Equation 1: 72 h, E:T 1:1, fresh targets, normalised to a no-engager control construct.
 
     Both arms use the SAME harvested T cells and the same assay RNG seed, so the comparison is
     paired and the ratio is not contaminated by between-arm sampling noise.
     """
-    E_vals = chronic.harvest()
-    n_T = len(E_vals)
-    if n_T == 0:
+    harvested = chronic.harvest()
+    if len(harvested) == 0:
         return 0.0
+
+    # STANDARDISE THE PLATING DENSITY. Philipp plate a defined number of effectors at E:T 1:1;
+    # they do not plate however many happened to survive the chronic culture. Reading out at the
+    # surviving count confounds per-cell function with population attrition, and the confound is
+    # large: at a fixed exhaustion of 0.10 this readout gives 100% lysis with 600 cells plated and
+    # 51.7% with 60. The chronic culture falls from 229 to 137 to 51 T cells across the three
+    # timepoints, so each readout was being taken at a different density.
+    #
+    # That artefact masked the recovery mechanism entirely. The day-14 TFI arm reaches mean
+    # exhaustion 0.048 against the continuous arm's 0.318 -- reinvigoration works in the model --
+    # yet read out at 65% because only 134 cells were plated. It also made recover_tau look
+    # computationally dead: a 14-fold change moved the reading by 1.5 points.
+    #
+    # Sampling with replacement when the culture has fewer than n_plate survivors preserves the
+    # exhaustion DISTRIBUTION, which is the quantity the assay is meant to interrogate, while
+    # holding density fixed. Recorded as an assumption: the real experiment has a finite cell
+    # yield, and a culture that cannot supply n_plate cells is being represented optimistically.
+    rng = np.random.default_rng(assay_seed)
+    n_T = int(n_plate)
+    E_vals = rng.choice(harvested, size=n_T, replace=(len(harvested) < n_T))
     model_cls = model_cls or chronic.model_cls
     params = dict(chronic.model_kw)
     params.update(kw)
