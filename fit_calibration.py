@@ -101,9 +101,14 @@ def cell(job):
     return path
 
 
-def grid(model):
+def grid(model, mode='base'):
+    # Base grid. Its optimum landed on the boundary in BOTH dimensions (highest p_kill, lowest
+    # tonic), so it did not bracket the optimum and its best cell must not be quoted as a fit.
     pks = [3e-4, 5e-4, 7e-4, 1e-3]
     tonics = [2.5e-5, 5e-5, 1e-4, 2e-4]
+    if mode == 'extend':
+        pks = [1e-3, 2e-3, 4e-3]
+        tonics = [6e-6, 1.2e-5, 2.5e-5]
     if model == 'M0':
         return [('M0', pk, t, {}) for pk, t in itertools.product(pks, tonics)]
     return [('M1', pk, t, {'theta': th, 'hill': h})
@@ -113,7 +118,8 @@ def grid(model):
 if __name__ == '__main__':
     models = sys.argv[1].split(',') if len(sys.argv) > 1 else ['M0']
     nproc = int(sys.argv[2]) if len(sys.argv) > 2 else os.cpu_count()
-    jobs = [j for m in models for j in grid(m)]
+    mode = sys.argv[3] if len(sys.argv) > 3 else 'base'
+    jobs = [j for m in models for j in grid(m, mode)]
     print(f'{len(jobs)} cells on {nproc} procs', flush=True)
     with Pool(nproc) as p:
         for i, path in enumerate(p.imap_unordered(cell, jobs), 1):
