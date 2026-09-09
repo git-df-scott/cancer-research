@@ -11,3 +11,7 @@
 10/32 M0 pk=7.0e-04 t=5.0e-05 | d7= 61.2 d14= 19.2 d28=  0.0 || held-out d14tfi= 70.4 (fail) | fit_loss=  1060.3
 11/32 M0 pk=7.0e-04 t=2.5e-05 | d7= 67.4 d14= 56.8 d28= 18.0 || held-out d14tfi= 72.4 (fail) | fit_loss=  1009.0
 12/32 M0 pk=7.0e-04 t=1.0e-04 | d7= 22.0 d14=  0.0 d28=  0.0 || held-out d14tfi= 63.4 (fail) | fit_loss=  5700.9
+13/32 M0 pk=1.0e-03 t=1.0e-04 | d7= 44.0 d14=  0.0 d28=  0.0 || held-out d14tfi= 78.2 (fail) | fit_loss=  3263.3
+14/32 M0 pk=1.0e-03 t=5.0e-05 | d7= 75.6 d14= 47.0 d28=  0.0 || held-out d14tfi= 84.8 (PASS) | fit_loss=   384.2
+15/32 M0 pk=1.0e-03 t=2.5e-05 | d7= 84.6 d14= 71.4 d28= 29.8 || held-out d14tfi= 85.2 (PASS) | fit_loss=  1796.1
+16/32 M0 pk=1.0e-03 t=2.0e-04 | d7=  0.0 d14=  0.0 d28=  0.0 || held-out d14tfi= 64.6 (fail) | fit_loss=  9106.5
