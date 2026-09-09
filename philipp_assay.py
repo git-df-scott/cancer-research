@@ -1,7 +1,7 @@
 """
 Philipp assay replica: chronic culture and readout are SEPARATE experiments.
 
-See PHILIPP_ASSAY.md for the protocol this implements and its sources. The short version is that
+See docs/calibration/PHILIPP_ASSAY.md for the protocol this implements and its sources. The short version is that
 the previous rig in `calibrate_exhaustion.py` conflated two distinct experiments and measured the
 wrong quantity:
 
@@ -31,7 +31,7 @@ rejuvenating every cell -- is not merely fixed, it is unrepresentable in this de
 WHAT IS ASSUMED AND MARKED AS SUCH
 ----------------------------------
 - The paper does not state whether the day-3 replenishment tops up the existing well or replaces
-  its contents. Implemented as a top-up to the set point. Recorded in PHILIPP_ASSAY.md.
+  its contents. Implemented as a top-up to the set point. Recorded in docs/calibration/PHILIPP_ASSAY.md.
 - Absolute seeding densities are not given. Lattice occupancy is chosen so the readout is not
   crowding-limited, and `target_occ` is exposed so the choice can be swept.
 - Irradiated targets do not divide: p_div = 0. This one IS stated.

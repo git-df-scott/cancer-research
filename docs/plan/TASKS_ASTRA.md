@@ -5,8 +5,8 @@ elsewhere: do not modify `calibrate_exhaustion.py`, `run_calib_scan.py`, `exp_re
 `schedules.py`, or anything under `results/calib/` or `results/expR/`. Everything below is either a
 new file or a document.
 
-Read `GROUNDWORK.md` first — it states what is built, what was already established, and the three
-corrections to the record. `PLAN.md` has the phase structure. Standing constraints at the bottom of
+Read `docs/plan/GROUNDWORK.md` first — it states what is built, what was already established, and the three
+corrections to the record. `docs/plan/PLAN.md` has the phase structure. Standing constraints at the bottom of
 this file are not optional.
 
 Ranked by value. A1 is the one that decides whether the lung claim survives at all.
@@ -56,7 +56,7 @@ report are often the best source for occupancy and exposure–response and are u
 
 ## A2 — Retrieve SCLC tumour-nest geometry (unblocks Lead 2)
 
-**Why.** `LUNG_CANCER_RECON.md` identifies SCLC tumour-nest / CD3+ stroma compartmentalisation as a
+**Why.** `docs/recon/LUNG_CANCER_RECON.md` identifies SCLC tumour-nest / CD3+ stroma compartmentalisation as a
 better-evidenced analogue of the follicular geometry question. It is currently marked **not
 runnable** because nest dimensions could not be retrieved. The follicular project's own history says
 guessed geometry is exactly how you produce a model artefact, so this stays blocked until measured.

@@ -143,7 +143,7 @@ separated from a malignant compartment by a barrier — with three advantages ov
 
 1. **The trafficking knockout threat is weaker.** The FL model's biggest vulnerability was that
    T cells at 11 µm/min in dense lymph-node cortex plausibly squeeze past B cells, and allowing that
-   collapsed the architecture effect (`TRAFFICKING_PREREG.md`, `FINDINGS.md`). A desmoplastic
+   collapsed the architecture effect (`docs/calibration/TRAFFICKING_PREREG.md`, `docs/findings/FINDINGS.md`). A desmoplastic
    fibroblast/matrix barrier around an epithelial tumour nest is a **physically different and much
    better-evidenced** exclusion mechanism than same-size lymphocytes jostling in a follicle.
 2. **MHC-I loss is a confound the engager bypasses.** SCLC-enriched regions "consistently express
@@ -155,7 +155,7 @@ separated from a malignant compartment by a barrier — with three advantages ov
 
 **Caveat, and it is a real one:** the compartment data above is TMA-core-level and I could not
 retrieve nest diameters or T-cell-to-tumour distances — nature.com is 403-blocked from this
-environment, consistent with the constraints already recorded in `HANDOFF.md`. **Calibrating nest
+environment, consistent with the constraints already recorded in `docs/plan/HANDOFF.md`. **Calibrating nest
 geometry requires a source not yet obtained.** Until it is, any SCLC geometry is a guess, and the
 FL project's own history says guessed geometry is how you get a model artefact.
 
@@ -198,9 +198,9 @@ and attack-battery discipline, `exp_attacks.py` structure (knockouts, dose-match
 
 ---
 
-## 6. The blocker that follows us, and a correction to `FINDINGS.md`
+## 6. The blocker that follows us, and a correction to `docs/findings/FINDINGS.md`
 
-`HANDOFF.md` names the first task: recalibrate exhaustion, then verify the positive control passes.
+`docs/plan/HANDOFF.md` names the first task: recalibrate exhaustion, then verify the positive control passes.
 **That blocker is inherited by any lung work using this model.** I read the reference model's
 published version ([PMC12667981](https://pmc.ncbi.nlm.nih.gov/articles/PMC12667981/)) and it
 sharpens the diagnosis considerably.
@@ -215,15 +215,15 @@ sharpens the diagnosis considerably.
 *The positive-control failure is real and is not a floor effect.* At day 28 this project's dispersed
 arm gives median burden CONT 250.5 vs TFI2 589.5 — continuous better by 2.4×, where the reference
 has TFI2 better. Day 28 is far from the floor, so this cannot be explained away by the day-42
-floor effect noted in `README.md`. `FINDINGS.md` is right that the control failed.
+floor effect noted in `README.md`. `docs/findings/FINDINGS.md` is right that the control failed.
 
-*But the model is not uniformly wrong.* `FINDINGS.md` states the dispersed arm "produced the
+*But the model is not uniformly wrong.* `docs/findings/FINDINGS.md` states the dispersed arm "produced the
 opposite ranking." That is imprecise. The reference **also** reports CONT beating TFI_7 at day 42,
 and this project reproduces that (7.0 vs 75.5). The failure is specific to the
 **short-TFI-versus-continuous** comparison, not to the whole ordering. Worth stating precisely,
 because it narrows what recalibration has to fix.
 
-**The root cause named in `HANDOFF.md` is now externally confirmed.** The handoff hypothesised that
+**The root cause named in `docs/plan/HANDOFF.md` is now externally confirmed.** The handoff hypothesised that
 T-cell influx dilutes the exhaustion pool. The reference model **has no influx or recruitment at
 all** — fixed population, 2,400 T cells at 1:4 E:T, changing only by proliferation, death and state
 transitions — and it reaches **over 80% exhaustion by day 16**. This project's model has influx
@@ -231,14 +231,14 @@ transitions — and it reaches **over 80% exhaustion by day 16**. This project's
 identified, and it is fixable. That is a substantially better position than "unexplained
 calibration failure."
 
-I have not edited `FINDINGS.md`'s classification. The correction above is recorded here and should
-be merged into `FINDINGS.md` by whoever next touches the FL analysis.
+I have not edited `docs/findings/FINDINGS.md`'s classification. The correction above is recorded here and should
+be merged into `docs/findings/FINDINGS.md` by whoever next touches the FL analysis.
 
 ---
 
 ## 7. Recommended sequence, with decision gates
 
-1. **Fix exhaustion calibration against Philipp's external curve** (unchanged from `HANDOFF.md`).
+1. **Fix exhaustion calibration against Philipp's external curve** (unchanged from `docs/plan/HANDOFF.md`).
    Prime suspect now confirmed: influx dilution. Gate: reproduce ~90% functional loss at day 28
    continuous, and the day-14 recovery comparison.
 2. **Re-run the FL positive control.** Gate: does short-TFI beat continuous in the dispersed arm?

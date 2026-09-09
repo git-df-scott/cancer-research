@@ -12,7 +12,7 @@ summary-based description of the assay used earlier in this project, including t
 This matters for the lung question. The exhaustion-versus-treatment-free-interval evidence this
 project calibrates against was generated with a *half-life-extended* engager, the same class as
 tarlatamab. It is a closer analogue than assumed, and it also means the "TFI literature descends
-from a 2-hour-half-life molecule" framing in `LUNG_CANCER_RECON.md` is too broad: it is true of the
+from a 2-hour-half-life molecule" framing in `docs/recon/LUNG_CANCER_RECON.md` is too broad: it is true of the
 Obertopp/Basanta ABM's blinatumomab lineage, but not of Philipp, whose rest intervals were imposed
 by physically removing drug at reculture rather than by letting concentration decay.
 

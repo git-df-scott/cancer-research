@@ -4,10 +4,10 @@ experiment misconfigured?
 
 THE PROBLEM THIS EXISTS TO SETTLE
 ---------------------------------
-`FINDINGS.md` classifies experiment L1 as UNINFORMATIVE because its positive control failed: the
+`docs/findings/FINDINGS.md` classifies experiment L1 as UNINFORMATIVE because its positive control failed: the
 dispersed arm was meant to reproduce the reference result (short treatment-free intervals beat
 continuous dosing in well-mixed, leukaemia-like disease) and produced the opposite ranking.
-`FINDINGS.md` and `HANDOFF.md` both attribute that failure to exhaustion being miscalibrated --
+`docs/findings/FINDINGS.md` and `docs/plan/HANDOFF.md` both attribute that failure to exhaustion being miscalibrated --
 the model reaches 12% functional loss at day 28 where Philipp et al. measured ~90% -- and make
 recalibration the blocking first task.
 
@@ -61,13 +61,13 @@ R4 (assumption robustness). The R1 verdict is unchanged across on_days in {2, 3,
 DECISION RULE, FIXED IN ADVANCE
 -------------------------------
   R1 holds and R2 holds  -> control passes. The model was sound; L1 was misconfigured.
-                            FINDINGS.md's root-cause attribution is wrong and gets corrected.
+                            docs/findings/FINDINGS.md's root-cause attribution is wrong and gets corrected.
                             Re-run the architecture comparison with correct schedules.
   R1 holds, R2 fails     -> schedule encoding was the bug; exhaustion is still undercooked.
                             Recalibrate, but the scope is narrowed and L1's diagnosis was still
                             wrong about the cause.
   R1 fails               -> genuine model failure under faithful conditions. Proceed to full
-                            exhaustion recalibration as HANDOFF.md originally specified.
+                            exhaustion recalibration as docs/plan/HANDOFF.md originally specified.
 
 In every branch the ablation table is the deliverable, because it attributes the failure
 quantitatively instead of asserting a cause. That is the thing L1 did not do.

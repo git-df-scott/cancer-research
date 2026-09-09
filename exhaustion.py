@@ -34,8 +34,8 @@ signal, cross a threshold, and only then lose function and begin to die. A popul
 with dispersed accrual histories crossing a threshold at different times produces exactly the
 observed sigmoid.
 
-`README.md` and `HANDOFF.md` frame the blocking task as recalibrating exhaustion. On this evidence
-that framing is incomplete in the same way `FINDINGS.md`'s was: the *rate* is not the only thing
+`README.md` and `docs/plan/HANDOFF.md` frame the blocking task as recalibrating exhaustion. On this evidence
+that framing is incomplete in the same way `docs/findings/FINDINGS.md`'s was: the *rate* is not the only thing
 wrong, the *functional form* is. This module supplies the alternative form so the two can be
 compared on the same external curve.
 

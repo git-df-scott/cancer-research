@@ -1,13 +1,13 @@
 # Plan: fix the control, then ask the lung question
 
-Written 2026-09-08, after the lung recon (`LUNG_CANCER_RECON.md`) and a close read of the
+Written 2026-09-08, after the lung recon (`docs/recon/LUNG_CANCER_RECON.md`) and a close read of the
 reference model. Two tracks run in parallel by decision of the project owner.
 
 ---
 
 ## What planning turned up, and why it changes everything
 
-`FINDINGS.md` and `HANDOFF.md` both attribute the failed positive control to **exhaustion
+`docs/findings/FINDINGS.md` and `docs/plan/HANDOFF.md` both attribute the failed positive control to **exhaustion
 miscalibration**, and set recalibration as the blocking first task. Reading the reference model's
 published methods ([PMC12667981](https://pmc.ncbi.nlm.nih.gov/articles/PMC12667981/)) against
 `exp_schedule.py` shows something different and much cheaper to fix.
@@ -42,7 +42,7 @@ killing directly. Exhaustion cannot become the binding constraint in that regime
 is calibrated. At the reference's 1:4 it can.
 
 **Consequence for the plan:** exhaustion recalibration may still be needed, but it is no longer
-the *first* thing to try, and `FINDINGS.md`'s root-cause attribution is probably wrong. Phase 0
+the *first* thing to try, and `docs/findings/FINDINGS.md`'s root-cause attribution is probably wrong. Phase 0
 settles it in hours rather than weeks.
 
 **Honest caveat.** The reference does not tabulate the ON-days between its OFF-intervals, so the
@@ -88,7 +88,7 @@ sweep the assumption does not matter; if it flips, say exactly where.
 
 | Outcome | Meaning | Next |
 |---|---|---|
-| Some short TFI beats CONT at day 28 **and** CONT exhaustion >80% by d16 | Control passes. The model was fine; the experiment was misconfigured. | Correct `FINDINGS.md`, re-run L1 properly, proceed |
+| Some short TFI beats CONT at day 28 **and** CONT exhaustion >80% by d16 | Control passes. The model was fine; the experiment was misconfigured. | Correct `docs/findings/FINDINGS.md`, re-run L1 properly, proceed |
 | Ranking correct but exhaustion far below 80% | Schedule was the bug, calibration still off | Phase 1 recalibration, narrowed |
 | CONT still wins under faithful conditions | Genuine model failure | Phase 1 recalibration, full scope |
 
@@ -187,4 +187,4 @@ it as a limitation. The gap is the combination, and only the combination is clai
    docstring written before any run.
 2. `pk.py` — two-compartment model, unit-tested against published half-life in isolation.
 3. Run Phase 0 ablation, report the attribution table.
-4. Correct `FINDINGS.md` once Phase 0 returns, with the ablation as evidence rather than assertion.
+4. Correct `docs/findings/FINDINGS.md` once Phase 0 returns, with the ablation as evidence rather than assertion.

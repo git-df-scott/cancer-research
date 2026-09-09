@@ -144,4 +144,4 @@ The bottom four rows are genuinely unclaimed. The top six are not, and I add not
 That is a narrow strip of novelty resting entirely on a conjunction, and it is only worth anything
 if the conjunction produces an effect that survives the attacks in Phases 3 to 7. As of writing, the
 Phase 5 trafficking test has already produced a result that threatens it badly (see
-`FINDINGS.md`), so novelty is not the binding constraint here. Validity is.
+`docs/findings/FINDINGS.md`), so novelty is not the binding constraint here. Validity is.

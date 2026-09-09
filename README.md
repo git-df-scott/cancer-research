@@ -1,95 +1,66 @@
-# Follicular lymphoma and T-cell-engager scheduling: does tissue architecture change the answer?
+# T-cell engager scheduling: follicular lymphoma, and an attempt to transfer it to lung
 
-A spatial agent-based model asking one narrow question, under active adversarial testing.
+Two linked projects under active adversarial testing. **Nothing here is a validated biological
+claim, and no experiment licensed to make treatment predictions has been run.**
 
-**Status as of 2026-09-07: UNRESOLVED, and currently leaning towards a negative result.**
-Nothing here is a validated biological claim. Read `FINDINGS.md` for the live status and
-`PRIOR_ART.md` before believing any novelty claim.
+## Status
 
-## The question
+| | |
+|---|---|
+| **Follicular lymphoma (original)** | Experiment L1 invalid. Its schedule encoding did not match the reference it was compared against, and the exhaustion calibration was independently broken. Not yet re-run. |
+| **Lung / SCLC (current)** | Calibration classified **B — FIT BUT NOT VALIDATED**. Experiments R and T are **blocked by a hard gate** and have never been run. |
 
-Obertopp, Froid, Pilon-Thomas & Basanta (bioRxiv 2025, doi 10.1101/2025.11.17.688873) modelled
-treatment-free intervals (TFIs) for a CD19xCD3 T-cell engager in B-cell acute lymphoblastic
-leukaemia and concluded that short 2-3 day intervals beat the clinical 7-day interval, and that
-continuous dosing is worst. Their model seeds tumour cells randomly at 50% occupancy with T cells
-already interspersed - their own stated limitation, and a fair model of leukaemia, where an effector
-and a blast are already neighbours.
-
-Follicular lymphoma is not like that. Imaging mass cytometry of paired biopsies found that
-"peri-follicular regions represented a barrier for immune infiltration into the follicles", with
-malignant cells inside follicles "separated spatially from the attack by CD8+ T cells"
-(J Hematol Oncol 2022, PMC9396877).
-
-**Does that architectural difference invalidate the leukaemia scheduling conclusion?**
-
-## The candidate causal chain under test
-
-```
-follicular architecture
-  -> smaller fraction of T cells simultaneously in contact with malignant B cells
-  -> lower cumulative contact dwell time per effector
-  -> slower exhaustion
-  -> less benefit from treatment-free recovery intervals
-  -> different optimal schedule than in dispersed / leukaemia-like disease
-```
-
-Links 1 and 2 are confirmed in-model and are **not novel** - geometry changing contact frequency is
-expected and covered by prior literature. The question is whether the chain reaches the last step
-strongly enough to be a falsifiable prediction.
-
-## What is NOT claimed
-
-- No cure claim. No clinical recommendation.
-- No new biological mechanism. Every individual link in the chain has prior art; see the claim
-  matrix in `PRIOR_ART.md`.
-- Simulated days under stated rate calibrations are not clinical predictions.
+Start with `docs/findings/FINAL_CLASSIFICATION.md`, then `docs/findings/STRATEGIC_ASSESSMENT.md`.
 
 ## Layout
 
-| Path | What it is |
-|---|---|
-| `lymphoid.py` | the model: 2D lattice, malignant B cells, motile exhaustible T cells, engager schedule |
-| `exp_schedule.py` | experiment L1, pre-registered in its docstring (P1-P5) |
-| `exp_attacks.py` | experiment L2: exhaustion knockout, dose-matched controls, trafficking knockout, exhaustion distribution |
-| `TRAFFICKING_PREREG.md` | Phase 5 pre-registration, written before any alternative was run |
-| `analyze_L1_full.py` | reports every pre-registered endpoint regardless of outcome |
-| `UNDERSTANDING_NHL.md` | the biology, sourced, including what the first attempt got wrong |
-| `PRIOR_ART.md` | prior-art audit and claim matrix |
-| `FINDINGS.md` | live results and current classification |
-| `results/` | raw outputs, all seeds preserved |
-| `superseded/` | the failed first attempt, kept deliberately |
-
-## Calibration and its sources
-
-| Quantity | Value | Source |
-|---|---|---|
-| T-cell speed, lymph node cortex | ~11 um/min | Miller/Cahalan, Science 2002 |
-| CTL killing capacity in vivo | 2-16 targets/CTL/day | Halle et al., Immunity 2016, PMID 26872694 |
-| Engage-kill-detach cycle | ~25 min | Cazaux et al., J Exp Med 2019 |
-| Exhaustion under continuous engager | specific lysis 88.4% (d7) -> 8.6% (d28) | Philipp et al., Blood 2022, PMID 35878001 |
-| Recovery on a treatment-free interval | d14 lysis 93.4% vs 34.9% continuous | same |
-| Neoplastic follicle diameter | 757 um (577-930) | intestinal FL morphometry |
-| Malignant B-cell cycle | ~2 days | standard human tumour cell-cycle time |
-
-One lattice site = one cell = 10 um. One step = 1 minute (runs use dt = 5 min with sub-stepped
-motility; validated against dt = 1, agreement within 13% on all reported quantities, and the
-discretisation is common-mode across arms).
-
-## Reproduce
-
-```bash
-python -m venv .venv && .venv/bin/pip install numpy scipy matplotlib
-.venv/bin/python exp_schedule.py     # experiment L1
-.venv/bin/python analyze_L1_full.py  # all pre-registered endpoints
-.venv/bin/python exp_attacks.py      # the attack battery
+```
+docs/recon/         why SCLC, prior art, the biology
+docs/plan/          phase structure, groundwork state, task board, handoff
+docs/calibration/   the Philipp assay as actually performed, data, pre-registrations
+docs/findings/      classification, contamination, counterexamples, retractions
+docs/review/        Codex's independent review
+results/            raw per-run outputs, every seed preserved
+superseded/         invalidated work, kept deliberately
 ```
 
-## Known deviations, recorded rather than hidden
+Model and instrument: `lymphoid.py`, `exhaustion.py`, `philipp_assay.py`, `pk.py`, `schedules.py`,
+`calibration.py`, `provenance.py`.
+Experiments and fitting: `exp_*.py`, `fit_calibration.py`, `calibrate_*.py`, `structural_audit.py`.
 
-- **2026-09-07 out-of-memory stall.** The first L1 launch deadlocked at 125/150 runs when system
-  swap filled. The 125 completed runs are preserved verbatim in `results/expL1_salvage125.json`;
-  the remaining 25 cells were re-run by `rerun_missing.py` with identical code and seeds and merged
-  into `results/expL1.json`. Nothing was discarded or re-rolled.
-- **Floor effect on the primary endpoint.** Under continuous dosing both architectures reach
-  near-zero burden by day 42 (medians 4 and 7 cells of 5525), so the pre-registered day-42 endpoint
-  may lack dynamic range. Day 28 is reported alongside it and is clearly labelled as secondary.
+## The gate
+
+`exp_replicate.py` and `exp_tarlatamab.py` refuse to run unless `results/calibration.json` reads
+`VALIDATED`. It currently reads `FIT_NOT_VALIDATED`. A fitted model is not a validated one; the
+gate exists because documenting that distinction was not enough.
+
+```bash
+python -m venv .venv && .venv/bin/pip install numpy scipy
+.venv/bin/python philipp_assay.py      # observation-model invariants
+.venv/bin/python pk.py                 # PK self-tests
+.venv/bin/python provenance.py         # source-to-parameter contamination audit
+.venv/bin/python calibration.py        # gate refusal tests
+.venv/bin/python structural_audit.py   # limiting-behaviour attack
+```
+
+## What has actually been established
+
+**Positive.** A threshold functional mapping reproduces Philipp's chronic-stimulation cytotoxicity
+curve within simulation noise, where a linear mapping cannot, on a bracketed grid. The L1 schedule
+encoding is provably wrong by exposure arithmetic. Tarlatamab's trough occupancy drop under
+clinical Q2W dosing is 17–22% at an EC50 of ~1 nM and 37–45% at 3 nM — a result that needed no
+simulation and has survived every correction.
+
+**Negative, and more useful.** Four instrument bugs were found and fixed, none of which raised an
+error and all of which produced plausible numbers. The held-out observation turned out to be
+contaminated by the parameter it was meant to test. Two measured functional axes are compressed
+into one latent variable, so the mechanism of treatment-free-interval recovery is unidentified.
+
+Full record, including retracted claims, in `docs/findings/`.
+
+## Standing rules
+
+Report every pre-registered endpoint regardless of outcome. Calibrate to external measured curves,
+never to a schedule ranking. Preserve failed hypotheses and superseded results rather than deleting
+them. No cure claims, no clinical recommendations, no proposed dosing changes. A clean negative is
+a success.

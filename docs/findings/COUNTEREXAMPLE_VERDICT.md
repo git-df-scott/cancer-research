@@ -7,7 +7,7 @@ different and much more specific claim than the one I made.
 
 ## What I claimed, and why it was wrong
 
-`STRUCTURAL_COUNTEREXAMPLE.md` asserted:
+`docs/findings/STRUCTURAL_COUNTEREXAMPLE.md` asserted:
 
 > M1's chronic culture has no T-cell proliferation. Philipp's does, and it differs about four-fold
 > between the two arms. The real culture sustains and expands its T cells; this model's only loses
@@ -85,4 +85,4 @@ The counterexample does not kill M1. It also does not clear it. It converts a cl
 contradiction into a demonstrated **identifiability limit with a measured basis**: two functional
 axes, one latent variable, both axes observed to move.
 
-`STRUCTURAL_COUNTEREXAMPLE.md` is retained unedited as the superseded claim, with a pointer here.
+`docs/findings/STRUCTURAL_COUNTEREXAMPLE.md` is retained unedited as the superseded claim, with a pointer here.

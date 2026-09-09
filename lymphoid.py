@@ -5,7 +5,7 @@ WHY THIS IS NOT THE SOLID-TUMOUR MODEL (../tumor.py)
 ----------------------------------------------------
 The parent project models a spheroid with an oxygen field, where a diffusing drug kills
 cells that attempt division. Three of those assumptions are wrong for follicular lymphoma
-(see UNDERSTANDING_NHL.md):
+(see docs/recon/UNDERSTANDING_NHL.md):
   - Oxygen: FMISO-PET shows lymphoma is markedly less hypoxic than glioblastoma
     (tumour-to-normal 1.80 vs 2.75), and germinal-centre hypoxia is physiological
     signalling in a ~100 um structure, not diffusion-limited necrosis. NO OXYGEN FIELD HERE.
@@ -106,7 +106,7 @@ class Lymphoid:
         # bumps into, instead of being blocked. 0 = absolute volume exclusion (T cells can only
         # enter vacancies, so the tissue must be eaten from the rim inward); 1 = occupancy does not
         # impede motility. Real lymphocytes migrate through densely packed lymphoid tissue, so 0 is
-        # almost certainly too restrictive. See TRAFFICKING_PREREG.md.
+        # almost certainly too restrictive. See docs/calibration/TRAFFICKING_PREREG.md.
         self.swap_prob = float(swap_prob)
 
         self.B = np.zeros((L, L), bool)     # tumour B cells

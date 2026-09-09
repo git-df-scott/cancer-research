@@ -2,7 +2,7 @@
 
 Status 2026-09-08. Four new modules, all executable and self-tested. **No experiment has been run
 to completion.** Everything below comes from validation runs and from the PK layer, which needs no
-simulation. Read `PLAN.md` for the phase structure and `LUNG_CANCER_RECON.md` for why SCLC.
+simulation. Read `docs/plan/PLAN.md` for the phase structure and `docs/recon/LUNG_CANCER_RECON.md` for why SCLC.
 
 ## What exists now
 
@@ -34,7 +34,7 @@ of TCE dosing" — a duty cycle. L1 encoded one interruption at the end of a cyc
 
 This is no longer an inference. It is arithmetic, and it is reproducible from `schedules.py`.
 
-### 2. But fixing the schedule and E:T is *not* sufficient — and that partly vindicates `HANDOFF.md`
+### 2. But fixing the schedule and E:T is *not* sufficient — and that partly vindicates `docs/plan/HANDOFF.md`
 
 A validation run of the faithful reference configuration (1:4 E:T, 50% occupancy, no influx,
 proliferation on, duty-cycle schedules):
@@ -49,11 +49,11 @@ this weak, killing never collapses, so no schedule can be distinguished from any
 reference gets dynamic range precisely *because* its T cells exhaust hard enough (>80% by day 16)
 for killing to fail and the tumour to regrow.
 
-So the correction to `FINDINGS.md` is now two-sided, and I got part of my earlier read wrong:
+So the correction to `docs/findings/FINDINGS.md` is now two-sided, and I got part of my earlier read wrong:
 
 - The schedule encoding and E:T ratio **are** misconfigured, decisively, and L1's ranking is
-  substantially an artefact of that. `FINDINGS.md`'s framing of L1 as a clean test is wrong.
-- **Exhaustion recalibration is genuinely required as well.** `HANDOFF.md` was right that it
+  substantially an artefact of that. `docs/findings/FINDINGS.md`'s framing of L1 as a clean test is wrong.
+- **Exhaustion recalibration is genuinely required as well.** `docs/plan/HANDOFF.md` was right that it
   blocks. My earlier claim that it was probably *not* the cause was too strong.
 
 Both are true at once. Phase 1 is not optional.
@@ -135,7 +135,7 @@ structured disease a T cell can be drug-saturated and unengaged. T2/T3 are not i
    of whether R1 passes; it is the deliverable that L1 never produced.
 4. `.venv/bin/python exp_tarlatamab.py run` — T2/T3/T4 in the ABM, at EC50 1 nM and 10 nM
    (either side of the boundary).
-5. Only then: correct `FINDINGS.md` with the ablation as evidence, and classify.
+5. Only then: correct `docs/findings/FINDINGS.md` with the ablation as evidence, and classify.
 
 Runtime is ~50 s per 42-day run at dt=5. Experiment R is 280 runs; T is 80 at 84 days. Every job
 writes its own file and skips if present, so a stall costs one run, not the batch.

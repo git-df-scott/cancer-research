@@ -8,8 +8,8 @@ cd cancer-research
 python -m venv .venv && .venv/bin/pip install numpy scipy matplotlib
 ```
 
-Read in this order: `FINDINGS.md` (live status), `README.md`, `UNDERSTANDING_NHL.md` (the biology),
-`PRIOR_ART.md` (novelty audit and claim matrix), `TRAFFICKING_PREREG.md`, then the docstrings of
+Read in this order: `docs/findings/FINDINGS.md` (live status), `README.md`, `docs/recon/UNDERSTANDING_NHL.md` (the biology),
+`docs/recon/PRIOR_ART.md` (novelty audit and claim matrix), `docs/calibration/TRAFFICKING_PREREG.md`, then the docstrings of
 `exp_schedule.py` and `exp_attacks.py`, which contain the pre-registrations.
 
 ## The question, unchanged
@@ -87,7 +87,7 @@ prediction written down *before* looking for data to test it).
 ## Hard constraints
 
 - Do not restart the general literature audit. Phase 8 is done; the two closest works were read in
-  full and neither duplicates the claim. See the claim matrix in `PRIOR_ART.md`.
+  full and neither duplicates the claim. See the claim matrix in `docs/recon/PRIOR_ART.md`.
 - Do not search for a positive result by tuning parameters after seeing outcomes.
 - Do not claim a new biological mechanism. Every individual link has prior art.
 - Report every pre-registered endpoint regardless of outcome. Do not reinterpret hypotheses after

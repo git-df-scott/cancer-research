@@ -72,7 +72,7 @@ of four with no multiplicity correction. It does not support the pre-registered 
 
 ## Independent threat, already established before these results
 
-The Phase 5 trafficking test (pre-registered in `TRAFFICKING_PREREG.md` before any alternative was
+The Phase 5 trafficking test (pre-registered in `docs/calibration/TRAFFICKING_PREREG.md` before any alternative was
 run) shows that allowing T cells to squeeze past malignant B cells — which the 11 um/min lymph-node
 cortex measurement arguably requires, since that speed was measured in dense tissue — raises the
 follicle engaged fraction from 0.048 to 0.576, essentially the dispersed value, with T cells reaching

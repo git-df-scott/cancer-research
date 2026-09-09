@@ -110,7 +110,7 @@ def grid(model, mode='base'):
         pks = [1e-3, 2e-3, 4e-3]
         tonics = [6e-6, 1.2e-5, 2.5e-5]
     if mode == 'clean':
-        # Phase 1 clean M1 reselection. See M1_RESELECTION_PREREG.md, committed before running.
+        # Phase 1 clean M1 reselection. See docs/calibration/M1_RESELECTION_PREREG.md, committed before running.
         # theta and hill ranges are defined from the reachable domain and structural limits, NOT
         # from the previous optimum, which came from the superseded destructive-probe scan.
         pks = [5e-4, 1e-3, 2e-3]

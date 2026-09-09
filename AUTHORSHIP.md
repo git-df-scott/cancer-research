@@ -24,13 +24,13 @@ exhaustion/recovery), `exhaustion.py`, `philipp_assay.py`, `pk.py`, `schedules.p
 `calibrate_threshold.py`, `run_calib_scan.py`, `structural_audit.py`
 
 **Record**
-`LUNG_CANCER_RECON.md`, `PLAN.md`, `GROUNDWORK.md`, `PHILIPP_ASSAY.md`,
-`PHILIPP_POPULATION_DATA.md` + `.csv`, `M1_RESELECTION_PREREG.md`,
-`HELD_OUT_CONTAMINATION.md`, `STRUCTURAL_COUNTEREXAMPLE.md`, `COUNTEREXAMPLE_VERDICT.md`,
-`STRATEGIC_ASSESSMENT.md`, `FINAL_CLASSIFICATION.md`, `TASKS_ASTRA.md`, `AUTHORSHIP.md`
+`docs/recon/LUNG_CANCER_RECON.md`, `docs/plan/PLAN.md`, `docs/plan/GROUNDWORK.md`, `docs/calibration/PHILIPP_ASSAY.md`,
+`docs/calibration/PHILIPP_POPULATION_DATA.md` + `.csv`, `docs/calibration/M1_RESELECTION_PREREG.md`,
+`docs/findings/HELD_OUT_CONTAMINATION.md`, `docs/findings/STRUCTURAL_COUNTEREXAMPLE.md`, `docs/findings/COUNTEREXAMPLE_VERDICT.md`,
+`docs/findings/STRATEGIC_ASSESSMENT.md`, `docs/findings/FINAL_CLASSIFICATION.md`, `docs/plan/TASKS_ASTRA.md`, `AUTHORSHIP.md`
 
 **Superseded, preserved deliberately**
 `superseded/calib_probe_bug/`, `superseded/calib2_density_bug/`
 
-Not authored here: `CODEX_GROUNDWORK_REVIEW.md`, `CODEX_GROUNDWORK_REVIEW_CHECKS.json`,
-`CODEX_verify_groundwork.py` (Codex), and the pre-existing follicular lymphoma files.
+Not authored here: `docs/review/CODEX_GROUNDWORK_REVIEW.md`, `docs/review/CODEX_GROUNDWORK_REVIEW_CHECKS.json`,
+`docs/review/CODEX_verify_groundwork.py` (Codex), and the pre-existing follicular lymphoma files.

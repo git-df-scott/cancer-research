@@ -4,7 +4,7 @@ Source: Philipp et al., *Blood* 2022, PMID 35878001, methods and results read at
 [PMC10652962](https://pmc.ncbi.nlm.nih.gov/articles/PMC10652962/).
 
 **This reconstruction retracts part of the structural counterexample recorded in
-`STRUCTURAL_COUNTEREXAMPLE.md`.** See `COUNTEREXAMPLE_VERDICT.md`.
+`docs/findings/STRUCTURAL_COUNTEREXAMPLE.md`.** See `docs/findings/COUNTEREXAMPLE_VERDICT.md`.
 
 ## The decisive definition
 
