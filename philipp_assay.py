@@ -223,6 +223,35 @@ def _invariants():
     y_dead = readout_specific_lysis(c_dead, assay_seed=999, L=40)
     check(f'fully exhausted population reads ~0 lysis (got {y_dead:.2f})', y_dead < 5.0)
 
+    # 6. DENSITY INVARIANCE. The readout must depend on per-cell function, not on how many cells
+    #    the chronic culture happened to have left. This is the regression test for the
+    #    plating-density confound (see superseded/calib2_density_bug/README.md), which passed
+    #    invariants 1-5 while measuring the wrong quantity entirely: at fixed exhaustion 0.10,
+    #    plating 600 cells gave 100% lysis and plating 60 gave 51.7%.
+    #
+    #    Checks 1-5 verify that measurement does not MUTATE state. This one verifies that it
+    #    measures the intended QUANTITY. They are different classes of check and the first does
+    #    not imply the second.
+    class _Fixed:
+        def __init__(self, E, kw, cls): self._E = E; self.model_kw = kw; self.model_cls = cls
+        def harvest(self): return self._E
+
+    kwd = dict(dt=5.0, p_kill=1e-3, exhaust_tonic=5e-5)
+    readings = [readout_specific_lysis(_Fixed(np.full(n, 0.10), kwd, Lymphoid),
+                                       assay_seed=4242, L=40)
+                for n in (60, 120, 300, 600)]
+    spread = max(readings) - min(readings)
+    check(f'readout invariant to surviving cell count at fixed E '
+          f'(spread {spread:.1f} pts over 60-600 cells: {[round(r,1) for r in readings]})',
+          spread < 5.0)
+
+    # 7. The readout must still RESPOND to exhaustion. A readout made density-invariant by being
+    #    insensitive to everything would pass check 6 and be useless.
+    lo = readout_specific_lysis(_Fixed(np.full(300, 0.05), kwd, Lymphoid), assay_seed=4242, L=40)
+    hi = readout_specific_lysis(_Fixed(np.full(300, 0.95), kwd, Lymphoid), assay_seed=4242, L=40)
+    check(f'readout still responds to exhaustion (E=0.05 -> {lo:.1f}, E=0.95 -> {hi:.1f})',
+          lo - hi > 20.0)
+
     print('\nPhase C invariants:', 'PASS' if ok else 'FAIL')
     return ok
 
